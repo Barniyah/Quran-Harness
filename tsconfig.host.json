@@ -235,6 +235,9 @@
     "scripts/client-bundle-purity.spec.ts"
   ],
   "references": [
+    { "path": "./packages/quran/evidence-core" },
+    { "path": "./packages/quran/tool-quran-text" },
+    { "path": "./packages/quran/tool-quran-metadata" },
     { "path": "./packages/experimental/client-ui-cot-translation/tsconfig.host.json" },
     { "path": "./packages/experimental/cot-translation-bundle" },
     { "path": "./packages/experimental/session-search" },
