@@ -1,0 +1,96 @@
+:root {
+  /* kept local to the card; the dark theme inherits through color-mix */
+}
+
+.card {
+  border: 1px solid color-mix(in oklab, #1d6f4a 45%, transparent);
+  border-inline-start: 3px solid #1d6f4a;
+  border-radius: 8px;
+  background: color-mix(in oklab, #1d6f4a 6%, transparent);
+  padding: 8px 10px;
+  margin: 4px 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.card[data-state='mismatch'] {
+  border-color: color-mix(in oklab, #b03030 55%, transparent);
+  border-inline-start-color: #b03030;
+  background: color-mix(in oklab, #b03030 7%, transparent);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.leading {
+  display: inline-flex;
+  color: #1d6f4a;
+}
+
+.card[data-state='mismatch'] .leading {
+  color: #b03030;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.badge {
+  margin-inline-start: auto;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: color-mix(in oklab, #1d6f4a 16%, transparent);
+  color: #14663f;
+}
+
+.card[data-state='mismatch'] .badge {
+  background: color-mix(in oklab, #b03030 16%, transparent);
+  color: #8f2727;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2px 12px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed color-mix(in oklab, currentColor 18%, transparent);
+}
+
+.label {
+  opacity: 0.65;
+  white-space: nowrap;
+}
+
+.value {
+  font-family: ui-monospace, monospace;
+  overflow-wrap: anywhere;
+  direction: ltr;
+  text-align: start;
+}
+
+.valueArabic {
+  font-family: inherit;
+  direction: auto;
+}
+
+.verdict {
+  margin-top: 6px;
+  font-size: 11px;
+  opacity: 0.8;
+  overflow-wrap: anywhere;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

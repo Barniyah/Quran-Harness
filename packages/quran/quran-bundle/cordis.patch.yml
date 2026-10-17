@@ -14,6 +14,10 @@
     default: quran
 
 - insert:
+    # Governance card (browser half ships via the package's dsh.client entry).
+    - id: ui-quran-governance
+      name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/client-governance-card/lib/index.js'
+
     - id: preset-quran
       name: '@deepseek-ai/dsh-agent-preset'
       config:
