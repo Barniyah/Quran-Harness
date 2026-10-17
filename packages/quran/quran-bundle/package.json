@@ -1,0 +1,20 @@
+{
+  "name": "@deepseek-ai/dsh-quran-bundle",
+  "description": "Quran Harness bundle: evidence-governed Quran tools and the Quran agent preset",
+  "version": "0.2.1-alpha.4",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": [
+        "./cordis.patch.yml"
+      ]
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-quran-evidence": "workspace:*",
+    "@deepseek-ai/dsh-tool-quran-text": "workspace:*",
+    "@deepseek-ai/dsh-tool-quran-metadata": "workspace:*"
+  }
+}

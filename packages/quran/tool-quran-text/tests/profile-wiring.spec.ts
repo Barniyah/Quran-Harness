@@ -51,7 +51,7 @@ it('web profile with quran patch registers quran_get_verse and quran_get_metadat
     return
   }
   const root = await mkdtemp(join(tmpdir(), 'quran-profile-'))
-  test.onTestFinished(() => rm(root, { recursive: true, force: true }))
+  test.onTestFinished(() => rm(root, { recursive: true, force: true, maxRetries: 8, retryDelay: 500 }))
 
   const observerOut = join(root, 'observer.json')
   const auditLog = join(root, 'evidence-audit.jsonl')
@@ -90,7 +90,8 @@ it('web profile with quran patch registers quran_get_verse and quran_get_metadat
   for (const stream of [child.stdout, child.stderr]) {
     stream!.on('data', (d) => { output = (output + String(d)).slice(-20_000) })
   }
-  test.onTestFinished(() => { if (child.exitCode === null) child.kill('SIGTERM') })
+  const childDone = new Promise<void>(resolve => child.once('close', () => resolve()))
+  test.onTestFinished(async () => { if (child.exitCode === null) child.kill('SIGTERM'); await childDone })
 
   const deadline = Date.now() + 90_000
   while (Date.now() < deadline && !existsSync(observerOut) && child.exitCode === null) {
