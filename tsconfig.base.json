@@ -540,6 +540,8 @@
       "@deepseek-ai/dsh-tool-quran-metadata": ["./packages/quran/tool-quran-metadata/src"],
       "@deepseek-ai/dsh-client-ui-quran-governance": ["./packages/quran/client-governance-card/src"],
       "@deepseek-ai/dsh-client-ui-quran-governance/client": ["./packages/quran/client-governance-card/src/client/index.ts"],
+      "@deepseek-ai/dsh-client-ui-quran-theme": ["./packages/quran/client-theme-islamic/src"],
+      "@deepseek-ai/dsh-client-ui-quran-theme/client": ["./packages/quran/client-theme-islamic/src/client/index.ts"],
       "@deepseek-ai/dsh-tool-workflow": ["./packages/workflow/tool-workflow/src"],
       "@deepseek-ai/dsh-tool-working-directory": ["./packages/session/tool-working-directory/src"],
       "@deepseek-ai/dsh-tool-workspace-dependencies": ["./packages/skill/tool-workspace-dependencies/src"],
