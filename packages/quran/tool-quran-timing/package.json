@@ -1,0 +1,35 @@
+{
+  "name": "@deepseek-ai/dsh-tool-quran-timing",
+  "description": "Ayah timing tool (Husary pinned set): start/end/duration per ayah with evidence envelope, aligned with the audio capability",
+  "version": "0.2.1-alpha.4",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/types/**/*.d.ts"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "workspace:~",
+    "@deepseek-ai/dsh-tools": "workspace:*"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-quran-data": "workspace:*",
+    "@deepseek-ai/dsh-quran-evidence": "workspace:*",
+    "@deepseek-ai/dsh-tool-quran-audio": "workspace:*"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "workspace:~",
+    "@deepseek-ai/dsh-tools": "workspace:*"
+  }
+}

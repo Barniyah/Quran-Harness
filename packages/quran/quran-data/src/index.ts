@@ -26,6 +26,17 @@ const DATA_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-u
 const HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-uthmani.sha256')
 const IMLAEI_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-simple-clean.txt')
 const IMLAEI_HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-simple-clean.sha256')
+const TIMING_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/timing-husary.json')
+const TIMING_HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/timing-husary.sha256')
+
+/** The EveryAyah Husary timing set descriptor. */
+export const EVERYAYAH_TIMING_HUSARY: SourceDescriptor = {
+  id: 'everyayah-timing-husary',
+  name: 'EveryAyah timings — Mahmoud Khalil Al-Husary (Murattal)',
+  url: 'https://everyayah.com/data/timings_files/Husary_Timings.zip',
+  trust: 'L3-community',
+  version: 'pinned-2026-10-18',
+}
 
 /** The Tanzil Imla'ei (standard-spelling) artifact used as the search corpus. */
 export const TANZIL_IMLAEI: SourceDescriptor = {
@@ -51,6 +62,56 @@ export interface VerseRow {
 let cache: readonly VerseRow[] | undefined
 let cacheByKey: Map<string, VerseRow> | undefined
 let imlaeiCache: readonly VerseRow[] | undefined
+let timingCache: HusaryTiming | undefined
+
+/** One surah's timing block in the pinned Husary set. */
+export interface SurahTiming {
+  /** Whether the source file carried a leading basmalah/isti'adha segment (dropped from ayahEndMs, documented). */
+  readonly introSegment: boolean
+  /** ayahEndMs[i] = end of ayah i+1 in milliseconds; start = previous end or 0. */
+  readonly ayahEndMs: readonly number[]
+}
+
+/** The pinned Husary timing document. */
+export interface HusaryTiming {
+  readonly reciter: string
+  readonly reciterName: string
+  readonly source: string
+  readonly unit: 'ms'
+  readonly convention: string
+  readonly surahs: Record<string, SurahTiming>
+}
+
+/**
+ * Load the pinned Husary timing set with the same integrity discipline as the
+ * text artifacts.
+ */
+export async function loadHusaryTiming(): Promise<HusaryTiming> {
+  if (timingCache) return timingCache
+  const text = await loadVerified(TIMING_FILE, TIMING_HASH_FILE)
+  const parsed = JSON.parse(text) as HusaryTiming
+  if (Object.keys(parsed.surahs).length !== 114) {
+    throw new Error(`timing artifact must hold 114 surahs, got ${Object.keys(parsed.surahs).length}`)
+  }
+  timingCache = parsed
+  return parsed
+}
+
+/** One ayah's timing span in milliseconds. */
+export interface AyahTimingSpan {
+  readonly startMs: number
+  readonly endMs: number
+  readonly durationMs: number
+}
+
+/** Start/end/duration of one ayah in the Husary set; undefined when absent. */
+export function ayahTiming(timing: HusaryTiming, surah: number, ayah: number): AyahTimingSpan | undefined {
+  const block = timing.surahs[String(surah)]
+  const endMs = block?.ayahEndMs[ayah - 1]
+  const prevEndMs = ayah > 1 ? block?.ayahEndMs[ayah - 2] : 0
+  if (block === undefined || endMs === undefined || prevEndMs === undefined) return undefined
+  return { startMs: prevEndMs, endMs, durationMs: endMs - prevEndMs }
+}
 
 /** Parse a Tanzil `surah|ayah|text` file whose integrity hash was verified by the caller. */
 function parseRows(text: string): VerseRow[] {

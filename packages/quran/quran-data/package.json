@@ -20,7 +20,9 @@
     "data/quran-uthmani.txt",
     "data/quran-uthmani.sha256",
     "data/quran-simple-clean.txt",
-    "data/quran-simple-clean.sha256"
+    "data/quran-simple-clean.sha256",
+    "data/timing-husary.json",
+    "data/timing-husary.sha256"
   ],
   "license": "MIT",
   "peerDependencies": {

@@ -22,7 +22,7 @@ import { GovernanceCard } from './GovernanceCard.tsx'
  */
 export function apply(ctx: ClientContext): void {
   ctx.slots.inject('tool.call.toolview', () => {
-    const disposers = ['quran_get_verse', 'quran_get_metadata', 'quran_search', 'quran_get_audio', 'quran_get_page_image', 'quran_get_ayah_image']
+    const disposers = ['quran_get_verse', 'quran_get_metadata', 'quran_search', 'quran_get_audio', 'quran_get_page_image', 'quran_get_ayah_image', 'quran_get_ayah_timing', 'quran_compare_riwayat', 'quran_get_page_layout', 'quran_get_fonts']
       .map(key => ctx.slots.register({ name: 'tool.call.toolview', key }, GovernanceCard))
     return () => { for (const dispose of disposers) dispose() }
   })
