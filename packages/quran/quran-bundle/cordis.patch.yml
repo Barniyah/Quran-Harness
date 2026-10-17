@@ -60,6 +60,18 @@
             name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-quran-metadata/lib/index.js'
             config:
               auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
+          - id: tool-quran-search
+            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-quran-search/lib/index.js'
+            config:
+              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
+          - id: tool-quran-audio
+            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-quran-audio/lib/index.js'
+            config:
+              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
+          - id: tool-mushaf-images
+            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-mushaf-images/lib/index.js'
+            config:
+              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
           # --- Standard capability set (unchanged from the standard preset) ---
           - id: tool-bash
             name: '@deepseek-ai/dsh-tool-bash'

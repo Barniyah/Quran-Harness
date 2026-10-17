@@ -19,6 +19,9 @@
     },
     {
       "path": "../../quran/evidence-core"
+    },
+    {
+      "path": "../../quran/quran-data"
     }
   ]
 }

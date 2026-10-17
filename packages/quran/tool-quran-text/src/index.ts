@@ -2,7 +2,7 @@
  * Quran text tool with mandatory evidence governance.
  *
  * The tool never serves a verse from model memory. Every call reads the pinned
- * Tanzil Uthmani artifact shipped with this package, cross-verifies the verse
+ * Tanzil Uthmani artifact owned by `@deepseek-ai/dsh-quran-data`, cross-verifies the verse
  * against the independent Quran.com API (Quran Foundation), and returns an
  * evidence envelope plus the verification record. A mismatch is reported as an
  * error state in the canonical value — silent presentation of unverified text
@@ -11,14 +11,12 @@
  * @module @deepseek-ai/dsh-tool-quran-text
  */
 
-import { readFile } from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
-import { dirname, join } from 'node:path'
 import type { Context } from '@deepseek-ai/cordis'
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import type { EvidenceEnvelope, SourceDescriptor } from '@deepseek-ai/dsh-quran-evidence'
 import { appendAuditLog, createEnvelope, crossVerify } from '@deepseek-ai/dsh-quran-evidence'
 import type { CrossVerification, TransformRecord } from '@deepseek-ai/dsh-quran-evidence'
+import { getVerse, TANZIL_UTHMANI } from '@deepseek-ai/dsh-quran-data'
 
 export const name = 'tool-quran-text'
 export const inject = ['tools']
@@ -29,13 +27,7 @@ export interface Config {
   auditLogPath?: string
 }
 
-const TANZIL: SourceDescriptor = {
-  id: 'tanzil-uthmani',
-  name: 'Tanzil — Uthmani text',
-  url: 'https://tanzil.net/download',
-  trust: 'L1-official',
-  version: 'pinned-2026-10-16',
-}
+const TANZIL = TANZIL_UTHMANI
 
 const QURAN_COM: SourceDescriptor = {
   id: 'quran-com-v4-uthmani',
@@ -74,35 +66,6 @@ function normalizeForCompare(text: string, stripBasmalah: boolean): string {
   n = n.replace(MARKS_RUN, run => [...run].sort().join(''))
   if (stripBasmalah) n = stripLeadingBasmalahWords(n)
   return n
-}
-
-const DATA_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-uthmani.txt')
-const HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-uthmani.sha256')
-
-let cache: Map<string, string> | undefined
-
-/** Load the pinned Tanzil artifact, verifying its integrity hash first. */
-async function loadTanzil(): Promise<Map<string, string>> {
-  if (cache) return cache
-  const [text, hashLine] = await Promise.all([
-    readFile(DATA_FILE, 'utf8'),
-    readFile(HASH_FILE, 'utf8'),
-  ])
-  const expected = hashLine.trim().split(/\s+/)[0]
-  const { createHash } = await import('node:crypto')
-  const actual = createHash('sha256').update(text, 'utf8').digest('hex')
-  if (actual !== expected) {
-    throw new Error(`Tanzil artifact integrity check FAILED: expected ${expected}, got ${actual}`)
-  }
-  const map = new Map<string, string>()
-  for (const line of text.split('\n')) {
-    if (!line) continue
-    const sep1 = line.indexOf('|')
-    const sep2 = line.indexOf('|', sep1 + 1)
-    map.set(`${line.slice(0, sep1)}:${line.slice(sep1 + 1, sep2)}`, line.slice(sep2 + 1).replace(/\r$/, ''))
-  }
-  cache = map
-  return map
 }
 
 /** Fetch the same verse from the independent Quran.com API (Quran Foundation). */
@@ -179,9 +142,9 @@ export function apply(ctx: Context, config: Config = {}) {
       if (!Number.isInteger(surah) || surah < 1 || surah > 114) throw new Error('surah must be an integer in 1..114')
       if (!Number.isInteger(ayah) || ayah < 1) throw new Error('ayah must be a positive integer')
 
-      const tanzil = await loadTanzil()
-      const localText = tanzil.get(`${surah}:${ayah}`)
-      if (localText === undefined) throw new Error(`verse ${surah}:${ayah} not found in Tanzil artifact`)
+      const row = await getVerse(surah, ayah)
+      if (row === undefined) throw new Error(`verse ${surah}:${ayah} not found in Tanzil artifact`)
+      const localText = row.text
 
       const stripBasmalah = ayah === 1 && surah !== 1
       const localEnvelope = createEnvelope(normalizeForCompare(localText, stripBasmalah), TANZIL, [COMPARE_NORMALIZATION])

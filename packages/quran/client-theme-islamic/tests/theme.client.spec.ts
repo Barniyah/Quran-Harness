@@ -35,10 +35,10 @@ describe('quran islamic theme plugin', () => {
     const { ctx, themes } = makeCtx()
     apply(ctx)
     expect(themes.map(t => t.id)).toEqual(['mushaf', 'mushaf-dark'])
-    expect(themes[0].colorScheme).toBe('light')
-    expect(themes[1].colorScheme).toBe('dark')
-    expect(themes[0].tokens).toEqual(MUSHAF_LIGHT_TOKENS)
-    expect(themes[1].tokens).toEqual(MUSHAF_DARK_TOKENS)
+    expect(themes[0]?.colorScheme).toBe('light')
+    expect(themes[1]?.colorScheme).toBe('dark')
+    expect(themes[0]?.tokens).toEqual(MUSHAF_LIGHT_TOKENS)
+    expect(themes[1]?.tokens).toEqual(MUSHAF_DARK_TOKENS)
   })
 
   it('defines the mushaf identity colors', () => {
@@ -51,7 +51,7 @@ describe('quran islamic theme plugin', () => {
   it('mounts the global stylesheet with the plugin tag (vitest returns empty ?inline CSS; content is checked in the source test below)', () => {
     const { ctx } = makeCtx()
     apply(ctx)
-    const tag = document.head.querySelector('style[data-plugin="@deepseek-ai/dsh-client-ui-quran-theme"]')
+    const tag = document.head.querySelector<HTMLStyleElement>('style[data-plugin="@deepseek-ai/dsh-client-ui-quran-theme"]')
     expect(tag).not.toBeNull()
     expect(tag!.dataset.pluginCss).toBe('@deepseek-ai/dsh-client-ui-quran-theme/global.css')
   })

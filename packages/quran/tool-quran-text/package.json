@@ -16,9 +16,7 @@
   },
   "files": [
     "lib/index.js",
-    "lib/types/**/*.d.ts",
-    "data/quran-uthmani.txt",
-    "data/quran-uthmani.sha256"
+    "lib/types/**/*.d.ts"
   ],
   "license": "MIT",
   "peerDependencies": {
@@ -26,6 +24,7 @@
     "@deepseek-ai/dsh-tools": "workspace:*"
   },
   "dependencies": {
+    "@deepseek-ai/dsh-quran-data": "workspace:*",
     "@deepseek-ai/dsh-quran-evidence": "workspace:*"
   },
   "devDependencies": {

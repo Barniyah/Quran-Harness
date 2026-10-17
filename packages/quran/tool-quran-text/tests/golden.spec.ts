@@ -53,7 +53,7 @@ const normalize = (t: string, stripBasmalah = false) => {
 }
 
 async function loadTanzilMap() {
-  const dir = join(__dirname, '../data')
+  const dir = join(__dirname, '../../quran-data/data')
   const [text, hashLine] = await Promise.all([
     readFile(join(dir, 'quran-uthmani.txt'), 'utf8'),
     readFile(join(dir, 'quran-uthmani.sha256'), 'utf8'),

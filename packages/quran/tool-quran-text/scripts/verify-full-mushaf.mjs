@@ -28,7 +28,7 @@ const norm = (t, strip) => {
 }
 
 const tanzil = new Map()
-const raw = readFileSync(join(here, '../data/quran-uthmani.txt'), 'utf8')
+const raw = readFileSync(join(here, '../../quran-data/data/quran-uthmani.txt'), 'utf8')
 for (const line of raw.split('\n')) {
   if (!line) continue
   const s1 = line.indexOf('|'), s2 = line.indexOf('|', s1 + 1)
