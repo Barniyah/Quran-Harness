@@ -11866,6 +11866,22 @@ importers:
         specifier: workspace:*
         version: link:../../core/tools
 
+  packages/quran/tool-quran-linguistics:
+    dependencies:
+      '@deepseek-ai/dsh-quran-data':
+        specifier: workspace:*
+        version: link:../quran-data
+      '@deepseek-ai/dsh-quran-evidence':
+        specifier: workspace:*
+        version: link:../evidence-core
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:~
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-tools':
+        specifier: workspace:*
+        version: link:../../core/tools
+
   packages/quran/tool-quran-metadata:
     dependencies:
       '@deepseek-ai/dsh-quran-evidence':
@@ -11914,6 +11930,22 @@ importers:
         specifier: workspace:*
         version: link:../../core/tools
 
+  packages/quran/tool-quran-tafsir:
+    dependencies:
+      '@deepseek-ai/dsh-quran-data':
+        specifier: workspace:*
+        version: link:../quran-data
+      '@deepseek-ai/dsh-quran-evidence':
+        specifier: workspace:*
+        version: link:../evidence-core
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:~
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-tools':
+        specifier: workspace:*
+        version: link:../../core/tools
+
   packages/quran/tool-quran-text:
     dependencies:
       '@deepseek-ai/dsh-quran-data':
@@ -11941,6 +11973,38 @@ importers:
       '@deepseek-ai/dsh-tool-quran-audio':
         specifier: workspace:*
         version: link:../tool-quran-audio
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:~
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-tools':
+        specifier: workspace:*
+        version: link:../../core/tools
+
+  packages/quran/tool-quran-translations:
+    dependencies:
+      '@deepseek-ai/dsh-quran-data':
+        specifier: workspace:*
+        version: link:../quran-data
+      '@deepseek-ai/dsh-quran-evidence':
+        specifier: workspace:*
+        version: link:../evidence-core
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:~
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-tools':
+        specifier: workspace:*
+        version: link:../../core/tools
+
+  packages/quran/tool-tajweed:
+    dependencies:
+      '@deepseek-ai/dsh-quran-data':
+        specifier: workspace:*
+        version: link:../quran-data
+      '@deepseek-ai/dsh-quran-evidence':
+        specifier: workspace:*
+        version: link:../evidence-core
     devDependencies:
       '@deepseek-ai/cordis':
         specifier: workspace:~

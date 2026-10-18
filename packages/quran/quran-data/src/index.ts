@@ -27,6 +27,17 @@ const HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-u
 const IMLAEI_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-simple-clean.txt')
 const IMLAEI_HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-simple-clean.sha256')
 const TIMING_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/timing-husary.json')
+const MORPHOLOGY_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-morphology.txt')
+const MORPHOLOGY_HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-morphology.sha256')
+
+/** The Quranic Arabic Corpus morphology descriptor (revised fork, Arabic script). */
+export const QAC_MORPHOLOGY: SourceDescriptor = {
+  id: 'qac-morphology-revised',
+  name: 'Quranic Arabic Corpus v0.4 — revised morphology (mustafa0x fork, Arabic script)',
+  url: 'https://github.com/mustafa0x/quran-morphology',
+  trust: 'L2-verified-open',
+  version: 'pinned-2026-10-18',
+}
 const TIMING_HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/timing-husary.sha256')
 
 /** The EveryAyah Husary timing set descriptor. */
@@ -63,6 +74,57 @@ let cache: readonly VerseRow[] | undefined
 let cacheByKey: Map<string, VerseRow> | undefined
 let imlaeiCache: readonly VerseRow[] | undefined
 let timingCache: HusaryTiming | undefined
+let morphologyCache: MorphSegment[] | undefined
+
+/** One morphological segment row (QAC revised format). */
+export interface MorphSegment {
+  readonly surah: number
+  readonly ayah: number
+  readonly word: number
+  readonly segment: number
+  /** Surface form in Arabic script. */
+  readonly text: string
+  /** Coarse part-of-speech tag (N, V, P, PN, ...). */
+  readonly tag: string
+  /** Fine features: ROOT, LEM, PRF, CASE, etc. as `KEY:value` pairs plus bare flags. */
+  readonly features: Record<string, string>
+  /** Bare feature flags without a value (e.g. PREF, GEN, M). */
+  readonly flags: readonly string[]
+}
+
+/** Load the pinned morphology artifact (integrity-checked). */
+export async function loadMorphology(): Promise<readonly MorphSegment[]> {
+  if (morphologyCache) return morphologyCache
+  const text = await loadVerified(MORPHOLOGY_FILE, MORPHOLOGY_HASH_FILE)
+  const rows: MorphSegment[] = []
+  for (const line of text.split('\n')) {
+    const trimmed = line.replace(/\r$/, '')
+    if (!trimmed) continue
+    // Columns: location (s:a:w:seg) <TAB> surface <TAB> coarse-tag <TAB> features
+    const cols = trimmed.split('\t')
+    if (cols.length < 4) continue
+    const loc = (cols[0] ?? '').split(':').map(Number)
+    const features: Record<string, string> = {}
+    const flags: string[] = []
+    for (const kv of (cols[3] ?? '').split('|')) {
+      const eq = kv.indexOf(':')
+      if (eq > 0) features[kv.slice(0, eq)] = kv.slice(eq + 1)
+      else if (kv) flags.push(kv)
+    }
+    rows.push({
+      surah: loc[0] ?? 0, ayah: loc[1] ?? 0, word: loc[2] ?? 0, segment: loc[3] ?? 0,
+      text: cols[1] ?? '', tag: cols[2] ?? '', features, flags,
+    })
+  }
+  morphologyCache = rows
+  return rows
+}
+
+/** All segments of one ayah, in word order. */
+export async function getAyahMorphology(surah: number, ayah: number): Promise<MorphSegment[]> {
+  const rows = await loadMorphology()
+  return rows.filter(r => r.surah === surah && r.ayah === ayah)
+}
 
 /** One surah's timing block in the pinned Husary set. */
 export interface SurahTiming {
@@ -82,6 +144,13 @@ export interface HusaryTiming {
   readonly surahs: Record<string, SurahTiming>
 }
 
+/** One ayah's timing span in milliseconds. */
+export interface AyahTimingSpan {
+  readonly startMs: number
+  readonly endMs: number
+  readonly durationMs: number
+}
+
 /**
  * Load the pinned Husary timing set with the same integrity discipline as the
  * text artifacts.
@@ -95,13 +164,6 @@ export async function loadHusaryTiming(): Promise<HusaryTiming> {
   }
   timingCache = parsed
   return parsed
-}
-
-/** One ayah's timing span in milliseconds. */
-export interface AyahTimingSpan {
-  readonly startMs: number
-  readonly endMs: number
-  readonly durationMs: number
 }
 
 /** Start/end/duration of one ayah in the Husary set; undefined when absent. */

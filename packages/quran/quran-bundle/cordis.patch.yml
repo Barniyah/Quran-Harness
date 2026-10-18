@@ -88,6 +88,22 @@
             name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-quran-fonts/lib/index.js'
             config:
               auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
+          - id: tool-tajweed
+            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-tajweed/lib/index.js'
+            config:
+              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
+          - id: tool-quran-tafsir
+            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-quran-tafsir/lib/index.js'
+            config:
+              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
+          - id: tool-quran-translations
+            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-quran-translations/lib/index.js'
+            config:
+              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
+          - id: tool-quran-linguistics
+            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/deepseek-harness/packages/quran/tool-quran-linguistics/lib/index.js'
+            config:
+              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/evidence-audit.jsonl'
           # --- Standard capability set (unchanged from the standard preset) ---
           - id: tool-bash
             name: '@deepseek-ai/dsh-tool-bash'
