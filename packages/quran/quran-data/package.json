@@ -22,7 +22,9 @@
     "data/quran-simple-clean.txt",
     "data/quran-simple-clean.sha256",
     "data/timing-husary.json",
-    "data/timing-husary.sha256"
+    "data/timing-husary.sha256",
+    "data/quranpedia-topics.json",
+    "data/quranpedia-topics.sha256"
   ],
   "license": "MIT",
   "peerDependencies": {

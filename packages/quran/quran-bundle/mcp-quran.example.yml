@@ -1,0 +1,19 @@
+# Quran Harness — جسر MCP (مثال اختياري)
+#
+# يربط خادم quran-mcp البعيد (مشروع quran.com الرسمي) عبر عميل MCP المدمج في dsh.
+# أضف هذا الملف كطبقة patch إضافية عند الإقلاع:
+#   ... --patch packages/quran/quran-bundle/cordis.patch.yml --patch packages/quran/quran-bundle/mcp-quran.example.yml
+#
+# ⚠️ ملاحظة حوكمة مهمة: أدوات MCP الخارجية لا تحمل مظاريف الأدلة الخاصة بنا —
+# قواعد الـ preset تلزم الوكيل بتسمية المصادر، لكن التحقق المتقاطع والبصمات
+# تبقى مضمونة فقط عبر أدواتنا المدمجة (quran_get_verse وما شابهها).
+# هذه الطبقة اختيارية ومعطلة افتراضيًا لهذا السبب.
+
+- insert:
+    - id: mcp-quran
+      name: '@deepseek-ai/dsh-mcp-client'
+      disabled: true   # فعّلها بوعي: أدوات MCP خارج مظروف الحوكمة
+      config:
+        serverName: quran
+        transport: streamable-http
+        url: https://mcp.quran.ai

@@ -11898,6 +11898,22 @@ importers:
         specifier: workspace:*
         version: link:../../core/tools
 
+  packages/quran/tool-quran-phonetic:
+    dependencies:
+      '@deepseek-ai/dsh-quran-data':
+        specifier: workspace:*
+        version: link:../quran-data
+      '@deepseek-ai/dsh-quran-evidence':
+        specifier: workspace:*
+        version: link:../evidence-core
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:~
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-tools':
+        specifier: workspace:*
+        version: link:../../core/tools
+
   packages/quran/tool-quran-riwayat:
     dependencies:
       '@deepseek-ai/dsh-quran-evidence':
@@ -11906,6 +11922,22 @@ importers:
       quran-meta:
         specifier: ^7.0.0
         version: 7.0.0
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:~
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-tools':
+        specifier: workspace:*
+        version: link:../../core/tools
+
+  packages/quran/tool-quran-sciences:
+    dependencies:
+      '@deepseek-ai/dsh-quran-data':
+        specifier: workspace:*
+        version: link:../quran-data
+      '@deepseek-ai/dsh-quran-evidence':
+        specifier: workspace:*
+        version: link:../evidence-core
     devDependencies:
       '@deepseek-ai/cordis':
         specifier: workspace:~

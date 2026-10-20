@@ -22,7 +22,7 @@ import { GovernanceCard } from './GovernanceCard.tsx'
  */
 export function apply(ctx: ClientContext): void {
   ctx.slots.inject('tool.call.toolview', () => {
-    const disposers = ['quran_get_verse', 'quran_get_metadata', 'quran_search', 'quran_get_audio', 'quran_get_page_image', 'quran_get_ayah_image', 'quran_get_ayah_timing', 'quran_compare_riwayat', 'quran_get_page_layout', 'quran_get_fonts', 'quran_analyze_tajweed', 'quran_get_tafsir', 'quran_get_translation', 'quran_get_ayah_morphology']
+    const disposers = ['quran_get_verse', 'quran_get_metadata', 'quran_search', 'quran_get_audio', 'quran_get_page_image', 'quran_get_ayah_image', 'quran_get_ayah_timing', 'quran_compare_riwayat', 'quran_get_page_layout', 'quran_get_fonts', 'quran_analyze_tajweed', 'quran_get_tafsir', 'quran_get_translation', 'quran_get_ayah_morphology', 'quran_phonetize', 'quran_search_topics', 'quran_convert_ayah']
       .map(key => ctx.slots.register({ name: 'tool.call.toolview', key }, GovernanceCard))
     return () => { for (const dispose of disposers) dispose() }
   })

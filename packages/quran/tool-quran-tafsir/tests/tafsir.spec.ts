@@ -28,5 +28,5 @@ describe('quran_get_tafsir', () => {
 
   it('rejects an unknown edition path as 404 from the CDN', async () => {
     await expect(fetchTafsir('no-such-edition' as never, 1, 1)).rejects.toThrow('404')
-  }, 30000)
+  }, 60000)
 })

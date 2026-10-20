@@ -29,6 +29,17 @@ const IMLAEI_HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/
 const TIMING_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/timing-husary.json')
 const MORPHOLOGY_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-morphology.txt')
 const MORPHOLOGY_HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quran-morphology.sha256')
+const TOPICS_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quranpedia-topics.json')
+const TOPICS_HASH_FILE = join(dirname(fileURLToPath(import.meta.url)), '../data/quranpedia-topics.sha256')
+
+/** The Quranpedia topics catalog descriptor. */
+export const QURANPEDIA_TOPICS: SourceDescriptor = {
+  id: 'quranpedia-topics',
+  name: 'Quranpedia — thematic classification of verses',
+  url: 'https://api.quranpedia.net/v1/topics',
+  trust: 'L2-verified-open',
+  version: 'pinned-2026-10-18',
+}
 
 /** The Quranic Arabic Corpus morphology descriptor (revised fork, Arabic script). */
 export const QAC_MORPHOLOGY: SourceDescriptor = {
@@ -75,6 +86,37 @@ let cacheByKey: Map<string, VerseRow> | undefined
 let imlaeiCache: readonly VerseRow[] | undefined
 let timingCache: HusaryTiming | undefined
 let morphologyCache: MorphSegment[] | undefined
+let topicsCache: readonly QuranTopic[] | undefined
+
+/** One topic in the Quranpedia thematic catalog. */
+export interface QuranTopic {
+  readonly id: number
+  readonly name: string
+  readonly parent_id: number | null
+  /** Comma-separated verse references, e.g. "7:26" or "2:30,2:31". */
+  readonly ayahs: string
+}
+
+/** Load the pinned topics catalog (integrity-checked). */
+export async function loadTopics(): Promise<readonly QuranTopic[]> {
+  if (topicsCache) return topicsCache
+  const text = await loadVerified(TOPICS_FILE, TOPICS_HASH_FILE)
+  const parsed = JSON.parse(text) as QuranTopic[]
+  if (!Array.isArray(parsed) || parsed.length < 6000) {
+    throw new Error(`topics artifact must hold 6000+ topics, got ${Array.isArray(parsed) ? parsed.length : 'not-an-array'}`)
+  }
+  topicsCache = parsed
+  return parsed
+}
+
+/** Search topics by name (skeleton match); returns topics that carry verse references first. */
+export function searchTopics(topics: readonly QuranTopic[], query: string, limit = 20): QuranTopic[] {
+  const needle = toSearchSkeleton(query)
+  if (!needle) return []
+  const matched = topics.filter(t => toSearchSkeleton(t.name).includes(needle))
+  matched.sort((a, b) => Number(Boolean(b.ayahs)) - Number(Boolean(a.ayahs)))
+  return matched.slice(0, limit)
+}
 
 /** One morphological segment row (QAC revised format). */
 export interface MorphSegment {

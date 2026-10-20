@@ -251,6 +251,8 @@
     { "path": "./packages/quran/tool-quran-tafsir" },
     { "path": "./packages/quran/tool-quran-translations" },
     { "path": "./packages/quran/tool-quran-linguistics" },
+    { "path": "./packages/quran/tool-quran-phonetic" },
+    { "path": "./packages/quran/tool-quran-sciences" },
     { "path": "./packages/experimental/client-ui-cot-translation/tsconfig.host.json" },
     { "path": "./packages/experimental/cot-translation-bundle" },
     { "path": "./packages/experimental/session-search" },

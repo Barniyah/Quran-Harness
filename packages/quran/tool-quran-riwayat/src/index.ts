@@ -15,6 +15,14 @@ import type { SourceDescriptor } from '@deepseek-ai/dsh-quran-evidence'
 import { appendAuditLog, createEnvelope } from '@deepseek-ai/dsh-quran-evidence'
 import { createBazzi, createDouri, createHafs, createQalun, createQunbul, createShuba, createSousi, createWarsh } from 'quran-meta'
 import type { AyahNo, Surah } from 'quran-meta'
+import { convertAyahTo as convertFromHafs } from 'quran-meta/hafs'
+import { convertAyahTo as convertFromWarsh } from 'quran-meta/warsh'
+import { convertAyahTo as convertFromQalun } from 'quran-meta/qalun'
+import { convertAyahTo as convertFromShuba } from 'quran-meta/shuba'
+import { convertAyahTo as convertFromDouri } from 'quran-meta/douri'
+import { convertAyahTo as convertFromSousi } from 'quran-meta/sousi'
+import { convertAyahTo as convertFromBazzi } from 'quran-meta/bazzi'
+import { convertAyahTo as convertFromQunbul } from 'quran-meta/qunbul'
 
 export const name = 'tool-quran-riwayat'
 export const inject = ['tools']
@@ -68,6 +76,27 @@ export function compareRiwayat(surah: number, ayah?: number): RiwayaRow[] {
     })
   }
   return rows
+}
+
+const RIWAYA_NAMES = ['Hafs', 'Warsh', 'Qalun', 'Shuba', 'Douri', 'Sousi', 'Bazzi', 'Qunbul'] as const
+type RiwayaName = typeof RIWAYA_NAMES[number]
+
+const CONVERTERS: Record<RiwayaName, (surah: Surah, ayah: AyahNo, to: RiwayaName) => unknown> = {
+  Hafs: convertFromHafs as never, Warsh: convertFromWarsh as never, Qalun: convertFromQalun as never,
+  Shuba: convertFromShuba as never, Douri: convertFromDouri as never, Sousi: convertFromSousi as never,
+  Bazzi: convertFromBazzi as never, Qunbul: convertFromQunbul as never,
+}
+
+/** Convert one verse reference between riwayat numberings. Exported for tests. */
+export function convertAyahBetween(surah: number, ayah: number, from: RiwayaName, to: RiwayaName): { surah: number; ayah: number } {
+  if (from === to) return { surah, ayah }
+  const result = CONVERTERS[from](surah as Surah, ayah as AyahNo, to) as [number, number] | { surah: number; ayah: number }
+  if (Array.isArray(result)) {
+    const [s2, a2] = result
+    if (s2 === undefined || a2 === undefined) throw new Error('conversion returned an incomplete pair')
+    return { surah: s2, ayah: a2 }
+  }
+  return result
 }
 
 export function apply(ctx: Context, config: Config = {}) {
@@ -126,6 +155,60 @@ export function apply(ctx: Context, config: Config = {}) {
         surah,
         rows: JSON.parse(JSON.stringify(rows)),
         differFromHafs: JSON.parse(JSON.stringify(differFromHafs)),
+        evidence: JSON.parse(JSON.stringify(evidence)),
+      }
+    },
+  }))
+
+  ctx.tools.register(defineTool({
+    name: 'quran_convert_ayah',
+    description: `Convert a verse reference between riwayat numberings (${RIWAYA_NAMES.join(', ')}). Numbering differs across riwayat (e.g. Hafs 2:255 = Warsh 2:253) — never assume; convert from data. Offline via quran-meta. Always show the governance card.`,
+    parameters: {
+      surah: { type: 'number', required: true, description: 'Surah number, 1-114' },
+      ayah: { type: 'number', required: true, description: 'Ayah number in the FROM riwaya' },
+      from: { type: 'string', required: true, description: `Source riwaya: ${RIWAYA_NAMES.join(', ')}` },
+      to: { type: 'string', required: true, description: 'Target riwaya' },
+    },
+    output: {
+      schema: {
+        type: 'object',
+        properties: {
+          from: { type: 'object', additionalProperties: true, required: true },
+          to: { type: 'object', additionalProperties: true, required: true },
+          evidence: { type: 'object', additionalProperties: true, required: true },
+        },
+        additionalProperties: false,
+      },
+      render: (_args, value) => [{
+        type: 'text' as const,
+        text: `${(value.from as { riwaya: string }).riwaya} ${(value.from as { reference: string }).reference} = ${(value.to as { riwaya: string }).riwaya} ${(value.to as { reference: string }).reference}
+
+[Governance card] source: quran-meta (offline) | envelope in metadata`,
+      }],
+      presentationMeta: () => ({
+        status: 'ok',
+        source: QURAN_META.id,
+      }),
+    },
+    async execute(args) {
+      const { surah, ayah } = args
+      const from = RIWAYA_NAMES.find(r => r.toLowerCase() === String(args.from).toLowerCase())
+      const to = RIWAYA_NAMES.find(r => r.toLowerCase() === String(args.to).toLowerCase())
+      if (!from || !to) throw new Error(`from/to must be in: ${RIWAYA_NAMES.join(', ')}`)
+      const result = convertAyahBetween(surah, ayah, from, to)
+      const payload = {
+        from: { riwaya: from, reference: `${surah}:${ayah}` },
+        to: { riwaya: to, reference: `${result.surah}:${result.ayah}` },
+      }
+      const evidence = createEnvelope(payload, QURAN_META)
+      await appendAuditLog(auditLogPath, {
+        at: new Date().toISOString(),
+        operation: 'quran_convert_ayah',
+        envelopes: [{ source: evidence.source.id, contentHash: evidence.contentHash }],
+      })
+      return {
+        from: JSON.parse(JSON.stringify(payload.from)),
+        to: JSON.parse(JSON.stringify(payload.to)),
         evidence: JSON.parse(JSON.stringify(evidence)),
       }
     },

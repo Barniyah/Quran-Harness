@@ -4,7 +4,7 @@
  * baseline stays intact.
  */
 import { describe, expect, it } from 'vitest'
-import { compareRiwayat } from '@deepseek-ai/dsh-tool-quran-riwayat'
+import { compareRiwayat, convertAyahBetween } from '@deepseek-ai/dsh-tool-quran-riwayat'
 
 describe('quran_compare_riwayat', () => {
   it('covers all 8 riwayat', () => {
@@ -34,5 +34,20 @@ describe('quran_compare_riwayat', () => {
     const rows = compareRiwayat(2, 286)
     expect(rows.find(r => r.riwaya === 'hafs')!.ayah).toBeDefined()
     expect(rows.find(r => r.riwaya === 'warsh')!.ayah).toBeUndefined()
+  })
+})
+
+describe('quran_convert_ayah', () => {
+  it('Hafs 2:255 = Warsh 2:253 (documented boundary shift)', () => {
+    expect(convertAyahBetween(2, 255, 'Hafs', 'Warsh')).toEqual({ surah: 2, ayah: 253 })
+  })
+
+  it('identity conversion within one riwaya', () => {
+    expect(convertAyahBetween(1, 1, 'Hafs', 'Hafs')).toEqual({ surah: 1, ayah: 1 })
+  })
+
+  it('round-trips Hafs→Warsh→Hafs', () => {
+    const warsh = convertAyahBetween(2, 255, 'Hafs', 'Warsh')
+    expect(convertAyahBetween(warsh.surah, warsh.ayah, 'Warsh', 'Hafs')).toEqual({ surah: 2, ayah: 255 })
   })
 })
