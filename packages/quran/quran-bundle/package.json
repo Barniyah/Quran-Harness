@@ -29,6 +29,8 @@
   "license": "MIT",
   "dependencies": {
     "@deepseek-ai/dsh-quran-evidence": "workspace:*",
+    "@deepseek-ai/dsh-quran-sdk": "workspace:*",
+    "@deepseek-ai/dsh-skill-quran": "workspace:*",
     "@deepseek-ai/dsh-tool-quran-text": "workspace:*",
     "@deepseek-ai/dsh-tool-quran-metadata": "workspace:*"
   }

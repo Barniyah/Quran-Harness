@@ -6,6 +6,7 @@ import type { StartedToolCall, ToolResultNode } from '@deepseek-ai/dsh-client-ui
 import type { ToolCallOwnerProps } from '@deepseek-ai/dsh-client-ui-tool/client'
 import { PartialArguments } from '@deepseek-ai/dsh-util-values'
 import { GovernanceCard } from '../src/client/GovernanceCard.tsx'
+import { apply, inject } from '../src/client/index.ts'
 
 type CardProps = Parameters<typeof GovernanceCard>[0]
 
@@ -102,5 +103,31 @@ describe('GovernanceCard', () => {
     const view = render(<GovernanceCard {...props(settled('garbage'))} />)
     expect(view.container.querySelector('[data-state="ok"]')).not.toBeNull()
     expect(view.container.textContent).not.toContain('a1b2c3d4')
+  })
+
+  it('declares slots service injection and registers all 17 Quran toolviews', () => {
+    expect(inject).toEqual(['slots'])
+    const registered: string[] = []
+    const disposers: Array<ReturnType<typeof vi.fn>> = []
+    let disposeSlot!: () => void
+    const fakeCtx = {
+      slots: {
+        inject: (_slot: string, cb: () => () => void) => {
+          disposeSlot = cb()
+        },
+        register: (spec: { key: string }) => {
+          registered.push(spec.key)
+          const d = vi.fn()
+          disposers.push(d)
+          return d
+        },
+      },
+    }
+    apply(fakeCtx as never)
+    expect(registered.length).toBe(17)
+    expect(registered).toContain('quran_get_verse')
+    expect(registered).toContain('quran_convert_ayah')
+    disposeSlot()
+    expect(disposers.every(d => d.mock.calls.length === 1)).toBe(true)
   })
 })

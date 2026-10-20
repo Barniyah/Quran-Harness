@@ -24,7 +24,8 @@ export function apply(ctx, config) {
   const snapshot = async () => {
     const presets = await ctx.agentPresets.list()
     const resolved = await ctx.agentPresets.resolve()
-    return { ids: presets.map(p => p.id), defaultId: resolved.id }
+    const doc = presets.some(p => p.id === 'quran') ? await ctx.agentPresets.readDocument('quran') : { content: '' }
+    return { ids: presets.map(p => p.id), defaultId: resolved.id, broken: resolved.broken, content: doc.content }
   }
   let tries = 0
   const tick = async () => {
@@ -97,4 +98,6 @@ it('web profile with quran bundle registers the quran preset as default', async 
   const report = JSON.parse(await readFile(observerOut, 'utf8'))
   expect(report.ids, `preset ids (tail: ${output.slice(-2000)})`).toContain('quran')
   expect(report.defaultId, 'quran must be the default preset').toBe('quran')
+  expect(report.broken, 'quran preset must activate all child plugins without error').toBeUndefined()
+  expect(report.content, 'quran preset must include skill-quran').toContain('skill-quran')
 }, 150_000)

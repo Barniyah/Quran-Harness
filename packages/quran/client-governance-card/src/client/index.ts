@@ -16,8 +16,11 @@ import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type {} from '@deepseek-ai/dsh-client-ui-tool/client'
 import { GovernanceCard } from './GovernanceCard.tsx'
 
+/** Required service: browser slot registry (`ctx.slots`). */
+export const inject = ['slots']
+
 /**
- * Client plugin body: register the two keyed tool rows.
+ * Client plugin body: register the keyed tool rows.
  * @param ctx - client root context.
  */
 export function apply(ctx: ClientContext): void {

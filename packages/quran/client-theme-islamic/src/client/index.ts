@@ -15,6 +15,9 @@ import globalCss from './global.css?inline'
 
 const PLUGIN_ID = '@deepseek-ai/dsh-client-ui-quran-theme'
 
+/** Required service: browser theme runtime (`ctx.theme`). */
+export const inject = ['theme']
+
 /**
  * Client plugin body: register the two mushaf themes and the global sheet.
  * @param ctx - client root context.

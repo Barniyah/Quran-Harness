@@ -11782,6 +11782,12 @@ importers:
       '@deepseek-ai/dsh-quran-evidence':
         specifier: workspace:*
         version: link:../evidence-core
+      '@deepseek-ai/dsh-quran-sdk':
+        specifier: workspace:*
+        version: link:../quran-sdk
+      '@deepseek-ai/dsh-skill-quran':
+        specifier: workspace:*
+        version: link:../skill-quran
       '@deepseek-ai/dsh-tool-quran-metadata':
         specifier: workspace:*
         version: link:../tool-quran-metadata
@@ -11798,6 +11804,55 @@ importers:
       '@deepseek-ai/cordis':
         specifier: workspace:~
         version: link:../../../vendor/cordis
+
+  packages/quran/quran-sdk:
+    dependencies:
+      '@deepseek-ai/dsh-quran-data':
+        specifier: workspace:*
+        version: link:../quran-data
+      '@deepseek-ai/dsh-quran-evidence':
+        specifier: workspace:*
+        version: link:../evidence-core
+      '@deepseek-ai/dsh-tool-mushaf-layout':
+        specifier: workspace:*
+        version: link:../tool-mushaf-layout
+      '@deepseek-ai/dsh-tool-quran-audio':
+        specifier: workspace:*
+        version: link:../tool-quran-audio
+      '@deepseek-ai/dsh-tool-quran-linguistics':
+        specifier: workspace:*
+        version: link:../tool-quran-linguistics
+      '@deepseek-ai/dsh-tool-quran-metadata':
+        specifier: workspace:*
+        version: link:../tool-quran-metadata
+      '@deepseek-ai/dsh-tool-quran-riwayat':
+        specifier: workspace:*
+        version: link:../tool-quran-riwayat
+      '@deepseek-ai/dsh-tool-quran-search':
+        specifier: workspace:*
+        version: link:../tool-quran-search
+      '@deepseek-ai/dsh-tool-quran-text':
+        specifier: workspace:*
+        version: link:../tool-quran-text
+      quran-meta:
+        specifier: ^7.0.0
+        version: 7.0.0
+
+  packages/quran/skill-quran:
+    dependencies:
+      '@deepseek-ai/schemastery':
+        specifier: link:../../../vendor/schemastery
+        version: link:../../../vendor/schemastery
+      yaml:
+        specifier: ^2.4.2
+        version: 2.9.0
+    devDependencies:
+      '@deepseek-ai/cordis':
+        specifier: workspace:~
+        version: link:../../../vendor/cordis
+      '@deepseek-ai/dsh-skill':
+        specifier: workspace:*
+        version: link:../../skill/skill
 
   packages/quran/tool-mushaf-images:
     dependencies:

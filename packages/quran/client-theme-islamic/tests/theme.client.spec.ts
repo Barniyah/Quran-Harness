@@ -3,7 +3,7 @@
 import { readFileSync } from 'node:fs'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
-import { apply } from '../src/client/index.ts'
+import { apply, inject } from '../src/client/index.ts'
 import { MUSHAF_DARK_TOKENS, MUSHAF_LIGHT_TOKENS } from '../src/client/themes.ts'
 
 interface FakeThemeDef { id: string; colorScheme: string; tokens: Record<string, string> }
@@ -32,6 +32,7 @@ describe('quran islamic theme plugin', () => {
   })
 
   it('registers the mushaf light and dark themes with token overrides', () => {
+    expect(inject).toEqual(['theme'])
     const { ctx, themes } = makeCtx()
     apply(ctx)
     expect(themes.map(t => t.id)).toEqual(['mushaf', 'mushaf-dark'])

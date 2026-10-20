@@ -1,0 +1,39 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../evidence-core"
+    },
+    {
+      "path": "../quran-data"
+    },
+    {
+      "path": "../tool-mushaf-layout"
+    },
+    {
+      "path": "../tool-quran-audio"
+    },
+    {
+      "path": "../tool-quran-linguistics"
+    },
+    {
+      "path": "../tool-quran-metadata"
+    },
+    {
+      "path": "../tool-quran-riwayat"
+    },
+    {
+      "path": "../tool-quran-search"
+    },
+    {
+      "path": "../tool-quran-text"
+    }
+  ]
+}

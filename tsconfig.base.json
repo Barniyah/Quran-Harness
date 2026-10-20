@@ -537,6 +537,8 @@
       "@deepseek-ai/dsh-tool-web": ["./packages/web/tool-web/src"],
       "@deepseek-ai/dsh-quran-evidence": ["./packages/quran/evidence-core/src"],
       "@deepseek-ai/dsh-quran-data": ["./packages/quran/quran-data/src"],
+      "@deepseek-ai/dsh-quran-sdk": ["./packages/quran/quran-sdk/src"],
+      "@deepseek-ai/dsh-skill-quran": ["./packages/quran/skill-quran/src"],
       "@deepseek-ai/dsh-quran-bundle": ["./packages/quran/quran-bundle/src"],
       "@deepseek-ai/dsh-tool-quran-text": ["./packages/quran/tool-quran-text/src"],
       "@deepseek-ai/dsh-tool-quran-metadata": ["./packages/quran/tool-quran-metadata/src"],
