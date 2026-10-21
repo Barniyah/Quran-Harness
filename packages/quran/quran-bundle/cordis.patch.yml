@@ -16,14 +16,14 @@
 - insert:
     # Islamic mushaf theme (browser half ships via the package's dsh.client entry).
     - id: ui-quran-theme
-      name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/client-theme-islamic/lib/index.js'
+      name: '../client-theme-islamic/lib/index.js'
 
     # Governance card (browser half ships via the package's dsh.client entry).
     - id: ui-quran-governance
-      name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/client-governance-card/lib/index.js'
+      name: '../client-governance-card/lib/index.js'
 
     - id: preset-quran
-      name: '@deepseek-ai/dsh-agent-preset'
+      name: './lib/index.js'
       config:
         id: quran
         name: Quran Harness
@@ -43,77 +43,48 @@
                 4. The active riwaya is Hafs 'an 'Asim (حفص عن عاصم). State this whenever it matters, and never mix riwayat silently.
                 5. For tafsir or rulings, cite the named source; never issue a fatwa of your own — defer to qualified scholars and say so.
                 6. Answer in the user's language (Arabic or English); Quran text itself is always Arabic Uthmani as returned by the tool.
+                7. When the user asks to create a new Quranic capability (tool) or skill, load the `quran-create-capability` skill so the new capability is automatically bound to the 3-layer Governance Pipeline (EvidenceEnvelope + GovernanceCard + cordis.patch.yml).
 
-                قواعد صارمة: لا تقتبس آية من ذاكرتك أبدًا — كل آية تُجلب عبر أداة quran_get_verse مع بطاقة الحوكمة (المصدر، البصمة، نتيجة التحقق). الرواية المعتمدة: حفص عن عاصم. لا فتوى ذاتية؛ التفسير يُنسب لمصدره المسمّى.
+                قواعد صارمة: لا تقتبس آية من ذاكرتك أبدًا — كل آية تُجلب عبر أداة quran_get_verse مع بطاقة الحوكمة (المصدر، البصمة، نتيجة التحقق). الرواية المعتمدة: حفص عن عاصم. لا فتوى ذاتية؛ التفسير يُنسب لمصدره المسمّى. عند طلب إنشاء قدرة أو مهارة قرآنية جديدة، استخدم مهارة quran-create-capability لربطها بطبقة الحوكمة تلقائيًا.
           - id: agent-instructions
             name: '@deepseek-ai/dsh-agent-instructions'
             config:
               maxBytes: 65536
           - id: time-context
             name: '@deepseek-ai/dsh-time-context'
-          # --- Quran capabilities (evidence-governed) ---
+          # --- Quran capabilities (evidence-governed, portable relative resolution) ---
           - id: skill-quran
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/skill-quran/lib/index.js'
+            name: '../skill-quran/lib/index.js'
           - id: tool-quran-text
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-text/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-text/lib/index.js'
           - id: tool-quran-metadata
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-metadata/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-metadata/lib/index.js'
           - id: tool-quran-search
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-search/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-search/lib/index.js'
           - id: tool-quran-audio
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-audio/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-audio/lib/index.js'
           - id: tool-mushaf-images
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-mushaf-images/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-mushaf-images/lib/index.js'
           - id: tool-quran-timing
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-timing/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-timing/lib/index.js'
           - id: tool-quran-riwayat
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-riwayat/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-riwayat/lib/index.js'
           - id: tool-mushaf-layout
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-mushaf-layout/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/evidence-audit.jsonl'
+            name: '../tool-mushaf-layout/lib/index.js'
           - id: tool-quran-fonts
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-fonts/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-fonts/lib/index.js'
           - id: tool-tajweed
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-tajweed/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-tajweed/lib/index.js'
           - id: tool-quran-tafsir
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-tafsir/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-tafsir/lib/index.js'
           - id: tool-quran-translations
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-translations/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-translations/lib/index.js'
           - id: tool-quran-linguistics
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-linguistics/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-linguistics/lib/index.js'
           - id: tool-quran-phonetic
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-phonetic/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-phonetic/lib/index.js'
           - id: tool-quran-sciences
-            name: 'file:///D:/Projects/DeepSeek_Quran_Harness/antigravity/deepseek-harness/packages/quran/tool-quran-sciences/lib/index.js'
-            config:
-              auditLogPath: 'D:/Projects/DeepSeek_Quran_Harness/antigravity/evidence-audit.jsonl'
+            name: '../tool-quran-sciences/lib/index.js'
           # --- Standard capability set (unchanged from the standard preset) ---
           - id: tool-bash
             name: '@deepseek-ai/dsh-tool-bash'

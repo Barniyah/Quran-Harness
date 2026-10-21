@@ -120,7 +120,7 @@ describe('Phase 5 — Gate 3: Full Quran Package Inventory & Built Artifacts Ver
     expect(existsSync(resolve(REPO_ROOT, 'packages/quran/client-governance-card/lib/client.js'))).toBe(true)
   })
 
-  it('verifies cordis.patch.yml wires the theme, governance card, default quran preset, skills, and all tool plugins', () => {
+  it('verifies cordis.patch.yml wires the theme, governance card, default quran preset, skills, and all tool plugins using portable paths', () => {
     const patchPath = resolve(REPO_ROOT, 'packages/quran/quran-bundle/cordis.patch.yml')
     const patchContent = readFileSync(patchPath, 'utf8')
     expect(patchContent).toContain('id: ui-quran-theme')
@@ -129,5 +129,29 @@ describe('Phase 5 — Gate 3: Full Quran Package Inventory & Built Artifacts Ver
     expect(patchContent).toContain('id: skill-quran')
     expect(patchContent).toContain('id: tool-quran-text')
     expect(patchContent).toContain('id: tool-quran-sciences')
+    expect(patchContent).toContain('quran-create-capability')
+    // Must not contain any hardcoded machine paths
+    expect(patchContent).not.toMatch(/D:\//i)
+    expect(patchContent).not.toMatch(/DeepSeek_Quran_Harness/i)
+  })
+
+  it('verifies all 5 pinned Quran datasets + SHA-256 sidecars and the quran-create-capability skill & generator exist', () => {
+    const pinnedFiles = [
+      'quran-uthmani.txt',
+      'quran-uthmani.sha256',
+      'quran-simple-clean.txt',
+      'quran-simple-clean.sha256',
+      'timing-husary.json',
+      'timing-husary.sha256',
+      'quran-morphology.txt',
+      'quran-morphology.sha256',
+      'quranpedia-topics.json',
+      'quranpedia-topics.sha256',
+    ]
+    for (const f of pinnedFiles) {
+      expect(existsSync(resolve(REPO_ROOT, 'packages/quran/quran-data/data', f)), `Missing pinned data file: ${f}`).toBe(true)
+    }
+    expect(existsSync(resolve(REPO_ROOT, 'packages/quran/skill-quran/assets/quran-create-capability/SKILL.md'))).toBe(true)
+    expect(existsSync(resolve(REPO_ROOT, 'scripts/create-quran-capability.mjs'))).toBe(true)
   })
 })

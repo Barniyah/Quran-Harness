@@ -4,7 +4,7 @@ import type { SkillProvider } from '@deepseek-ai/dsh-skill'
 import { apply, parseQuranSkill, QURAN_SKILL_NAMES } from '../src/index.ts'
 
 describe('@deepseek-ai/dsh-skill-quran', () => {
-  it('registers all 4 default Quran skills and loads their full markdown bodies', async () => {
+  it('registers all 5 default Quran skills (including quran-create-capability) and loads their full markdown bodies', async () => {
     let registeredProvider: SkillProvider | undefined
     const fakeCtx = {
       skills: {
@@ -21,6 +21,7 @@ describe('@deepseek-ai/dsh-skill-quran', () => {
     const listResult = await registeredProvider!.list({})
     const candidates = Array.isArray(listResult) ? listResult : listResult.candidates
     expect(candidates.map(c => c.name)).toEqual([...QURAN_SKILL_NAMES])
+    expect(candidates.map(c => c.name)).toContain('quran-create-capability')
 
     for (const candidate of candidates) {
       expect(candidate.source).toBe('bundled')

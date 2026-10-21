@@ -26,8 +26,8 @@ def main() -> int:
     surah, ayah = int(sys.argv[1]), int(sys.argv[2])
     style = sys.argv[3] if len(sys.argv) > 3 else "long"
 
-    from tajweed_embeddings import embedder
     with contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
+        from tajweed_embeddings import embedder
         engine = embedder.TajweedEmbedder()
         emb = engine.text_to_embedding(surah, ayah)
         text = engine.get_text(surah, ayah)

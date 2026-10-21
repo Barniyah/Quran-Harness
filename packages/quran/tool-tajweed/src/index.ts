@@ -13,8 +13,9 @@
  */
 
 import { execFile } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { dirname, join } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { promisify } from 'node:util'
 import type { Context } from '@deepseek-ai/cordis'
 import { defineTool } from '@deepseek-ai/dsh-tools'
@@ -43,8 +44,30 @@ const TAJWEED_EMBEDDINGS: SourceDescriptor = {
   version: '2.0.0',
 }
 
-const CLI_SCRIPT = join(dirname(fileURLToPath(import.meta.url)), '../python/tajweed_cli.py')
-const DEFAULT_PYTHON = 'D:/Projects/DeepSeek_Quran_Harness/.venv/Scripts/python.exe'
+const MODULE_DIR = dirname(fileURLToPath(import.meta.url))
+const CLI_SCRIPT = join(MODULE_DIR, '../python/tajweed_cli.py')
+
+/**
+ * Resolve the Python interpreter portably across machines and operating systems:
+ * 1. `QURAN_PYTHON_PATH` environment variable (if set)
+ * 2. Nearest `.venv` walking up from the package directory (`.venv/Scripts/python.exe` on Windows, `.venv/bin/python` on POSIX)
+ * 3. System `python3` / `python` fallback
+ */
+export function resolveDefaultPython(): string {
+  if (process.env.QURAN_PYTHON_PATH) return process.env.QURAN_PYTHON_PATH
+  const binRel = process.platform === 'win32' ? '.venv/Scripts/python.exe' : '.venv/bin/python'
+  let current = MODULE_DIR
+  for (let i = 0; i < 8; i++) {
+    const candidate = join(current, binRel)
+    if (existsSync(candidate)) return candidate
+    const parent = resolve(current, '..')
+    if (parent === current) break
+    current = parent
+  }
+  return process.platform === 'win32' ? 'python' : 'python3'
+}
+
+const DEFAULT_PYTHON = resolveDefaultPython()
 
 const execFileAsync = promisify(execFile)
 

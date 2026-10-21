@@ -6,9 +6,9 @@
 import { existsSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { getVerse } from '@deepseek-ai/dsh-quran-data'
-import { phonetize } from '@deepseek-ai/dsh-tool-quran-phonetic'
+import { phonetize, resolveDefaultPython } from '@deepseek-ai/dsh-tool-quran-phonetic'
 
-const PYTHON = 'D:/Projects/DeepSeek_Quran_Harness/.venv/Scripts/python.exe'
+const PYTHON = resolveDefaultPython()
 const available = existsSync(PYTHON)
 
 describe('quran_phonetize', () => {

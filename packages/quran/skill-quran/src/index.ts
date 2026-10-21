@@ -7,6 +7,7 @@
  * - `quran-recitation-feature`: audio playback, Husary timing & algorithmic Tajweed
  * - `quran-verified-research`: scholarly search, morphology, topics & named Tafsir
  * - `quran-compare-riwayat`: structural comparison & coordinate conversion across 8 riwayat
+ * - `quran-create-capability`: scaffolding a new Quran capability and wiring it into the Governance Layer
  *
  * @module @deepseek-ai/dsh-skill-quran
  */
@@ -26,6 +27,7 @@ export const QURAN_SKILL_NAMES = [
   'quran-recitation-feature',
   'quran-verified-research',
   'quran-compare-riwayat',
+  'quran-create-capability',
 ] as const
 
 export type QuranSkillName = typeof QURAN_SKILL_NAMES[number]

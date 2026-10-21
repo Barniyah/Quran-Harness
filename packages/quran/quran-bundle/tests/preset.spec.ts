@@ -14,8 +14,9 @@ import { expect, it } from 'vitest'
 const repo = fileURLToPath(new URL('../../../..', import.meta.url))
 const binJs = join(repo, 'apps/cli/lib/bin.js')
 
-/** The repo runtime rejects Kimi's Electron-flavoured Node; use the standalone install for child processes. */
-const childNode = process.versions.electron ? 'C:\\Program Files\\nodejs\\node.exe' : process.execPath
+/** The repo runtime rejects Kimi's Electron-flavoured Node; use the standalone install when running under Electron. */
+const winNode = 'C:\\Program Files\\nodejs\\node.exe'
+const childNode = process.versions.electron && existsSync(winNode) ? winNode : process.execPath
 
 const OBSERVER_SOURCE = `import { writeFileSync } from 'node:fs'
 export const name = 'quran-preset-observer'
