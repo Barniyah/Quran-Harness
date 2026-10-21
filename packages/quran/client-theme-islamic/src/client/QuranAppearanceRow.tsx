@@ -11,6 +11,11 @@ import {
 } from '@deepseek-ai/dsh-client-ui-primitives'
 import type { PropsRuntime, PropsStore } from '@deepseek-ai/dsh-client-ui-slots'
 import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
+import {
+  ISLAMIC_PATTERN_DATA_URI,
+  MUSHAF_REHAL_DATA_URI,
+  ORNAMENT_DIAMOND,
+} from './islamic-assets.ts'
 import type { createQuranAppearanceRowStore, QuranThemePreference } from './settings-store.ts'
 import css from './QuranAppearanceRow.module.css'
 
@@ -32,6 +37,8 @@ interface ThemeCubeSpec {
   labelEn: string
   Icon: typeof IconLightOutlineMedium
   swatches?: readonly [string, string, string]
+  isMushaf?: boolean
+  isDarkMushaf?: boolean
 }
 
 const CUBES: readonly ThemeCubeSpec[] = [
@@ -41,6 +48,8 @@ const CUBES: readonly ThemeCubeSpec[] = [
     labelEn: 'Mushaf Light',
     Icon: IconLightOutlineMedium,
     swatches: ['#FBF7EC', '#14663F', '#C9A44C'],
+    isMushaf: true,
+    isDarkMushaf: false,
   },
   {
     id: 'mushaf-dark',
@@ -48,6 +57,8 @@ const CUBES: readonly ThemeCubeSpec[] = [
     labelEn: 'Mushaf Dark',
     Icon: IconDarkOutlineMedium,
     swatches: ['#0E1B16', '#D4AF37', '#1C8A57'],
+    isMushaf: true,
+    isDarkMushaf: true,
   },
   {
     id: 'light',
@@ -70,7 +81,8 @@ const CUBES: readonly ThemeCubeSpec[] = [
 ]
 
 /**
- * Render the Quran Appearance settings row with all 5 themes.
+ * Render the Quran Appearance settings row with all 5 themes, Mushaf-on-Rehal
+ * emblem previews, and Islamic ornamental divider.
  */
 export function QuranAppearanceRow({ setTheme, useStore }: QuranAppearanceRowComponentProps) {
   const preference = useStore(s => s.preference)
@@ -80,8 +92,11 @@ export function QuranAppearanceRow({ setTheme, useStore }: QuranAppearanceRowCom
         <div className={css.title}>المظهر · Appearance</div>
         <div className={css.subtitle}>الثيم الإسلامي والأنماط القياسية</div>
       </div>
+      <div className={css.ornamentLine} aria-hidden="true">
+        {ORNAMENT_DIAMOND}
+      </div>
       <div className={css.cubeRow}>
-        {CUBES.map(({ id, labelAr, labelEn, Icon, swatches }) => {
+        {CUBES.map(({ id, labelAr, labelEn, Icon, swatches, isMushaf, isDarkMushaf }) => {
           const isSelected = preference === id
           const className = [css.themeCube, isSelected ? css.selected : ''].filter(Boolean).join(' ')
           return (
@@ -93,8 +108,23 @@ export function QuranAppearanceRow({ setTheme, useStore }: QuranAppearanceRowCom
               aria-pressed={isSelected}
               onClick={() => { setTheme(id) }}
             >
+              {isMushaf === true && (
+                <div
+                  className={`${css.cubePatternThumb} ${isDarkMushaf ? '' : css.cubePatternLight}`}
+                  style={{ backgroundImage: `url("${ISLAMIC_PATTERN_DATA_URI}")` }}
+                  aria-hidden="true"
+                />
+              )}
               <div className={css.iconRow}>
-                <Icon />
+                {isMushaf === true ? (
+                  <img
+                    src={MUSHAF_REHAL_DATA_URI}
+                    alt=""
+                    className={`${css.mushafThumbIcon} ${isDarkMushaf ? css.mushafThumbIconDark : ''}`}
+                  />
+                ) : (
+                  <Icon />
+                )}
                 {swatches !== undefined && (
                   <span className={css.swatchGroup} aria-hidden="true">
                     {swatches.map(color => (

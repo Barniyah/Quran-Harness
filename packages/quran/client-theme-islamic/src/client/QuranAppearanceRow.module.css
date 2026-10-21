@@ -13,6 +13,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .title {
@@ -28,6 +29,18 @@
   color: var(--dsw-alias-label-secondary);
 }
 
+.ornamentLine {
+  font-size: 10.5px;
+  line-height: 14px;
+  color: var(--qh-gold, #B8912F);
+  opacity: 0.85;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: ltr;
+}
+
 .cubeRow {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
@@ -35,6 +48,8 @@
 }
 
 .themeCube {
+  position: relative;
+  overflow: hidden;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -63,10 +78,35 @@
   box-shadow: 0 0 0 1px var(--dsw-alias-brand-primary);
 }
 
+.cubePatternThumb {
+  position: absolute;
+  inset: 0;
+  background-size: 160px auto;
+  background-position: center;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.cubePatternLight {
+  filter: invert(1) sepia(0.55) hue-rotate(85deg) saturate(1.3);
+}
+
 .iconRow {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.mushafThumbIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.mushafThumbIconDark {
+  filter: invert(0.88) sepia(0.85) saturate(1.85) hue-rotate(8deg) brightness(1.1);
 }
 
 .swatchGroup {
@@ -83,6 +123,8 @@
 }
 
 .labelAr {
+  position: relative;
+  z-index: 1;
   font-weight: 600;
   font-size: 13px;
   line-height: 18px;
@@ -90,6 +132,8 @@
 }
 
 .labelEn {
+  position: relative;
+  z-index: 1;
   font-size: 11px;
   line-height: 15px;
   color: var(--dsw-alias-label-secondary);

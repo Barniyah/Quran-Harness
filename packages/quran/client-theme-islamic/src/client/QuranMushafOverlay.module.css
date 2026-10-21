@@ -1,0 +1,230 @@
+/* Full-frame non-interactive Islamic Mushaf visual overlay registered into `shell.overlay` */
+
+.overlayRoot {
+  position: fixed;
+  inset: 0;
+  pointer-events: none !important;
+  user-select: none;
+  z-index: 1;
+  overflow: hidden;
+  direction: ltr;
+}
+
+.overlayRoot * {
+  pointer-events: none !important;
+}
+
+/* 1. Tiled Islamic 8-pointed star (Khatam) & floral arabesque pattern from user image */
+.patternLayer {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-size: 420px auto;
+  background-position: center center;
+  transition: opacity 0.25s ease;
+}
+
+.lightMode .patternLayer {
+  opacity: 0.085;
+  filter: invert(1) sepia(0.55) hue-rotate(85deg) saturate(1.35);
+  mix-blend-mode: multiply;
+}
+
+.darkMode .patternLayer {
+  opacity: 0.16;
+  mix-blend-mode: screen;
+}
+
+/* 2. Center Watermark: Open Mushaf on Carved Rehal + Rub el Hizb medallion */
+.centerMedallion {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.medallionFrame {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medallionSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lightMode .medallionSvg {
+  color: #14663F;
+  opacity: 0.14;
+}
+
+.darkMode .medallionSvg {
+  color: #D4AF37;
+  opacity: 0.18;
+}
+
+.mushafWatermarkImg {
+  width: 196px;
+  height: 196px;
+  object-fit: contain;
+}
+
+.lightMode .mushafWatermarkImg {
+  opacity: 0.13;
+  mix-blend-mode: multiply;
+}
+
+.darkMode .mushafWatermarkImg {
+  opacity: 0.17;
+  filter: invert(0.88) sepia(0.85) saturate(1.85) hue-rotate(8deg) brightness(1.08);
+  mix-blend-mode: screen;
+}
+
+.watermarkCaption {
+  font-family: var(--qh-font-quran, serif);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.lightMode .watermarkCaption {
+  color: #14663F;
+  opacity: 0.26;
+}
+
+.darkMode .watermarkCaption {
+  color: #D4AF37;
+  opacity: 0.30;
+}
+
+/* 3. Top Illuminated ASCII/Unicode Header Cartouche */
+.topBanner {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 3px 18px 4px;
+  border-radius: 999px;
+  backdrop-filter: blur(2px);
+}
+
+.lightMode .topBanner {
+  background: linear-gradient(90deg, transparent, rgba(251, 247, 236, 0.86) 15%, rgba(251, 247, 236, 0.86) 85%, transparent);
+  border-bottom: 1px solid rgba(201, 164, 76, 0.38);
+  color: #14663F;
+}
+
+.darkMode .topBanner {
+  background: linear-gradient(90deg, transparent, rgba(14, 27, 22, 0.84) 15%, rgba(14, 27, 22, 0.84) 85%, transparent);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.38);
+  color: #D4AF37;
+}
+
+.topBannerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.miniMushafIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.darkMode .miniMushafIcon {
+  filter: invert(0.88) sepia(0.85) saturate(1.85) hue-rotate(8deg) brightness(1.1);
+}
+
+.topSubRow {
+  font-size: 9.5px;
+  line-height: 11px;
+  opacity: 0.72;
+  white-space: nowrap;
+  color: var(--qh-gold, #B8912F);
+}
+
+/* 4. Bottom Floral ASCII/Unicode Ornament Strip */
+.bottomBanner {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10.5px;
+  line-height: 13px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  padding: 1px 14px;
+  border-radius: 999px;
+}
+
+.lightMode .bottomBanner {
+  color: #14663F;
+  opacity: 0.45;
+}
+
+.darkMode .bottomBanner {
+  color: #D4AF37;
+  opacity: 0.48;
+}
+
+/* 5. Four Corner Arabesque Illumination Brackets */
+.corner {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+}
+
+.lightMode .corner {
+  color: #C9A44C;
+  opacity: 0.38;
+}
+
+.darkMode .corner {
+  color: #D4AF37;
+  opacity: 0.42;
+}
+
+.cornerTl {
+  top: 8px;
+  left: 8px;
+}
+
+.cornerTr {
+  top: 8px;
+  right: 8px;
+  transform: scaleX(-1);
+}
+
+.cornerBl {
+  bottom: 8px;
+  left: 8px;
+  transform: scaleY(-1);
+}
+
+.cornerBr {
+  bottom: 8px;
+  right: 8px;
+  transform: scale(-1, -1);
+}

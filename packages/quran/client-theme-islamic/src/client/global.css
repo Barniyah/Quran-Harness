@@ -1,12 +1,15 @@
-/* Quran Harness — Islamic theme global layer.
-   Arabic-first font stacks, a faint girih (geometric star) backdrop, and
-   mushaf-style reading niceties for Quranic text. Everything is additive:
-   removing this sheet restores the stock client pixel-perfect. */
+/* Quran Harness — Islamic theme global layer & RTL support.
+   Arabic-first font stacks, an ornate girih/khatam (eight-pointed star + floral
+   arabesque) backdrop, mushaf-style reading niceties for Quranic text, and full
+   RTL refinements when Arabic (`html[dir="rtl"]`) is selected. */
 
 :root {
   --qh-font-arabic-ui: "IBM Plex Sans Arabic", "Segoe UI", "Noto Sans Arabic", "Tahoma", sans-serif;
   --qh-font-quran: "KFGQPC Uthmanic Script HAFS", "KFGQPC HAFS", "Amiri Quran", "Amiri", "Scheherazade New", "Traditional Arabic", serif;
   --qh-gold: #B8912F;
+  --qh-ornament-floral: "───⊱✿⊰─── ۞ ───⊱✿⊰─── ۞ ───⊱✿⊰───";
+  --qh-ornament-diamond: "───♦─── ۞ ───♦─── ۞ ───♦───";
+  --qh-ornament-header: "۞  ━━━━━━━  ۞  QURAN HARNESS  ۞  ━━━━━━━  ۞";
 }
 
 /* Arabic-first interface text: the Arabic-capable families lead the stack. */
@@ -24,23 +27,60 @@ body {
   text-align: right;
 }
 
-/* Faint girih backdrop — a geometric eight-pointed star lattice at very low
-   opacity behind the app canvas; never interactive, never distracting. */
+/* Girih / Khatam eight-pointed star & arabesque backdrop — placed at z-index: 1
+   with pointer-events: none so it remains subtly visible above solid frame
+   backgrounds when the mushaf theme is active, without ever intercepting clicks. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%2314663F' stroke-opacity='0.05'%3E%3Cpath d='M48 8 L56 40 L88 48 L56 56 L48 88 L40 56 L8 48 L40 40 Z'/%3E%3Ccircle cx='48' cy='48' r='14'/%3E%3C/g%3E%3C/svg%3E");
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2314663F' stroke-opacity='0.09' stroke-width='1.1'%3E%3Cpath d='M60 8 L71 49 L112 60 L71 71 L60 112 L49 71 L8 60 L49 49 Z'/%3E%3Crect x='32' y='32' width='56' height='56' transform='rotate(45 60 60)' stroke='%23C9A44C' stroke-opacity='0.12'/%3E%3Ccircle cx='60' cy='60' r='16' stroke='%23C9A44C' stroke-opacity='0.14'/%3E%3Ccircle cx='60' cy='60' r='4' fill='%2314663F' fill-opacity='0.08'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 body[data-ds-dark-theme]::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-opacity='0.06'%3E%3Cpath d='M48 8 L56 40 L88 48 L56 56 L48 88 L40 56 L8 48 L40 40 Z'/%3E%3Ccircle cx='48' cy='48' r='14'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-opacity='0.11' stroke-width='1.1'%3E%3Cpath d='M60 8 L71 49 L112 60 L71 71 L60 112 L49 71 L8 60 L49 49 Z'/%3E%3Crect x='32' y='32' width='56' height='56' transform='rotate(45 60 60)' stroke='%231C8A57' stroke-opacity='0.14'/%3E%3Ccircle cx='60' cy='60' r='16' stroke='%23D4AF37' stroke-opacity='0.15'/%3E%3Ccircle cx='60' cy='60' r='4' fill='%23D4AF37' fill-opacity='0.10'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Hide the Islamic lattice when a non-mushaf standard theme (light/dark) is selected. */
+body:not([data-quran-theme])::before {
+  opacity: 0;
 }
 
 /* Gold hairline accents on primary surfaces' top edges, echoing mushaf
    illumination frames — kept to a 1px line so layout metrics never change. */
 [data-slot="sidebar"], nav, header {
-  border-image: linear-gradient(90deg, transparent, color-mix(in oklab, var(--qh-gold) 35%, transparent), transparent) 1;
+  border-image: linear-gradient(90deg, transparent, color-mix(in oklab, var(--qh-gold) 45%, transparent), transparent) 1;
+}
+
+/* Decorative floral ASCII ornament on Quran Governance Cards */
+[data-tool="quran-governance"]::after {
+  content: var(--qh-ornament-floral);
+  display: block;
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 0.5px dashed color-mix(in oklab, var(--qh-gold) 40%, transparent);
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+  color: var(--qh-gold);
+  opacity: 0.78;
+  direction: ltr;
+}
+
+/* Full RTL Layout Support when Arabic (`html[dir="rtl"]`) is active */
+html[dir="rtl"],
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Keep code blocks, terminal output, and technical identifiers LTR inside RTL UI */
+html[dir="rtl"] pre,
+html[dir="rtl"] code,
+html[dir="rtl"] [data-terminal],
+html[dir="rtl"] [dir="ltr"] {
+  direction: ltr;
+  text-align: left;
 }

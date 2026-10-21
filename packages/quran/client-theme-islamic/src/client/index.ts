@@ -1,26 +1,32 @@
 /**
- * Islamic theme plugin, browser half: registers the `mushaf` and
- * `mushaf-dark` themes through the theme runtime (alias-token overrides over
- * the built-in palettes), shadows the `appearance` row in
- * `settings.general.item` so all 5 themes (`mushaf`, `mushaf-dark`, `light`,
- * `dark`, `system`) appear in Settings → General → Appearance, persists the
- * user's selection in `localStorage`, and mounts one additive global
- * stylesheet carrying the Arabic-first font stacks, the faint girih backdrop,
- * and mushaf reading niceties. Disposing the plugin removes both themes, the
- * settings row override, and the stylesheet.
+ * Islamic theme & Arabic locale plugin, browser half:
+ * 1. Registers `mushaf` and `mushaf-dark` themes through `ctx.theme`
+ * 2. Shadows the `appearance` row in `settings.general.item` so all 5 themes
+ *    (`mushaf`, `mushaf-dark`, `light`, `dark`, `system`) appear in Settings
+ * 3. Registers `QuranMushafOverlay` into `shell.overlay` (`id: 'quran-mushaf-decor'`)
+ *    rendering the Islamic Khatam/Arabesque pattern backdrop, Open Mushaf on
+ *    Carved Rehal watermark, and ASCII/Unicode ornamental borders
+ * 4. Registers Arabic (`ar` — `العربية`) into `ctx.locale` with full RTL
+ *    (`dir="rtl"`) synchronization and Arabic UI dictionaries
  *
  * @module @deepseek-ai/dsh-client-ui-quran-theme
  */
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
 import type { BoundActions } from '@deepseek-ai/dsh-client-ui-slots'
+// Type-only: pulls the LocaleRuntime service merge (ctx.locale).
+import type {} from '@deepseek-ai/dsh-client-locale/client'
+// Type-only: pulls the shell.overlay SlotMap merge.
+import type {} from '@deepseek-ai/dsh-client-ui-layout/client'
 // Type-only: pulls the SlotRegistry service merge (ctx.slots).
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 // Type-only: pulls the settings.general.item SlotMap merge.
 import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
 // Type-only: pulls the ThemeRuntime service merge (ctx.theme).
 import type { ThemeSnapshot } from '@deepseek-ai/dsh-client-ui-theme/client'
+import { installArabicLocale } from './arabic-locale.ts'
 import type { QuranAppearanceRowInjected } from './QuranAppearanceRow.tsx'
 import { QuranAppearanceRow } from './QuranAppearanceRow.tsx'
+import { QuranMushafOverlay } from './QuranMushafOverlay.tsx'
 import {
   createQuranAppearanceRowStore,
   isQuranThemePreference,
@@ -29,8 +35,24 @@ import {
 import { MUSHAF_DARK_TOKENS, MUSHAF_LIGHT_TOKENS } from './themes.ts'
 import globalCss from './global.css?inline'
 
+export {
+  ARABIC_DICTIONARIES,
+  ARABIC_LOCALE_ID,
+  ARABIC_LOCALE_LABEL,
+  installArabicLocale,
+  syncDocumentDirection,
+} from './arabic-locale.ts'
+export {
+  ISLAMIC_PATTERN_DATA_URI,
+  MUSHAF_REHAL_DATA_URI,
+  ORNAMENT_DIAMOND,
+  ORNAMENT_FLORAL,
+  ORNAMENT_HEADER,
+} from './islamic-assets.ts'
 export type { QuranAppearanceRowComponentProps, QuranAppearanceRowInjected } from './QuranAppearanceRow.tsx'
 export { QuranAppearanceRow } from './QuranAppearanceRow.tsx'
+export type { QuranMushafOverlayProps } from './QuranMushafOverlay.tsx'
+export { QuranMushafOverlay } from './QuranMushafOverlay.tsx'
 export {
   createQuranAppearanceRowStore,
   isQuranThemePreference,
@@ -67,13 +89,23 @@ function writePersistedPreference(id: QuranThemePreference): void {
   }
 }
 
-/** Required services: browser theme runtime (`ctx.theme`) and UI slot registry (`ctx.slots`). */
-export const inject = ['theme', 'slots']
+function syncBodyThemeAttribute(preference: QuranThemePreference): void {
+  if (typeof document === 'undefined' || document.body === null) return
+  if (preference === 'mushaf' || preference === 'mushaf-dark') {
+    document.body.dataset.quranTheme = preference
+  } else {
+    delete document.body.dataset.quranTheme
+  }
+}
+
+/** Required services: browser theme runtime (`ctx.theme`), UI slot registry (`ctx.slots`), and locale service (`ctx.locale`). */
+export const inject = ['theme', 'slots', 'locale']
 
 /**
  * Client plugin body: register the two mushaf themes, shadow the Appearance
- * settings row in `settings.general.item` with all 5 themes, and mount the
- * global stylesheet.
+ * settings row in `settings.general.item`, register the Islamic visual overlay
+ * in `shell.overlay`, install Arabic (`ar`) + RTL support in `ctx.locale`, and
+ * mount the global stylesheet.
  * @param ctx - client root context.
  */
 export function apply(ctx: ClientContext): void {
@@ -89,14 +121,19 @@ export function apply(ctx: ClientContext): void {
   })
 
   let desiredPreference: QuranThemePreference = readPersistedPreference()
+  syncBodyThemeAttribute(desiredPreference)
   ctx.theme.setTheme?.(desiredPreference)
 
   const store = createQuranAppearanceRowStore()
   let bound: BoundActions<typeof store> | undefined
+  const overlayStore = createQuranAppearanceRowStore()
+  let overlayBound: BoundActions<typeof overlayStore> | undefined
   let reapplying = false
 
   const syncStore = (preference: QuranThemePreference, revision: number): void => {
+    syncBodyThemeAttribute(preference)
     bound?.sync(preference, revision)
+    overlayBound?.sync(preference, revision)
   }
 
   const selectTheme = (id: QuranThemePreference): void => {
@@ -152,6 +189,24 @@ export function apply(ctx: ClientContext): void {
     inject: injected,
   }, QuranAppearanceRow))
 
+  ctx.slots?.inject('shell.overlay', () => ctx.slots.register({
+    name: 'shell.overlay',
+    id: 'quran-mushaf-decor',
+    order: 5,
+    store: overlayStore,
+    inject: (actions: BoundActions<typeof overlayStore>) => {
+      overlayBound = actions
+      const snap = ctx.theme.getTheme?.()
+      const currentPref = isQuranThemePreference(snap?.preference) ? snap.preference : desiredPreference
+      overlayBound.sync(currentPref, snap?.revision ?? 0)
+      return {}
+    },
+  }, QuranMushafOverlay))
+
+  if (ctx.locale !== undefined) {
+    ctx.effect(() => installArabicLocale(ctx.locale), 'quran-theme: arabic locale & RTL')
+  }
+
   ctx.effect(() => {
     if (typeof document === 'undefined') return () => {}
     const tag = document.createElement('style')
@@ -163,6 +218,9 @@ export function apply(ctx: ClientContext): void {
   }, 'quran-theme: global stylesheet')
 
   ctx.effect(() => () => {
+    if (typeof document !== 'undefined' && document.body !== null) {
+      delete document.body.dataset.quranTheme
+    }
     disposeLight()
     disposeDark()
   }, 'quran-theme: unregister themes')
