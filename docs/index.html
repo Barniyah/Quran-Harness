@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="mushaf">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeepSeek Quran Harness — المنظومة القرآنية الموثقة بالأدلة التشفيرية</title>
+  <meta name="description" content="المواصفات المعمارية الكاملة لمنظومة Quran Harness: طبقة إضافات معزولة 100% فوق DeepSeek Harness مع حوكمة تشفيرية SHA-256، تحقق متقاطع مزدوج، 17 أداة قرآنية، و5 مهارات تخصصية." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root, [data-theme="mushaf"] {
+      --bg-primary: #fbf6e9;
+      --bg-secondary: #f3ead3;
+      --bg-card: #fffdf7;
+      --bg-code: #10241b;
+      --text-primary: #132a1f;
+      --text-secondary: #385244;
+      --text-muted: #5c7467;
+      --accent-emerald: #145a38;
+      --accent-emerald-light: #1e7a4e;
+      --accent-gold: #b8861b;
+      --accent-gold-bright: #d4af37;
+      --border-gold: rgba(184, 134, 27, 0.35);
+      --border-subtle: rgba(20, 90, 56, 0.16);
+      --shadow-card: 0 8px 28px rgba(19, 42, 31, 0.07);
+      --badge-l1-bg: rgba(20, 90, 56, 0.12);
+      --badge-l1-text: #0f4d2e;
+      --badge-l2-bg: rgba(184, 134, 27, 0.15);
+      --badge-l2-text: #8a6109;
+      --badge-l3-bg: rgba(34, 102, 138, 0.13);
+      --badge-l3-text: #18516e;
+    }
+
+    [data-theme="mushaf-dark"] {
+      --bg-primary: #071912;
+      --bg-secondary: #0c251b;
+      --bg-card: #102e21;
+      --bg-code: #05110c;
+      --text-primary: #f7f1e1;
+      --text-secondary: #c5dccf;
+      --text-muted: #8cb09d;
+      --accent-emerald: #289e64;
+      --accent-emerald-light: #3bc17f;
+      --accent-gold: #e0b84c;
+      --accent-gold-bright: #f3d27a;
+      --border-gold: rgba(212, 175, 55, 0.38);
+      --border-subtle: rgba(212, 175, 55, 0.18);
+      --shadow-card: 0 10px 32px rgba(0, 0, 0, 0.38);
+      --badge-l1-bg: rgba(40, 158, 100, 0.22);
+      --badge-l1-text: #7ef0b5;
+      --badge-l2-bg: rgba(224, 184, 76, 0.2);
+      --badge-l2-text: #f3d27a;
+      --badge-l3-bg: rgba(77, 171, 219, 0.2);
+      --badge-l3-text: #93d8fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.75;
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(20, 90, 56, 0.08) 0%, transparent 45%);
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Sticky Top Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in srgb, var(--bg-card) 90%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid var(--border-gold);
+      padding: 0.75rem 1.5rem;
+    }
+
+    .navbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0d291e, #1b5e3c);
+      border: 1.5px solid var(--accent-gold-bright);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #f3d27a;
+      font-family: 'Amiri', serif;
+      font-size: 1.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.94rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-emerald);
+      background: var(--badge-l1-bg);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 1rem;
+      border-radius: 9px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1.5px solid var(--border-gold);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #145a38, #0d3d25);
+      color: #fdf8ec;
+      border-color: var(--accent-gold-bright);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(20, 90, 56, 0.3);
+    }
+
+    .btn-outline {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-gold);
+      background: var(--bg-secondary);
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* Hero Banner Container */
+    .hero {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero-banner-wrap {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid var(--border-gold);
+      box-shadow: var(--shadow-card);
+      margin-bottom: 1.75rem;
+      background: #071a12;
+    }
+
+    .hero-banner-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .ornament-line {
+      font-family: 'Amiri', serif;
+      color: var(--accent-gold);
+      text-align: center;
+      font-size: 1.1rem;
+      letter-spacing: 1.5px;
+      margin: 1rem 0;
+      user-select: none;
+    }
+
+    .hero-cta {
+      display: flex;
+      justify-content: center;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+    }
+
+    /* Section Headings */
+    section {
+      margin-bottom: 4rem;
+      scroll-margin-top: 84px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+      background: var(--badge-l2-bg);
+      padding: 0.25rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.95rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.45rem;
+    }
+
+    .section-desc {
+      max-width: 820px;
+      margin: 0 auto;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    /* Cards & Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1.35rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-gold-bright);
+    }
+
+    .card-title {
+      font-size: 1.22rem;
+      font-weight: 800;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    /* Architecture Layer Diagram */
+    .arch-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .arch-layer {
+      background: var(--bg-card);
+      border: 2px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .arch-layer.isolated {
+      border-color: var(--accent-emerald);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--bg-card) 92%, #145a38), var(--bg-card));
+    }
+
+    .arch-layer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .arch-layer-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent-emerald);
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.28rem 0.65rem;
+      border-radius: 7px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      direction: ltr;
+    }
+
+    /* Live Governance Card Mockup */
+    .gov-demo {
+      background: linear-gradient(135deg, #0d291e, #123828);
+      color: #fdf8ec;
+      border: 2px solid #d4af37;
+      border-radius: 16px;
+      padding: 1.6rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 12px 32px rgba(7, 25, 18, 0.35);
+    }
+
+    .gov-verse-box {
+      font-family: 'Amiri Quran', 'Amiri', serif;
+      font-size: 2rem;
+      line-height: 2.2;
+      text-align: center;
+      padding: 1.25rem;
+      background: rgba(255, 253, 247, 0.06);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 12px;
+      color: #fff8e7;
+      margin-bottom: 1.1rem;
+    }
+
+    .gov-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.85rem;
+      font-size: 0.9rem;
+    }
+
+    .gov-meta-item {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      padding: 0.65rem 0.9rem;
+      border-radius: 10px;
+    }
+
+    .gov-meta-label {
+      color: #f3d27a;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .gov-meta-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.83rem;
+      color: #e6f4ec;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      border: 1.5px solid var(--border-gold);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent-emerald);
+      color: #fff;
+      border-color: var(--accent-gold-bright);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      direction: ltr;
+    }
+
+    .badge-local {
+      background: var(--badge-l1-bg);
+      color: var(--badge-l1-text);
+      border: 1px solid currentColor;
+    }
+
+    .badge-external {
+      background: var(--badge-l2-bg);
+      color: var(--badge-l2-text);
+      border: 1px solid currentColor;
+    }
+
+    .badge-hybrid {
+      background: var(--badge-l3-bg);
+      color: var(--badge-l3-text);
+      border: 1px solid currentColor;
+    }
+
+    /* Code & Prompt Blocks */
+    .prompt-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-gold);
+      border-radius: 10px;
+      padding: 0.75rem 0.95rem;
+      margin-top: 0.85rem;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .copy-btn {
+      background: var(--bg-card);
+      color: var(--accent-emerald);
+      border: 1px solid var(--border-gold);
+      border-radius: 7px;
+      padding: 0.3rem 0.65rem;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-emerald);
+      color: #fff;
+    }
+
+    pre.code-block {
+      background: var(--bg-code);
+      color: #e8f5ee;
+      padding: 1.15rem 1.35rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-gold);
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      margin-top: 0.75rem;
+    }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1.5px solid var(--border-gold);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-card);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+    }
+
+    th, td {
+      padding: 0.9rem 1.1rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-weight: 800;
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(135deg, #071a12, #0f2d20);
+      color: #f7f1e1;
+      border-top: 3px solid #d4af37;
+      padding: 3rem 1.5rem;
+      margin-top: 4rem;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .author-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.85rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(212, 175, 55, 0.55);
+      border-radius: 16px;
+      padding: 1.5rem 2.5rem;
+      margin: 1.25rem 0;
+    }
+
+    .author-name {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #f3d27a;
+    }
+
+    .author-links {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .author-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .author-link.linkedin {
+      background: #0a66c2;
+      color: #ffffff;
+      border: 1px solid #378fe9;
+    }
+
+    .author-link.linkedin:hover {
+      background: #004182;
+      transform: translateY(-2px);
+    }
+
+    .author-link.github {
+      background: rgba(212, 175, 55, 0.18);
+      color: #f3d27a;
+      border: 1px solid #d4af37;
+    }
+
+    .author-link.github:hover {
+      background: rgba(212, 175, 55, 0.32);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .section-title { font-size: 1.55rem; }
+      .gov-verse-box { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="brand">
+        <span class="brand-icon">۞</span>
+        <span>DeepSeek Quran Harness</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#architecture">المعمارية المعزولة</a></li>
+        <li><a href="#governance">طبقة الحوكمة</a></li>
+        <li><a href="#capabilities">القدرات الـ17</a></li>
+        <li><a href="#skills">المهارات الـ5</a></li>
+        <li><a href="#extensibility">إضافة قدرة جديدة</a></li>
+        <li><a href="#setup">التثبيت والاختبار</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn btn-outline" id="themeToggle" onclick="toggleTheme()">🌙 الوضع الليلي</button>
+        <a class="btn btn-primary" href="https://github.com/Barniyah/Quran-Harness" target="_blank" rel="noopener noreferrer">
+          ⭐ مستودع GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <header class="hero">
+      <div class="hero-banner-wrap">
+        <img src="./assets/quran-harness-banner.svg" alt="DeepSeek Quran Harness Banner" />
+      </div>
+      <div class="ornament-line">───⊱✿⊰─── ۞ ───⊱✿⊰─── ۞ ───⊱✿⊰─── ۞ ───⊱✿⊰───</div>
+      <p class="section-desc">
+        منظومة هندسية متكاملة تحوّل <strong>DeepSeek Harness (DSH)</strong> إلى بيئة تطوير وبحث قرآني موثقة بالأدلة التشفيرية (<strong>SHA-256</strong>)، مبنية كطبقة إضافات معزولة بنسبة <strong>100%</strong> دون تعديل سطر واحد من نواة DSH، مع حظر قطعي لاقتباس الآيات من ذاكرة النموذج اللغوي.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://github.com/Barniyah/Quran-Harness" target="_blank" rel="noopener noreferrer">
+          📦 استعرض الكود المصدري على GitHub
+        </a>
+        <a class="btn btn-outline" href="./quran/QURAN-HARNESS-GUI-TESTS.html">
+          🧪 افتح دليل اختبارات الواجهة التفاعلي (GUI Tests)
+        </a>
+        <a class="btn btn-outline" href="#setup">
+          🚀 دليل التثبيت والتشغيل السريع
+        </a>
+      </div>
+    </header>
+
+    <!-- Section 1: Isolated Layer Architecture -->
+    <section id="architecture">
+      <div class="section-header">
+        <span class="section-eyebrow">1. هندسة العزل التام · Zero-Core-Modification Architecture</span>
+        <h2 class="section-title">كيف يعمل Quran Harness كطبقة منفصلة تمامًا فوق نواة DSH؟</h2>
+        <p class="section-desc">
+          صُمم المشروع وفق مبدأ <strong>Additive Plugin Composition</strong>: تعيش جميع الحزم القرآنية الـ22 داخل المسار المستقل <code>packages/quran/*</code>، وتركب فوق نواة DSH عبر ملف التجميع المحمول <code>cordis.patch.yml</code> دون لمس أي ملف في <code>packages/core</code> أو <code>packages/client</code>.
+        </p>
+      </div>
+
+      <div class="arch-stack">
+        <div class="arch-layer isolated">
+          <div class="arch-layer-header">
+            <span class="arch-layer-title">🕌 طبقة الواجهة الإسلامية والبطاقات البصرية (Browser Client Plugins)</span>
+            <span class="badge badge-local">packages/quran/client-*</span>
+          </div>
+          <p style="margin-bottom: 0.75rem; color: var(--text-secondary);">
+            تُحقن في منافذ الواجهة الرسومية للمتصفح (<code>ctx.slots</code>, <code>ctx.theme</code>, <code>ctx.locale</code>) لتوفير ثيم المصحف الكريمي والليلي الزمردي، زخارف النقش الإسلامي والمصحف على الرحل، تعريب الواجهة بالكامل مع دعم <code>RTL</code>، وعرض بطاقة الحوكمة التلقائية لكل أداة قرآنية.
+          </p>
+          <div class="chip-list">
+            <span class="chip">@deepseek-ai/dsh-client-ui-quran-theme</span>
+            <span class="chip">@deepseek-ai/dsh-client-ui-quran-governance</span>
+            <span class="chip">mushaf / mushaf-dark</span>
+            <span class="chip">Arabic Locale (ar + RTL)</span>
+          </div>
+        </div>
+
+        <div class="arch-layer isolated">
+          <div class="arch-layer-header">
+            <span class="arch-layer-title">🛠️ طبقة القدرات القرآنية الـ17 والمهارات الـ5 والـ SDK (Host Tool &amp; Skill Plugins)</span>
+            <span class="badge badge-local">packages/quran/tool-* &amp; skill-quran</span>
+          </div>
+          <p style="margin-bottom: 0.75rem; color: var(--text-secondary);">
+            تُسجّل عبر مُسجّل النمط المحمول <code>@deepseek-ai/dsh-quran-bundle</code> وتوفر 17 أداة قرآنية محكمة و5 مهارات تطوير وبحث وإضافة قدرات، بالإضافة إلى حزمة <code>@deepseek-ai/dsh-quran-sdk</code> للمطورين.
+          </p>
+          <div class="chip-list">
+            <span class="chip">tool-quran-text</span>
+            <span class="chip">tool-quran-metadata</span>
+            <span class="chip">tool-quran-search</span>
+            <span class="chip">tool-quran-riwayat</span>
+            <span class="chip">tool-quran-audio</span>
+            <span class="chip">tool-quran-timing</span>
+            <span class="chip">tool-mushaf-images</span>
+            <span class="chip">tool-mushaf-layout</span>
+            <span class="chip">tool-quran-fonts</span>
+            <span class="chip">tool-tajweed</span>
+            <span class="chip">tool-quran-phonetic</span>
+            <span class="chip">tool-quran-linguistics</span>
+            <span class="chip">tool-quran-tafsir</span>
+            <span class="chip">tool-quran-translations</span>
+            <span class="chip">tool-quran-sciences</span>
+            <span class="chip">skill-quran (5 Skills)</span>
+            <span class="chip">quran-sdk</span>
+          </div>
+        </div>
+
+        <div class="arch-layer isolated">
+          <div class="arch-layer-header">
+            <span class="arch-layer-title">🔐 طبقة الحوكمة ومظروف الأدلة والبيانات المثبتة (Evidence Core &amp; Pinned Data)</span>
+            <span class="badge badge-local">packages/quran/evidence-core &amp; quran-data</span>
+          </div>
+          <p style="margin-bottom: 0.75rem; color: var(--text-secondary);">
+            تتحقق من بصمات <code>SHA-256</code> لملفات البيانات المحلية الخمسة قبل القراءة، وتنشئ مظروف الأدلة <code>EvidenceEnvelope</code>، وتنفذ المطابقة الحرفية المزدوجة <code>crossVerify</code>، وتدوّن كل عملية في سجل التدقيق غير القابل للمسح <code>evidence-audit.jsonl</code>.
+          </p>
+          <div class="chip-list">
+            <span class="chip">quran-uthmani.txt (SHA-256)</span>
+            <span class="chip">quran-simple-clean.txt (SHA-256)</span>
+            <span class="chip">quran-morphology.txt (128,219 segments)</span>
+            <span class="chip">timing-husary.json (SHA-256)</span>
+            <span class="chip">quranpedia-topics.json (6,100 topics)</span>
+          </div>
+        </div>
+
+        <div class="arch-layer">
+          <div class="arch-layer-header">
+            <span class="arch-layer-title" style="color: var(--text-secondary);">⚙️ نواة DeepSeek Harness الأصلية (Unmodified Upstream Core)</span>
+            <span class="badge badge-hybrid">git diff = 0 files changed</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            تبقى الحزم الأساسية (<code>packages/core</code>, <code>packages/client</code>, <code>packages/preset</code>, <code>apps</code>) نظيفة بنسبة 100% كما صدرت في <code>dsh-v0.2.1-alpha.4</code>، مما يضمن سهولة الترقية المستقبلية دون أي تعارض، مع اختبار آلي صارم (<code>Phase 5 — Gate 1</code>) يفشل فورًا لو تغيّر ملف واحد في النواة.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Governance Layer -->
+    <section id="governance">
+      <div class="section-header">
+        <span class="section-eyebrow">2. طبقة الحوكمة الصارمة · Cryptographic Governance Layer</span>
+        <h2 class="section-title">ضمانات انعدام الهلوسة والتحقق المتقاطع المزدوج</h2>
+        <p class="section-desc">
+          النص القرآني نصٌّ مقدس لا يقبل التقريب أو التوليد الاحتمالي من ذاكرة النماذج اللغوية. لذلك تفرض طبقة الحوكمة في Quran Harness أربع بوابات إلزامية على كل استدعاء.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🛡️ البوابة الأولى: حظر الذاكرة والتحقق المزدوج الحي</span>
+            <span class="badge badge-local">L1 × L2 Cross-Verify</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            يُمنع النموذج اللغوي منعًا باتًا من كتابة أي آية من ذاكرته. عند استدعاء <code>quran_get_verse</code>، تجلب الأداة النص العثماني من ملف <strong>Tanzil Uthmani</strong> المحلي المثبت ببصمة <code>SHA-256</code> (المستوى <code>L1-official</code>) وتقارنه حرفيًا في اللحظة نفسها مع <strong>Quran.com API v4</strong> (المستوى <code>L2-verified-open</code>). إذا وُجد اختلافٌ ولو في حركة واحدة، يُحجب عرض النص فورًا.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>📜 البوابة الثانية: مظروف الأدلة التشفيري (EvidenceEnvelope)</span>
+            <span class="badge badge-local">SHA-256 Provenance</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            كل مخرج من أي أداة قرآنية يُغلَّف داخل <code>EvidenceEnvelope</code> يحتوي على: معرف المصدر (<code>source.id</code>)، مستوى الموثوقية (<code>L1-official</code> أو <code>L2-verified-open</code> أو <code>L3-community</code>)، البصمة التشفيرية الكاملة <code>contentHash</code> (SHA-256)، طابع الوقت <code>retrievedAt</code>، وسلسلة التحويلات الخوارزمية <code>transforms</code>.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>🚫 البوابة الثالثة: حماية Red-Team ضد الاستدراج والفتوى</span>
+            <span class="badge badge-external">Anti-Hallucination</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            يرفض النظام أي إحداثيات مختلقة أو خارج نطاق سور القرآن الـ114 وآياته الـ6,236 في رواية حفص عن عاصم (مثل طلب الآية 5 من سورة الإخلاص أو الآية 287 من سورة البقرة)، كما يمتنع الوكيل صراحةً عن إصدار الفتاوى الشرعية المستقلة أو التفسير بالرأي الشخصي غير المنسوب لكتب التفسير المعتمدة.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>🪪 البوابة الرابعة: بطاقة الحوكمة المرئية وسجل التدقيق</span>
+            <span class="badge badge-hybrid">UI GovernanceCard</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            تعرض واجهة المتصفح بطاقة حوكمة بصرية إلزامية (<code>GovernanceCard</code>) أسفل كل استدعاء أداة قرآنية، وتُختم كل عملية في ملف سجل التدقيق التراكمي <code>evidence-audit.jsonl</code> بحيث يمكن لأي باحث أو مدقق مراجعة البصمات التشفيرية لكل جلسة.
+          </p>
+        </div>
+      </div>
+
+      <!-- Live Mockup of Governance Card -->
+      <div class="gov-demo">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.9rem;">
+          <span style="font-weight: 800; color: #f3d27a;">🕌 معاينة حية لبطاقة الحوكمة في الواجهة الرسومية (GovernanceCard Component)</span>
+          <span class="badge" style="background: rgba(40, 158, 100, 0.3); color: #7ef0b5; border: 1px solid #3bc17f;">✓ VERIFIED · تطابق حرفي تام (L1 × L2)</span>
+        </div>
+        <div class="gov-verse-box" dir="rtl">
+          قُلْ هُوَ ٱللَّهُ أَحَدٌ ﴿١﴾ ٱللَّهُ ٱلصَّمَدُ ﴿٢﴾ لَمْ يَلِدْ وَلَمْ يُولَدْ ﴿٣﴾ وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ ﴿٤﴾
+        </div>
+        <div class="gov-meta-grid">
+          <div class="gov-meta-item">
+            <span class="gov-meta-label">المرجع والرواية (Reference &amp; Riwaya)</span>
+            <span class="gov-meta-value">Surah 112:1-4 · Hafs 'an 'Asim</span>
+          </div>
+          <div class="gov-meta-item">
+            <span class="gov-meta-label">المصدر الأساسي والثانوي (Sources)</span>
+            <span class="gov-meta-value">tanzil-uthmani (L1) × quran.com-v4 (L2)</span>
+          </div>
+          <div class="gov-meta-item">
+            <span class="gov-meta-label">بصمة المحتوى (SHA-256 Content Hash)</span>
+            <span class="gov-meta-value">sha256:9f84c2e0a7b1d4...83e19b</span>
+          </div>
+          <div class="gov-meta-item">
+            <span class="gov-meta-label">حكم التحقق المتقاطع (Verdict)</span>
+            <span class="gov-meta-value">MATCH (Normalized Uthmani Skeleton)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: The 17 Capabilities -->
+    <section id="capabilities">
+      <div class="section-header">
+        <span class="section-eyebrow">3. كتالوج القدرات القرآنية الـ17 · Evidence-Governed Tools</span>
+        <h2 class="section-title">جميع القدرات القرآنية ومصادرها (المحلية مقابل الخارجية)</h2>
+        <p class="section-desc">
+          تُصنَّف القدرات الـ17 بحسب مصدر بياناتها إلى: قدرات تعمل <strong>محليًا بالكامل (Offline 100%)</strong> من ملفات مثبتة ببصمة <code>SHA-256</code> داخل المستودع، وقدرات <strong>هجينة</strong> تقارن المحلي بالخارجي، وقدرات <strong>خارجية حية</strong> للوسائط والتفاسير والترجمات.
+        </p>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterTools('all', this)">الكل (17 أداة)</button>
+        <button class="filter-btn" onclick="filterTools('local', this)">📦 محلي مثبت بالكامل — Offline (10)</button>
+        <button class="filter-btn" onclick="filterTools('hybrid', this)">🔄 تحقق متقاطع هجين — Local × Cloud (1)</button>
+        <button class="filter-btn" onclick="filterTools('external', this)">🌐 مصادر خارجية محققة حياً — Online (6)</button>
+      </div>
+
+      <div class="grid-3" id="toolsGrid">
+        <!-- Tool 1 -->
+        <div class="card tool-card" data-category="hybrid">
+          <div class="card-title">
+            <span>1. نص الآية المحقق</span>
+            <span class="badge badge-hybrid">هجين L1×L2</span>
+          </div>
+          <p><code class="chip">quran_get_verse</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            جلب النص العثماني لآية محددة مع مطابقة إلزامية بين ملف <code>quran-uthmani.txt</code> المحلي وواجهة <code>Quran.com API v4</code>.
+          </p>
+          <div class="prompt-box">
+            <span>اعرض لي سورة الإخلاص كاملة بالرسم العثماني مع بطاقة الحوكمة</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 2 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>2. البيانات الوصفية والفهرسة</span>
+            <span class="badge badge-local">محلي L2</span>
+          </div>
+          <p><code class="chip">quran_get_metadata</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            بيانات السورة (مكية/مدنية، عدد الآيات، الصفحة، الجزء، الحزب، الربع، الموضع العام) من مكتبة <code>quran-meta</code> المحلية.
+          </p>
+          <div class="prompt-box">
+            <span>أعطني البيانات الوصفية الكاملة لآية الكرسي (البقرة 2:255)</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 3 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>3. البحث القرآني الهيكلي</span>
+            <span class="badge badge-local">محلي SHA-256</span>
+          </div>
+          <p><code class="chip">quran_search</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            بحث فوري بدون إنترنت في <code>quran-simple-clean.txt</code> مع إرجاع النص العثماني الأصلي من <code>quran-uthmani.txt</code>.
+          </p>
+          <div class="prompt-box">
+            <span>ابحث في القرآن الكريم عن كلمة "الرحمن" وأعطني أول 5 نتائج</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 4 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>4. مقارنة الروايات الثمان</span>
+            <span class="badge badge-local">محلي L2</span>
+          </div>
+          <p><code class="chip">quran_compare_riwayat</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            مقارنة عدّ الآيات ومواضع الصفحات والأجزاء عبر 8 روايات (حفص، ورش، قالون، شعبة، الدوري، السوسي، البزي، قنبل).
+          </p>
+          <div class="prompt-box">
+            <span>قارن الآية 2:255 عبر الروايات الثمان المعتمدة</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 5 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>5. تحويل إحداثيات الآيات</span>
+            <span class="badge badge-local">محلي L2</span>
+          </div>
+          <p><code class="chip">quran_convert_ayah</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            تحويل رقم الآية بدقة بين أي روايتين (مثل تحويل آية الكرسي 2:255 في حفص إلى 2:253 في ورش).
+          </p>
+          <div class="prompt-box">
+            <span>حوّل مرجع آية الكرسي (2:255) من رواية حفص إلى رواية ورش وقالون</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 6 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>6. تخطيط صفحات مصحف المدينة</span>
+            <span class="badge badge-local">محلي L2</span>
+          </div>
+          <p><code class="chip">quran_get_page_layout</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            نطاقات السور والآيات لكل صفحة من صفحات مصحف المدينة النبوية الـ604 محليًا بالكامل.
+          </p>
+          <div class="prompt-box">
+            <span>ما السور والآيات الموجودة في الصفحة 604 من مصحف المدينة؟</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 7 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>7. التزمين الصوتي بالمللي ثانية</span>
+            <span class="badge badge-local">محلي SHA-256</span>
+          </div>
+          <p><code class="chip">quran_get_ayah_timing</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            توقيت البداية والنهاية والمدة بالمللي ثانية لتلاوة الشيخ محمود خليل الحصري من الملف المثبت <code>timing-husary.json</code>.
+          </p>
+          <div class="prompt-box">
+            <span>أعطني التزمين الصوتي بالمللي ثانية للآية 1 و2 من سورة الفاتحة</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 8 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>8. التحليل الصرفي والنحوي والجذور</span>
+            <span class="badge badge-local">محلي SHA-256</span>
+          </div>
+          <p><code class="chip">quran_get_ayah_morphology</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            تحليل كل كلمة ومقطع صرفي (128,219 مقطعًا) مع الجذر والوزن وأقسام الكلم من <code>quran-morphology.txt</code>.
+          </p>
+          <div class="prompt-box">
+            <span>حلّل الآية 1 من سورة الإخلاص صرفيًا ونحويًا كلمة بكلمة مع الجذور</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 9 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>9. الفهرس الموضوعي لعلوم القرآن</span>
+            <span class="badge badge-local">محلي SHA-256</span>
+          </div>
+          <p><code class="chip">quran_search_topics</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            البحث الموضوعي في 6,100 موضوع قرآني مصنف داخل الملف المحلي المثبت <code>quranpedia-topics.json</code>.
+          </p>
+          <div class="prompt-box">
+            <span>ابحث في الفهرس الموضوعي للقرآن عن موضوع "الصبر"</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 10 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>10. محرك أحكام التجويد الحتمي</span>
+            <span class="badge badge-local">محلي (.venv)</span>
+          </div>
+          <p><code class="chip">quran_analyze_tajweed</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            استخراج أحكام التجويد حرفًا بحرف خوارزميًا بدون نماذج احتمالية عبر <code>tajweed-embeddings</code> في بيئة بايثون المحلية.
+          </p>
+          <div class="prompt-box">
+            <span>حلّل أحكام التجويد حرفًا بحرف في الآية الأولى من سورة الفاتحة</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 11 -->
+        <div class="card tool-card" data-category="local">
+          <div class="card-title">
+            <span>11. الرسم الصوتي المنطوق وصفات الحروف</span>
+            <span class="badge badge-local">محلي (.venv)</span>
+          </div>
+          <p><code class="chip">quran_phonetize</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            تحويل الآية من الرسم العثماني إلى الرسم الصوتي المنطوق وجدول صفات الحروف (الجهر، الشدة، القلقلة...) عبر <code>quran-transcript</code>.
+          </p>
+          <div class="prompt-box">
+            <span>حوّل الآية الأولى من سورة الإخلاص إلى رسم صوتي منطوق مع صفات الحروف</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 12 -->
+        <div class="card tool-card" data-category="external">
+          <div class="card-title">
+            <span>12. التلاوات الصوتية المعتمدة</span>
+            <span class="badge badge-external">خارجي + HEAD</span>
+          </div>
+          <p><code class="chip">quran_get_audio</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            روابط MP3 لـ5 قرّاء معتمدين من EveryAyah مع فحص <code>HTTP HEAD</code> حي للتأكد من صلاحية الرابط وحجمه.
+          </p>
+          <div class="prompt-box">
+            <span>أعطني رابط التلاوة الصوتية للآية 1:1 بصوت الحصري والمنشاوي</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 13 -->
+        <div class="card tool-card" data-category="external">
+          <div class="card-title">
+            <span>13. صورة صفحة المصحف الشريف</span>
+            <span class="badge badge-external">خارجي L1 + HEAD</span>
+          </div>
+          <p><code class="chip">quran_get_page_image</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            صور صفحات مصحف المدينة النبوية الـ604 مع التحقق الحي من توافر الصورة ونوعها <code>Content-Type</code>.
+          </p>
+          <div class="prompt-box">
+            <span>اعرض لي رابط صورة الصفحة 1 من مصحف المدينة مع التحقق من الرابط</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 14 -->
+        <div class="card tool-card" data-category="external">
+          <div class="card-title">
+            <span>14. صورة الآية المفردة الشفافة</span>
+            <span class="badge badge-external">خارجي + HEAD</span>
+          </div>
+          <p><code class="chip">quran_get_ayah_image</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            صورة PNG عالية الدقة لآية مفردة بالرسم العثماني من EveryAyah مع فحص التوافر الحي.
+          </p>
+          <div class="prompt-box">
+            <span>أعطني رابط صورة الآية 2:255 (آية الكرسي) بصيغة PNG</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 15 -->
+        <div class="card tool-card" data-category="external">
+          <div class="card-title">
+            <span>15. خطوط مجمع الملك فهد الرسمية</span>
+            <span class="badge badge-external">خارجي L1 KFGQPC</span>
+          </div>
+          <p><code class="chip">quran_get_fonts</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            روابط خطوط حفص وورش وقالون والدوري الرسمية (<code>TTF/OTF/WOFF2</code>) من مجمع الملك فهد لطباعة المصحف الشريف.
+          </p>
+          <div class="prompt-box">
+            <span>أعطني روابط خطوط مجمع الملك فهد الرسمية لرواية حفص وورش</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 16 -->
+        <div class="card tool-card" data-category="external">
+          <div class="card-title">
+            <span>16. التفاسير المعتمدة المنسوبة</span>
+            <span class="badge badge-external">خارجي L2 CDN</span>
+          </div>
+          <p><code class="chip">quran_get_tafsir</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            جلب نص التفسير المنسوب صراحةً لمصدره (تفسير ابن كثير، الطبري، القرطبي، السعدي، التفسير الميسر) مع بصمة المحتوى.
+          </p>
+          <div class="prompt-box">
+            <span>ما تفسير ابن كثير وتفسير الطبري للآية الأولى من سورة الإخلاص؟</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <!-- Tool 17 -->
+        <div class="card tool-card" data-category="external">
+          <div class="card-title">
+            <span>17. الترجمات المعتمدة لمعاني القرآن</span>
+            <span class="badge badge-external">خارجي L2 API</span>
+          </div>
+          <p><code class="chip">quran_get_translation</code></p>
+          <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.94rem;">
+            جلب ترجمات معاني القرآن المعتمدة (مثل Abdel Haleem وSaheeh International) مع نسبة المترجم والتنبيه أنها ترجمة معانٍ وليست قرآنًا.
+          </p>
+          <div class="prompt-box">
+            <span>اعرض ترجمة Abdel Haleem لآية الكرسي (2:255) مع بطاقة الحوكمة</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: The 5 Bundled Skills -->
+    <section id="skills">
+      <div class="section-header">
+        <span class="section-eyebrow">4. المهارات التخصصية الـ5 · Bundled Quranic Skills</span>
+        <h2 class="section-title">مهارات هندسية وبحثية مدمجة في <code>@deepseek-ai/dsh-skill-quran</code></h2>
+        <p class="section-desc">
+          تُوجّه هذه المهارات الوكيل لتنفيذ سيناريوهات مركّبة متعددة الخطوات مع الالتزام الكامل بقواعد الحوكمة وبصمات <code>SHA-256</code>.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">
+            <span>📖 1. بناء تطبيق مصحف موثق</span>
+            <span class="badge badge-local">quran-mushaf-app</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            توجيه معماري لبناء واجهات عرض المصحف باستخدام <code>@deepseek-ai/dsh-quran-sdk</code>، مع التحقق من سلامة المظروف <code>verifyEnvelopeIntegrity</code> وتطبيق خطوط KFGQPC.
+          </p>
+          <div class="prompt-box">
+            <span>استخدم مهارة quran-mushaf-app لتصميم مكوّن React يعرض صفحة مصحف موثقة</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>🎙️ 2. ميزة التلاوة والتجويد المتزامن</span>
+            <span class="badge badge-local">quran-recitation-feature</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            دمج صوتيات EveryAyah مع تزمين الحصري بالمللي ثانية وتلوين أحكام التجويد خوارزميًا والرسم الصوتي المنطوق.
+          </p>
+          <div class="prompt-box">
+            <span>استخدم مهارة quran-recitation-feature لبناء مشغل تلاوة متزامن لسورة الفاتحة</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>🔬 3. البحث القرآني الموثق بالأدلة</span>
+            <span class="badge badge-local">quran-verified-research</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            منهجية بحثية تجمع البحث الهيكلي، التحليل الصرفي والجذور، الفهرس الموضوعي، والتفاسير المسماة مع جدول سجل الأدلة (Evidence Ledger).
+          </p>
+          <div class="prompt-box">
+            <span>استخدم مهارة quran-verified-research لإعداد بطاقة بحثية موثقة حول مفهوم "التقوى"</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>⚖️ 4. مقارنة الروايات وتحويل العدّ</span>
+            <span class="badge badge-local">quran-compare-riwayat</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            مقارنة الفروق الهيكلية في عدّ الآيات ومواضع الصفحات والأجزاء وتحويل المراجع بين الروايات الثمان المعتمدة.
+          </p>
+          <div class="prompt-box">
+            <span>استخدم مهارة quran-compare-riwayat لمقارنة عدّ آيات الفاتحة والبقرة بين حفص وورش</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+
+        <div class="card" style="grid-column: span 2;">
+          <div class="card-title">
+            <span>⚡ 5. إنشاء قدرة قرآنية جديدة وربطها تلقائيًا بالحوكمة (جديد)</span>
+            <span class="badge badge-hybrid">quran-create-capability</span>
+          </div>
+          <p style="color: var(--text-secondary); font-size: 0.95rem;">
+            تُمكّن المطور أو الباحث من طلب إنشاء قدرة قرآنية جديدة أو مهارة إضافية مباشرة من خلال المحادثة، وتقوم تلقائيًا بتوليد الحزمة وربطها بمظروف الأدلة <code>EvidenceEnvelope</code> (SHA-256)، وبطاقة الحوكمة الرسومية <code>GovernanceCard</code>، وملف التجميع المحمول <code>cordis.patch.yml</code>.
+          </p>
+          <div class="prompt-box">
+            <span>استخدم مهارة quran-create-capability لتوليد قدرة قرآنية جديدة باسم quran_get_sajdah_verses وربطها تلقائيًا بطبقة الحوكمة</span>
+            <button class="copy-btn" onclick="copyText(this)">نسخ</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: How to Add a New Capability or Skill -->
+    <section id="extensibility">
+      <div class="section-header">
+        <span class="section-eyebrow">5. قابلية التوسيع المحكومة · Governed Extensibility</span>
+        <h2 class="section-title">كيف تضيف قدرة أو مهارة قرآنية جديدة مرتبطة بالحوكمة تلقائيًا؟</h2>
+        <p class="section-desc">
+          يوفر المشروع مسارين متكاملين لإضافة أي قدرة جديدة (سواء عبر المحادثة المباشرة أو عبر أداة سطر الأوامر المدمجة) مع ضمان ربطها الإلزامي بالبوابات الأربع للحوكمة.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>💬 الطريقة الأولى: عبر المحادثة (Prompt-Driven)</span>
+            <span class="badge badge-local">Skill: quran-create-capability</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            اطلب من الوكيل مباشرة في المحادثة إنشاء القدرة الجديدة؛ سيقوم تلقائيًا بتحميل مهارة <code>quran-create-capability</code> وتشغيل المولّد الآلي لربطها بطبقة الحوكمة:
+          </p>
+          <pre class="code-block" style="direction: rtl; text-align: right; font-family: 'Tajawal', sans-serif;">أنشئ قدرة قرآنية جديدة باسم quran_get_sajdah_verses تعرض مواضع سجود التلاوة في القرآن الكريم باستخدام مهارة quran-create-capability واربطها تلقائيًا بطبقة الحوكمة وبطاقة GovernanceCard.</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>⌨️ الطريقة الثانية: عبر المولّد الآلي في الطرفية (CLI Generator)</span>
+            <span class="badge badge-hybrid">scripts/create-quran-capability.mjs</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            بأمر واحد فقط، يُنشئ السكربت الحزمة الجديدة ويحقنها في <code>GovernanceCard</code> وفي <code>cordis.patch.yml</code> بمسار نسبي محمول:
+          </p>
+          <pre class="code-block">node scripts/create-quran-capability.mjs \
+  --pkg tool-quran-sajdah \
+  --tool quran_get_sajdah_verses \
+  --source-id tanzil-sajdah-meta \
+  --source-name "Tanzil Sajdah Coordinates" \
+  --trust L1-official \
+  --description "Retrieve verified Sajdah verses in Hafs"</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Installation, Standalone Run & Testing -->
+    <section id="setup">
+      <div class="section-header">
+        <span class="section-eyebrow">6. دليل المطورين والباحثين · Setup, Standalone Run &amp; Verification</span>
+        <h2 class="section-title">التثبيت، التشغيل المستقل، وإجراء الاختبارات الـ95</h2>
+        <p class="section-desc">
+          جميع ملفات البيانات القرآنية الخمسة وبصماتها التشفيرية مضمّنة داخل المستودع، وجميع المسارات نسبية محمولة لتعمل على أي جهاز (Windows / macOS / Linux).
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🪟 التثبيت والتشغيل على Windows</span>
+            <span class="badge badge-local">One-Step Setup</span>
+          </div>
+          <pre class="code-block"># 1. استنساخ المستودع
+git clone https://github.com/Barniyah/Quran-Harness.git
+cd Quran-Harness
+
+# 2. الإعداد الكامل (تثبيت الحزم + البناء + بيئة بايثون للتجويد)
+.\setup-quran-harness.cmd
+
+# 3. تشغيل الواجهة الرسومية الكاملة لـ Quran Harness
+.\run-quran-harness.cmd</pre>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>🐧 التثبيت والتشغيل على macOS / Linux</span>
+            <span class="badge badge-local">POSIX Portable</span>
+          </div>
+          <pre class="code-block"># 1. استنساخ المستودع
+git clone https://github.com/Barniyah/Quran-Harness.git
+cd Quran-Harness
+
+# 2. الإعداد الكامل
+chmod +x setup-quran-harness.sh run-quran-harness.sh
+./setup-quran-harness.sh
+
+# 3. تشغيل الواجهة الرسومية الكاملة لـ Quran Harness
+./run-quran-harness.sh</pre>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-title">
+          <span>✅ تشغيل منظومة الاختبارات الآلية الشاملة (21 ملف اختبار — 95 / 95 اختبارًا ناجحًا)</span>
+          <span class="badge badge-local">Vitest Verification Suite</span>
+        </div>
+        <p style="color: var(--text-secondary);">
+          تشمل الاختبارات: التحقق المتقاطع للآيات، سلامة بصمات <code>SHA-256</code>، اختبارات Red-Team لمنع الهلوسة وكشف التلاعب بحركة واحدة، اختبارات الثيم الإسلامي واللغة العربية (<code>RTL</code>)، وبوابة عدم المساس بنواة DSH الأصلية:
+        </p>
+        <pre class="code-block"># تشغيل جميع اختبارات حزم القرآن (21 ملف اختبار — 95 اختبارًا)
+pnpm exec vitest run packages/quran
+
+# تشغيل بوابات التحقق النهائية واختبارات Red-Team منفردةً
+pnpm exec vitest run packages/quran/quran-bundle/tests/phase5-release-verification.spec.ts</pre>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer with Author Name & LinkedIn -->
+  <footer>
+    <div class="footer-inner">
+      <div class="ornament-line" style="color: #f3d27a;">۞  ━━━━━━━  ۞  ━━━━━━━  ۞  QURAN HARNESS  ۞  ━━━━━━━  ۞  ━━━━━━━  ۞</div>
+      <p style="color: #c5dccf; max-width: 680px; margin: 0.5rem auto 1rem;">
+        مشروع مفتوح المصدر لبناء تطبيقات وأبحاث القرآن الكريم الموثقة بالأدلة التشفيرية والتحقق المتقاطع المزدوج فوق منظومة DeepSeek Harness.
+      </p>
+
+      <div class="author-card">
+        <span style="font-size: 0.88rem; color: #c5dccf;">إعداد وتطوير ومعمارية المشروع · Created &amp; Architected by</span>
+        <div class="author-name">Mohammed Barniyah · محمد برنيه</div>
+        <div class="author-links">
+          <a class="author-link linkedin" href="https://www.linkedin.com/in/barniyah" target="_blank" rel="noopener noreferrer">
+            🔗 تواصل عبر LinkedIn (@barniyah)
+          </a>
+          <a class="author-link github" href="https://github.com/Barniyah/Quran-Harness" target="_blank" rel="noopener noreferrer">
+            🐙 مستودع المشروع على GitHub
+          </a>
+        </div>
+      </div>
+
+      <p style="font-size: 0.85rem; color: #8cb09d; margin-top: 1rem;">
+        الإصدار <code>v0.1.0</code> · الرواية الافتراضية المعتمدة: حفص عن عاصم · مرخص تحت رخصة MIT
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      if (html.getAttribute('data-theme') === 'mushaf-dark') {
+        html.setAttribute('data-theme', 'mushaf');
+        btn.textContent = '🌙 الوضع الليلي';
+      } else {
+        html.setAttribute('data-theme', 'mushaf-dark');
+        btn.textContent = '☀️ الوضع النهاري';
+      }
+    }
+
+    function filterTools(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tool-card').forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function copyText(btn) {
+      const text = btn.previousElementSibling.textContent.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const old = btn.textContent;
+        btn.textContent = '✓ تم النسخ';
+        setTimeout(() => { btn.textContent = old; }, 1600);
+      });
+    }
+  </script>
+</body>
+</html>

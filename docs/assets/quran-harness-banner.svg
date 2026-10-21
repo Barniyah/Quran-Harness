@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 460" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#071a12" />
+      <stop offset="50%" stop-color="#0d291e" />
+      <stop offset="100%" stop-color="#123526" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b8892a" />
+      <stop offset="50%" stop-color="#f3d27a" />
+      <stop offset="100%" stop-color="#c99b3b" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#163d2b" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#0a2016" stop-opacity="0.92" />
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="50%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.18" />
+      <stop offset="60%" stop-color="#1b5e3c" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#071a12" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="islamicGrid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="#d4af37" stroke-width="0.7" stroke-opacity="0.14">
+        <polygon points="40,4 50,26 72,16 62,38 80,40 62,42 72,64 50,54 40,76 30,54 8,64 18,42 0,40 18,38 8,16 30,26" />
+        <circle cx="40" cy="40" r="14" />
+        <rect x="26" y="26" width="28" height="28" transform="rotate(45 40 40)" />
+      </g>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="460" fill="url(#bgGrad)" rx="18" />
+  <rect width="1280" height="460" fill="url(#islamicGrid)" rx="18" />
+  <rect width="1280" height="460" fill="url(#glowGrad)" rx="18" />
+
+  <!-- Outer & Inner Ornate Gold Borders -->
+  <rect x="16" y="16" width="1248" height="428" rx="14" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-opacity="0.75" />
+  <rect x="24" y="24" width="1232" height="412" rx="10" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-opacity="0.4" stroke-dasharray="6,4" />
+
+  <!-- Corner Medallions -->
+  <g stroke="url(#goldGrad)" fill="#0d291e" stroke-width="1.5">
+    <circle cx="24" cy="24" r="10" />
+    <circle cx="1256" cy="24" r="10" />
+    <circle cx="24" cy="436" r="10" />
+    <circle cx="1256" cy="436" r="10" />
+  </g>
+
+  <!-- Top Ornament Header -->
+  <text x="640" y="64" text-anchor="middle" fill="url(#goldGrad)" font-family="'Amiri', 'Traditional Arabic', serif" font-size="18" letter-spacing="2">
+    ۞  ━━━━━━━  ۞  ━━━━━━━  ۞  QURAN HARNESS · المصحف الذكي الموثق بالأدلة  ۞  ━━━━━━━  ۞  ━━━━━━━  ۞
+  </text>
+
+  <!-- Center Mushaf-on-Rehal Vector Emblem -->
+  <g transform="translate(640, 128)">
+    <circle cx="0" cy="0" r="42" fill="#0b2419" stroke="url(#goldGrad)" stroke-width="2" />
+    <circle cx="0" cy="0" r="36" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-opacity="0.5" />
+    <!-- Open Mushaf Pages -->
+    <path d="M -24,-8 Q -12,-16 0,-8 Q 12,-16 24,-8 L 24,10 Q 12,2 0,10 Q -12,2 -24,10 Z" fill="#f7eed7" stroke="#c99b3b" stroke-width="1.5" />
+    <line x1="0" y1="-8" x2="0" y2="10" stroke="#b8892a" stroke-width="1.4" />
+    <!-- Rehal (Wooden Stand) -->
+    <path d="M -20,14 L 16,28 M 20,14 L -16,28" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" />
+    <!-- Radiant Star Above Mushaf -->
+    <polygon points="0,-28 3,-20 11,-20 5,-15 7,-7 0,-12 -7,-7 -5,-15 -11,-20 -3,-20" fill="url(#goldGrad)" />
+  </g>
+
+  <!-- Main Title -->
+  <text x="640" y="216" text-anchor="middle" fill="#fdf8ec" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" letter-spacing="1">
+    DeepSeek Quran Harness
+  </text>
+
+  <!-- Arabic Subtitle -->
+  <text x="640" y="258" text-anchor="middle" fill="url(#goldGrad)" font-family="'Amiri', 'Scheherazade New', 'Traditional Arabic', serif" font-size="27" font-weight="700">
+    منظومة الوكيل القرآني الموثق بالأدلة التشفيرية والتحقق المتقاطع الإلزامي
+  </text>
+
+  <!-- English Subtitle -->
+  <text x="640" y="290" text-anchor="middle" fill="#b7d5c4" font-family="'Segoe UI', system-ui, sans-serif" font-size="16.5" font-weight="500">
+    Evidence-Governed Quranic AI Agent &amp; SDK · Dual-Source Verification (Tanzil L1 × Quran.com L2) · SHA-256 Provenance
+  </text>
+
+  <!-- Feature Metric Pills -->
+  <g transform="translate(100, 322)" font-family="'Segoe UI', system-ui, sans-serif">
+    <!-- Pill 1 -->
+    <g transform="translate(0, 0)">
+      <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">22 حزمة معزولة</text>
+      <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">0 Core Modifications</text>
+    </g>
+    <!-- Pill 2 -->
+    <g transform="translate(220, 0)">
+      <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">17 أداة قرآنية محكمة</text>
+      <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">SHA-256 EvidenceEnvelope</text>
+    </g>
+    <!-- Pill 3 -->
+    <g transform="translate(440, 0)">
+      <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">5 مهارات تخصصية</text>
+      <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">+ Auto Capability Generator</text>
+    </g>
+    <!-- Pill 4 -->
+    <g transform="translate(660, 0)">
+      <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">8 روايات معتمدة</text>
+      <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">6,236 Verified Verses</text>
+    </g>
+    <!-- Pill 5 -->
+    <g transform="translate(880, 0)">
+      <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">95 / 95 اختبارًا</text>
+      <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">Red-Team &amp; Golden Verified</text>
+    </g>
+  </g>
+
+  <!-- Bottom Ornament Footer -->
+  <text x="640" y="416" text-anchor="middle" fill="#d4af37" fill-opacity="0.85" font-family="'Segoe UI', system-ui, sans-serif" font-size="13.5" letter-spacing="1">
+    ───⊱✿⊰───  Created &amp; Architected by Mohammed Barniyah · رواية حفص عن عاصم · v0.1.0  ───⊱✿⊰───
+  </text>
+</svg>
