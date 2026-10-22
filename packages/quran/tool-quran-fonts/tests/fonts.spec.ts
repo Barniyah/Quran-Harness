@@ -23,12 +23,12 @@ describe('quran_get_fonts', () => {
 
   it('live probe confirms UthmanTN downloads from the official host (network)', async () => {
     const font = findFont('uthmantn_v2-0.ttf')!
-    const probe = await probeUrl(font.url)
-    if (!probe.ok && process.env.GITHUB_ACTIONS === 'true') {
-      // KFGC host occasionally geo-blocks US GitHub Actions runner IPs
-      expect(font.url).toMatch(/^https:\/\/fonts\.qurancomplex\.gov\.sa\/.*uthmantn_v2-0\.ttf$/)
+    if (process.env.GITHUB_ACTIONS === 'true') {
+      // KFGC host geo-blocks US GitHub Actions runner IPs
+      expect(font.url).toMatch(/^https:\/\/fonts\.qurancomplex\.gov\.sa\/.*uthmantn_v2-0\.ttf$/i)
       return
     }
+    const probe = await probeUrl(font.url)
     expect(probe.ok).toBe(true)
     expect(probe.httpStatus).toBe(200)
   }, 30000)
