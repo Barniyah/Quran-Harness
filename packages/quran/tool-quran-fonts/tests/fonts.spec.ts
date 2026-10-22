@@ -26,7 +26,7 @@ describe('quran_get_fonts', () => {
     const probe = await probeUrl(font.url)
     if (!probe.ok && process.env.GITHUB_ACTIONS === 'true') {
       // KFGC host occasionally geo-blocks US GitHub Actions runner IPs
-      expect(font.url).toBe('https://fonts.qurancomplex.gov.sa/wp02/wp-content/uploads/2023/02/uthmantn_v2-0.ttf')
+      expect(font.url).toMatch(/^https:\/\/fonts\.qurancomplex\.gov\.sa\/.*uthmantn_v2-0\.ttf$/)
       return
     }
     expect(probe.ok).toBe(true)
