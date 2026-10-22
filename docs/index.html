@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeepSeek Quran Harness — المنظومة القرآنية الموثقة بالأدلة التشفيرية</title>
-  <meta name="description" content="المواصفات المعمارية الكاملة لمنظومة Quran Harness: طبقة إضافات معزولة 100% فوق DeepSeek Harness مع حوكمة تشفيرية SHA-256، تحقق متقاطع مزدوج، 17 أداة قرآنية، و5 مهارات تخصصية." />
+  <title>Quran Harness — المنظومة القرآنية الموثقة بالأدلة التشفيرية</title>
+  <meta name="description" content="المواصفات المعمارية الكاملة لمنظومة Quran Harness: طبقة إضافات معزولة 100% مع حوكمة تشفيرية SHA-256، تحقق متقاطع مزدوج، 17 أداة قرآنية، و5 مهارات تخصصية." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -74,6 +74,22 @@
         radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.08) 0%, transparent 45%),
         radial-gradient(circle at 85% 80%, rgba(20, 90, 56, 0.08) 0%, transparent 45%);
       transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    code, .chip, bdi {
+      unicode-bidi: isolate;
+      direction: ltr;
+      display: inline-block;
+    }
+
+    p code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84em;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 0.08rem 0.42rem;
+      border-radius: 5px;
+      margin: 0 0.15rem;
     }
 
     /* Sticky Top Navigation */
@@ -634,7 +650,7 @@
     <div class="navbar-inner">
       <a href="#" class="brand">
         <span class="brand-icon">۞</span>
-        <span>DeepSeek Quran Harness</span>
+        <span>Quran Harness · المصحف الذكي</span>
       </a>
       <ul class="nav-links">
         <li><a href="#architecture">المعمارية المعزولة</a></li>
@@ -657,11 +673,11 @@
     <!-- Hero Section -->
     <header class="hero">
       <div class="hero-banner-wrap">
-        <img src="./assets/quran-harness-banner.svg" alt="DeepSeek Quran Harness Banner" />
+        <img src="./assets/quran-harness-banner.svg" alt="Quran Harness Banner" />
       </div>
       <div class="ornament-line">───⊱✿⊰─── ۞ ───⊱✿⊰─── ۞ ───⊱✿⊰─── ۞ ───⊱✿⊰───</div>
       <p class="section-desc">
-        منظومة هندسية متكاملة تحوّل <strong>DeepSeek Harness (DSH)</strong> إلى بيئة تطوير وبحث قرآني موثقة بالأدلة التشفيرية (<strong>SHA-256</strong>)، مبنية كطبقة إضافات معزولة بنسبة <strong>100%</strong> دون تعديل سطر واحد من نواة DSH، مع حظر قطعي لاقتباس الآيات من ذاكرة النموذج اللغوي.
+        منظومة هندسية متكاملة ومستقلة لبناء التطبيقات والأبحاث القرآنية الموثقة بالأدلة التشفيرية (<code>SHA-256</code>)، مبنية كطبقة إضافات معزولة بنسبة <strong>100%</strong> فوق معمارية <code>Cordis / DSH</code> دون تعديل سطر واحد من النواة، مع حظر قطعي لاقتباس الآيات من ذاكرة النموذج اللغوي.
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="https://github.com/Barniyah/Quran-Harness" target="_blank" rel="noopener noreferrer">
@@ -1343,7 +1359,8 @@ pnpm exec vitest run packages/quran/quran-bundle/tests/phase5-release-verificati
       </div>
 
       <p style="font-size: 0.85rem; color: #8cb09d; margin-top: 1rem;">
-        الإصدار <code>v0.1.0</code> · الرواية الافتراضية المعتمدة: حفص عن عاصم · مرخص تحت رخصة MIT
+        الإصدار <code>v0.1.0</code> · الرواية الافتراضية المعتمدة: حفص عن عاصم · مرخص تحت رخصة MIT<br />
+        <span style="font-size: 0.8rem; opacity: 0.85;">مشروع مفتوح المصدر ومستقل من تطوير محمد برنيه، مبني كطبقة إضافات متوافقة مع معمارية Cordis / DSH المرخصة تحت MIT، وغير تابع لأي شركة خارجية.</span>
       </p>
     </div>
   </footer>

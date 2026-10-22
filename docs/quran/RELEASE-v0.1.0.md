@@ -1,4 +1,4 @@
-# 🕌 بيان الإصدار `v0.1.0` — DeepSeek Quran Harness
+# 🕌 بيان الإصدار `v0.1.0` — Quran Harness
 
 ```text
 ۞  ━━━━━━━  ۞  ━━━━━━━  ۞  QURAN HARNESS  ۞  ━━━━━━━  ۞  ━━━━━━━  ۞

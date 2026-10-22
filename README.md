@@ -1,194 +1,195 @@
 <div align="center">
 
-<img src="./docs/assets/quran-harness-banner.svg" alt="DeepSeek Quran Harness Banner" width="100%" />
+<img src="./docs/assets/quran-harness-banner.svg" alt="Quran Harness Banner" width="100%" />
 
-# 🕌 DeepSeek Quran Harness · المصحف الذكي الموثق بالأدلة
+# 🕌 Quran Harness
 
-**منظومة الوكيل القرآني الموثق بالأدلة التشفيرية (`SHA-256`) والتحقق المتقاطع الإلزامي فوق DeepSeek Harness**
+**Evidence-Governed Quranic AI Agent, Developer SDK, and Scholarly Research Suite (`SHA-256` Provenance)**
 
-[![Version](https://img.shields.io/badge/Release-v0.1.0-145a38?style=for-the-badge)](./docs/quran/RELEASE-v0.1.0.md)
+[![Release](https://img.shields.io/badge/Release-v0.1.0-145a38?style=for-the-badge)](https://github.com/Barniyah/Quran-Harness/releases/tag/quran-harness-v0.1.0)
 [![Packages](https://img.shields.io/badge/Quran_Packages-22_Isolated-b8861b?style=for-the-badge)](./packages/quran)
-[![Capabilities](https://img.shields.io/badge/Governed_Tools-17_Tools-145a38?style=for-the-badge)](#3-كتالوج-القدرات-القرآنية-الـ17--the-17-governed-capabilities)
-[![Skills](https://img.shields.io/badge/Bundled_Skills-5_Skills-b8861b?style=for-the-badge)](#4-المهارات-القرآنية-الـ5--the-5-bundled-skills)
-[![Tests](https://img.shields.io/badge/Tests-95%2F95_Passing-145a38?style=for-the-badge)](#6-إجراء-الاختبارات-الشاملة--running-all-tests)
-[![Core Diff](https://img.shields.io/badge/DSH_Core_Diff-0_Files_Modified-0d291e?style=for-the-badge)](#1-المعمارية-كطبقة-معزولة--isolated-layer-architecture)
+[![Capabilities](https://img.shields.io/badge/Governed_Tools-17_Tools-145a38?style=for-the-badge)](#3-the-17-evidence-governed-capabilities)
+[![Skills](https://img.shields.io/badge/Bundled_Skills-5_Skills-b8861b?style=for-the-badge)](#4-the-5-bundled-skills)
+[![Tests](https://img.shields.io/badge/Tests-95%2F95_Passing-145a38?style=for-the-badge)](#6-running-the-verification--test-suite)
+[![Core Diff](https://img.shields.io/badge/Upstream_Core_Diff-0_Files_Modified-0d291e?style=for-the-badge)](#1-isolated-layer-architecture)
 
-🌐 **[صفحة المواصفات التفاعلية الكاملة (Interactive Showcase)](https://barniyah.github.io/Quran-Harness/)** · 🧪 **[دليل اختبارات الواجهة (GUI Test Suite)](./docs/quran/QURAN-HARNESS-GUI-TESTS.md)** · 🛠️ **[دليل مطوري الإضافات (Developer Guide)](./docs/quran/DEVELOPER-PLUGIN-GUIDE.md)** · 📦 **[دليل الـ SDK والمهارات](./docs/quran/SDK-AND-SKILLS-GUIDE.md)**
+🌐 **[Interactive Arabic & Technical Showcase (GitHub Pages)](https://barniyah.github.io/Quran-Harness/)** · 🧪 **[Interactive GUI Test Suite](https://barniyah.github.io/Quran-Harness/quran/QURAN-HARNESS-GUI-TESTS.html)** · 🛠️ **[Developer Plugin Guide](./docs/quran/DEVELOPER-PLUGIN-GUIDE.md)** · 📦 **[SDK & Skills Reference](./docs/quran/SDK-AND-SKILLS-GUIDE.md)**
 
 </div>
 
 ---
 
-## نبذة عن المشروع · Overview
+## Overview
 
-**DeepSeek Quran Harness** هو منظومة هندسية متكاملة تحوّل منصة **DeepSeek Harness (DSH)** إلى بيئة تطوير وبحث قرآني موثقة بالأدلة التشفيرية (**SHA-256**)، مبنية بالكامل كـ **طبقة إضافات معزولة 100%** داخل المسار `packages/quran/*` دون تعديل ملف واحد من نواة DSH الأصلية (`0` files modified in `packages/core`, `packages/client`, `packages/preset`, `apps`).
+**Quran Harness** is a comprehensive, evidence-governed engineering and scholarly research suite designed for building verifiable Quranic applications and conducting rigorous Quranic studies. It is architected as a **100% isolated plugin layer** inside `packages/quran/*` (`22` modular packages) with **zero modifications** to the underlying host runtime (`0` files modified in `packages/core`, `packages/client`, `packages/preset`, or `apps`).
 
-صُمم المشروع ليقضي جذريًا على مشكلة "هلوسة النماذج اللغوية" في النصوص القرآنية والتفسير وعلوم القرآن عبر فرض **أربع قواعد حوكمة صارمة**:
-1. **حظر الاقتباس من ذاكرة النموذج اللغوي (Zero LLM Memory Recall):** يُمنع الوكيل قطعيًا من كتابة أي آية من ذاكرته؛ كل آية يجب أن تمر عبر أداة `quran_get_verse`.
-2. **التحقق المتقاطع المزدوج الحي (Mandatory Dual-Source Cross-Verification):** تقارن أداة `quran_get_verse` النص العثماني المثبت محليًا من **Tanzil Uthmani (`L1-official`)** مع **Quran.com API v4 (`L2-verified-open`)** حرفًا بحرف، وتحجب العرض فورًا عند وجود أي تعارض.
-3. **مظروف الأدلة التشفيري (`EvidenceEnvelope` + `SHA-256`):** كل أداة قرآنية تغلّف مخرجاتها بمظروف يحتوي على معرف المصدر، مستوى الموثوقية (`L1` / `L2` / `L3`)، بصمة `SHA-256`، وطابع الوقت، وتدوّنه في سجل التدقيق التراكمي `evidence-audit.jsonl`.
-4. **بطاقة الحوكمة المرئية الإلزامية (`GovernanceCard`):** تعرض الواجهة الرسومية للمتصفح بطاقة حوكمة إسلامية تلقائية أسفل كل أداة قرآنية توضح المصدر والبصمة وحكم التحقق.
+To eliminate Large Language Model (LLM) hallucination when handling sacred Quranic text, **Quran Harness** enforces **four iron governance gates**:
+
+1. **Zero LLM Memory Recall:** The agent is strictly prohibited from quoting, paraphrasing, or recalling Quranic verses from model memory. Every verse must be retrieved through the `quran_get_verse` tool.
+2. **Mandatory Dual-Source Cross-Verification (`L1 × L2`):** `quran_get_verse` cross-verifies the local SHA-256-pinned **Tanzil Uthmani (`L1-official`)** artifact against **Quran.com API v4 (`L2-verified-open`)** character by character. Any discrepancy blocks display immediately.
+3. **Cryptographic `EvidenceEnvelope` (`SHA-256`):** Every Quranic tool wraps its output in a tamper-evident `EvidenceEnvelope` containing the source descriptor, trust tier (`L1-official`, `L2-verified-open`, `L3-community`), canonical `SHA-256` `contentHash`, `retrievedAt` timestamp, and algorithmic `transforms`, while recording every operation in an append-only `evidence-audit.jsonl` ledger.
+4. **Mandatory Browser `GovernanceCard`:** The web UI automatically renders a visual Islamic Governance Card beneath every Quran tool invocation, displaying the reference, source provenance, SHA-256 digest, and verification verdict.
 
 ---
 
-## 1. المعمارية كطبقة معزولة · Isolated Layer Architecture
+## 1. Isolated Layer Architecture
+
+All Quran Harness functionality lives inside `packages/quran/*` and mounts declaratively via [`packages/quran/quran-bundle/cordis.patch.yml`](./packages/quran/quran-bundle/cordis.patch.yml) using portable relative module resolution (`./lib/index.js` and `../<pkg>/lib/index.js`).
 
 ```mermaid
 flowchart TB
-    subgraph UI["🕌 طبقة الواجهة الإسلامية في المتصفح (packages/quran/client-*)"]
-        Theme["@deepseek-ai/dsh-client-ui-quran-theme<br/>ثيم المصحف الكريمي والليلي + الزخارف الإسلامية + اللغة العربية (RTL)"]
-        GovCard["@deepseek-ai/dsh-client-ui-quran-governance<br/>بطاقة الحوكمة المرئية الإلزامية لـ17 أداة قرآنية"]
+    subgraph UI["🕌 Browser UI Layer (packages/quran/client-*)"]
+        Theme["@deepseek-ai/dsh-client-ui-quran-theme<br/>Mushaf Light & Dark Themes · Islamic Arabesque & Rehal Emblem · Arabic (RTL) Locale"]
+        GovCard["@deepseek-ai/dsh-client-ui-quran-governance<br/>Mandatory Visual GovernanceCard for All 17 Quran Tools"]
     end
 
-    subgraph Bundle["📦 طبقة التجميع والـ Preset والمهارات (packages/quran/quran-bundle & skill-quran)"]
-        Patch["cordis.patch.yml + QuranBundlePreset<br/>ربط نسبي محمول 100% يعمل على أي جهاز ونظام تشغيل"]
-        Skills["@deepseek-ai/dsh-skill-quran (5 Bundled Skills)<br/>mushaf-app · recitation · research · riwayat · create-capability"]
-        SDK["@deepseek-ai/dsh-quran-sdk<br/>واجهة TypeScript الموحدة للمطورين"]
+    subgraph Bundle["📦 Composition, Preset & Skills Layer (packages/quran/quran-bundle & skill-quran)"]
+        Patch["cordis.patch.yml + QuranBundlePreset<br/>100% Portable Relative Path Resolution Across Windows, macOS & Linux"]
+        Skills["@deepseek-ai/dsh-skill-quran (5 Bundled Skills)<br/>mushaf-app · recitation-feature · verified-research · compare-riwayat · create-capability"]
+        SDK["@deepseek-ai/dsh-quran-sdk<br/>Unified TypeScript Developer SDK"]
     end
 
-    subgraph Tools["🛠️ طبقة القدرات القرآنية المحكمة (17 Evidence-Governed Tools)"]
-        LocalTools["10 قدرات محلية مثبتة (Offline SHA-256)<br/>البحث · البيانات الوصفية · الروايات · التخطيط · التزمين · الصرف · المواضيع · التجويد · الرسم الصوتي"]
-        HybridTool["قدرة التحقق المتقاطع الهجين (L1 × L2)<br/>quran_get_verse (Tanzil Local × Quran.com API v4)"]
-        ExtTools["6 قدرات خارجية محققة حيًا (Online Verified)<br/>الصوتيات · صور الصفحات والآيات · خطوط مجمع الملك فهد · التفاسير · الترجمات"]
+    subgraph Tools["🛠️ Evidence-Governed Capability Layer (17 Tools)"]
+        LocalTools["10 Local Offline Capabilities (Pinned SHA-256)<br/>Search · Metadata · Riwayat · Layout · Timing · Morphology · Topics · Tajweed · Phonetics"]
+        HybridTool["1 Hybrid Dual-Verification Capability (L1 × L2)<br/>quran_get_verse (Tanzil Local L1 × Quran.com API v4 L2)"]
+        ExtTools["6 Live-Verified External Capabilities<br/>EveryAyah Audio · Mushaf Page & Ayah Images · KFGQPC Fonts · Tafsir · Translations"]
     end
 
-    subgraph CoreGov["🔐 نواة الحوكمة والبيانات القرآنية المثبتة (packages/quran/evidence-core & quran-data)"]
+    subgraph CoreGov["🔐 Cryptographic Governance & Pinned Data (packages/quran/evidence-core & quran-data)"]
         EvCore["@deepseek-ai/dsh-quran-evidence<br/>createEnvelope (SHA-256) · crossVerify · appendAuditLog"]
-        PinnedData["@deepseek-ai/dsh-quran-data (Pinned SHA-256 Datasets)<br/>quran-uthmani · simple-clean · morphology (128k) · timing-husary · quranpedia (6.1k)"]
+        PinnedData["@deepseek-ai/dsh-quran-data (5 Pinned SHA-256 Datasets)<br/>quran-uthmani · simple-clean · morphology (128k) · timing-husary · quranpedia (6.1k)"]
     end
 
-    subgraph DSHCore["⚙️ نواة DeepSeek Harness الأصلية (0 Files Modified)"]
+    subgraph HostCore["⚙️ Unmodified Underlying Runtime Core (0 Files Modified)"]
         Upstream["packages/core · packages/client · packages/preset · apps"]
     end
 
     UI --> Patch
     Bundle --> Tools
     Tools --> CoreGov
-    Patch -.->|"يركب كطبقة إضافات معزولة فوق"| DSHCore
+    Patch -.->|"Mounts as an isolated plugin layer over"| HostCore
 ```
 
 ---
 
-## 2. البيانات القرآنية المحلية المضمّنة في المستودع · Included Pinned Datasets
+## 2. Pinned Local Quranic Datasets Included in Repository
 
-يحتوي المستودع في المسار [`packages/quran/quran-data/data/`](./packages/quran/quran-data/data) على جميع قواعد البيانات المحلية الخمس مع ملفات البصمات التشفيرية `.sha256` التي يتم فحصها برمجيًا قبل أي قراءة:
+All five local Quranic datasets and their `.sha256` cryptographic sidecar files are committed directly inside [`packages/quran/quran-data/data/`](./packages/quran/quran-data/data) and verified prior to every read operation:
 
-| الملف المحلي | البصمة المرافقة | الوصف والحجم | مستوى الثقة |
+| Local Data File | SHA-256 Sidecar | Contents & Scale | Trust Tier |
 |---|---|---|---|
-| `quran-uthmani.txt` | `quran-uthmani.sha256` | النص القرآني الكامل بالرسم العثماني (رواية حفص عن عاصم — 6,236 آية من Tanzil) | `L1-official` |
-| `quran-simple-clean.txt` | `quran-simple-clean.sha256` | النص الإملائي المبسّط للفهرسة والبحث الهيكلي السريع | `L1-official` |
-| `quran-morphology.txt` | `quran-morphology.sha256` | مدونة التحليل الصرفي والنحوي والجذور (128,219 مقطعًا من Quranic Arabic Corpus v0.4) | `L2-verified-open` |
-| `timing-husary.json` | `timing-husary.sha256` | تزمين الآيات بالمللي ثانية لتلاوة الشيخ محمود خليل الحصري (EveryAyah) | `L1-official` |
-| `quranpedia-topics.json` | `quranpedia-topics.sha256` | كتالوج الموضوعات والمفاهيم القرآنية المصنفة (6,100 موضوع من Quranpedia) | `L2-verified-open` |
+| `quran-uthmani.txt` | `quran-uthmani.sha256` | Complete Uthmani Quran text (Hafs 'an 'Asim — 6,236 verses from Tanzil) | `L1-official` |
+| `quran-simple-clean.txt` | `quran-simple-clean.sha256` | Clean Imla'ei skeleton index for fast offline structural search | `L1-official` |
+| `quran-morphology.txt` | `quran-morphology.sha256` | Quranic Arabic Corpus v0.4 morphological & syntactic segments (128,219 segments) | `L2-verified-open` |
+| `timing-husary.json` | `timing-husary.sha256` | Millisecond-level ayah recitation timings for Sheikh Mahmoud Khalil Al-Husary | `L1-official` |
+| `quranpedia-topics.json` | `quranpedia-topics.sha256` | Categorized Quranic concepts and thematic index (6,100 topics from Quranpedia) | `L2-verified-open` |
 
 ---
 
-## 3. كتالوج القدرات القرآنية الـ17 · The 17 Governed Capabilities
+## 3. The 17 Evidence-Governed Capabilities
 
-| # | اسم الأداة (Tool) | الحزمة في `packages/quran/` | نوع المصدر | الوظيفة |
+| # | Tool Name | Package (`packages/quran/`) | Data Source Type | Description |
 |---|---|---|---|---|
-| 1 | `quran_get_verse` | `tool-quran-text` | **هجين (`L1 × L2`)** | جلب نص الآية بالرسم العثماني بعد مطابقة Tanzil المحلي مع Quran.com API v4 |
-| 2 | `quran_get_metadata` | `tool-quran-metadata` | **محلي بالكامل** | بيانات السورة والآية والصفحة والجزء والحزب والربع من `quran-meta` |
-| 3 | `quran_search` | `tool-quran-search` | **محلي بالكامل (`SHA-256`)** | بحث هيكلي أو حرفي في 6,236 آية مع إرجاع النص العثماني الأصلي |
-| 4 | `quran_compare_riwayat` | `tool-quran-riwayat` | **محلي بالكامل** | مقارنة عدّ الآيات ومواضع الصفحات والأجزاء عبر 8 روايات معتمدة |
-| 5 | `quran_convert_ayah` | `tool-quran-riwayat` | **محلي بالكامل** | تحويل إحداثيات الآية بين أي روايتين (مثل حفص `2:255` ↔ ورش `2:253`) |
-| 6 | `quran_get_page_layout` | `tool-mushaf-layout` | **محلي بالكامل** | نطاقات السور والآيات في صفحات مصحف المدينة الـ604 |
-| 7 | `quran_get_ayah_timing` | `tool-quran-timing` | **محلي بالكامل (`SHA-256`)** | تزمين البداية والنهاية والمدة بالمللي ثانية لتلاوة الشيخ الحصري |
-| 8 | `quran_get_ayah_morphology` | `tool-quran-linguistics` | **محلي بالكامل (`SHA-256`)** | التحليل الصرفي والنحوي والجذر والوزن لكل كلمة (128,219 مقطعًا) |
-| 9 | `quran_search_topics` | `tool-quran-sciences` | **محلي بالكامل (`SHA-256`)** | البحث في الفهرس الموضوعي لعلوم القرآن (6,100 موضوع) |
-| 10 | `quran_analyze_tajweed` | `tool-tajweed` | **محلي بالكامل (`.venv`)** | تحليل أحكام التجويد حرفًا بحرف خوارزميًا عبر `tajweed-embeddings` |
-| 11 | `quran_phonetize` | `tool-quran-phonetic` | **محلي بالكامل (`.venv`)** | تحويل الآية إلى الرسم الصوتي المنطوق وجدول صفات الحروف عبر `quran-transcript` |
-| 12 | `quran_get_audio` | `tool-quran-audio` | **خارجي + فحص `HEAD`** | روابط التلاوة لـ5 قرّاء معتمدين من EveryAyah مع فحص توافر حي |
-| 13 | `quran_get_page_image` | `tool-mushaf-images` | **خارجي + فحص `HEAD`** | صور صفحات مصحف المدينة الـ604 من مجمع الملك فهد مع فحص حي |
-| 14 | `quran_get_ayah_image` | `tool-mushaf-images` | **خارجي + فحص `HEAD`** | صورة PNG شفافة للآية المفردة من EveryAyah مع فحص حي |
-| 15 | `quran_get_fonts` | `tool-quran-fonts` | **خارجي + فحص `HEAD`** | روابط خطوط مجمع الملك فهد الرسمية (`KFGQPC`) لحفص وورش وقالون والدوري |
-| 16 | `quran_get_tafsir` | `tool-quran-tafsir` | **خارجي محقق (`SHA-256`)** | التفاسير المعتمدة المنسوبة (ابن كثير، الطبري، القرطبي، السعدي، الميسر) |
-| 17 | `quran_get_translation` | `tool-quran-translations` | **خارجي محقق (`SHA-256`)** | ترجمات معاني القرآن المعتمدة مع نسبة المترجم الصريحة |
+| 1 | `quran_get_verse` | `tool-quran-text` | **Hybrid (`L1 × L2`)** | Retrieves Uthmani verse text after mandatory cross-verification between pinned Tanzil (`L1`) and Quran.com API v4 (`L2`) |
+| 2 | `quran_get_metadata` | `tool-quran-metadata` | **Local Offline** | Structural metadata (Surah name, Makki/Madani, verse count, page, Juz, Hizb, Rub') via `quran-meta` |
+| 3 | `quran_search` | `tool-quran-search` | **Local Offline (`SHA-256`)** | Skeleton & exact search across all 6,236 verses returning verified Uthmani script |
+| 4 | `quran_compare_riwayat` | `tool-quran-riwayat` | **Local Offline** | Compares verse counts, page/Juz positions, and global ayah IDs across 8 canonical riwayat |
+| 5 | `quran_convert_ayah` | `tool-quran-riwayat` | **Local Offline** | Converts verse coordinates accurately across riwayat (e.g., Ayat al-Kursi: Hafs `2:255` ↔ Warsh `2:253`) |
+| 6 | `quran_get_page_layout` | `tool-mushaf-layout` | **Local Offline** | Surah and ayah range layout for all 604 pages of the Medina Mushaf |
+| 7 | `quran_get_ayah_timing` | `tool-quran-timing` | **Local Offline (`SHA-256`)** | Millisecond start, end, and duration timings for Sheikh Al-Husary's murattal recitation |
+| 8 | `quran_get_ayah_morphology` | `tool-quran-linguistics` | **Local Offline (`SHA-256`)** | Word-by-word morphological segmentation, POS tags, lemmas, and Arabic roots (128,219 segments) |
+| 9 | `quran_search_topics` | `tool-quran-sciences` | **Local Offline (`SHA-256`)** | Thematic search across 6,100 categorized Quranic topics (`quranpedia-topics.json`) |
+| 10 | `quran_analyze_tajweed` | `tool-tajweed` | **Local Offline (`.venv`)** | Deterministic character-level Tajweed rule extraction via `tajweed-embeddings` (no probabilistic ML) |
+| 11 | `quran_phonetize` | `tool-quran-phonetic` | **Local Offline (`.venv`)** | Converts Uthmani script into Hafs phonetic transcription and per-letter articulation attributes (`sifat`) via `quran-transcript` |
+| 12 | `quran_get_audio` | `tool-quran-audio` | **External + Live `HEAD`** | Verified MP3 recitation URLs for 5 canonical reciters from EveryAyah with live HTTP `HEAD` availability probing |
+| 13 | `quran_get_page_image` | `tool-mushaf-images` | **External + Live `HEAD`** | High-resolution Medina Mushaf page images (1–604) with live HTTP `HEAD` verification |
+| 14 | `quran_get_ayah_image` | `tool-mushaf-images` | **External + Live `HEAD`** | Transparent PNG image URLs for individual verses with live HTTP `HEAD` verification |
+| 15 | `quran_get_fonts` | `tool-quran-fonts` | `External + Live HEAD` | Official King Fahd Glorious Quran Printing Complex (`KFGQPC`) TTF/OTF/WOFF2 fonts for Hafs, Warsh, Qalun, and Douri |
+| 16 | `quran_get_tafsir` | `tool-quran-tafsir` | **External Verified (`SHA-256`)** | Named classical and contemporary Tafsir editions (Ibn Kathir, Al-Tabari, Al-Qurtubi, Al-Sa'di, Al-Muyassar) |
+| 17 | `quran_get_translation` | `tool-quran-translations` | **External Verified (`SHA-256`)** | Attributed translations of Quranic meanings (e.g., Abdel Haleem, Saheeh International) with explicit translator attribution |
 
 ---
 
-## 4. المهارات القرآنية الـ5 · The 5 Bundled Skills
+## 4. The 5 Bundled Skills
 
-تُشحن الحزمة [`@deepseek-ai/dsh-skill-quran`](./packages/quran/skill-quran) بخمس مهارات قياسية:
-1. **`quran-mushaf-app`**: بناء تطبيقات عرض المصحف الموثقة باستخدام `@deepseek-ai/dsh-quran-sdk` وخطوط مجمع الملك فهد.
-2. **`quran-recitation-feature`**: بناء مشغلات التلاوة المتزامنة بالمللي ثانية مع تلوين التجويد الخوارزمي والرسم الصوتي.
-3. **`quran-verified-research`**: إعداد الأبحاث القرآنية الموثقة (بحث + صرف وجذور + مواضيع + تفاسير مسماة + سجل أدلة `SHA-256`).
-4. **`quran-compare-riwayat`**: المقارنة الهيكلية وتحويل عدّ الآيات بين الروايات الثمان المعتمدة.
-5. **`quran-create-capability`**: إنشاء قدرة أو مهارة قرآنية جديدة وربطها **تلقائيًا** بطبقة الحوكمة (`EvidenceEnvelope` + `GovernanceCard` + `cordis.patch.yml`).
+The [`@deepseek-ai/dsh-skill-quran`](./packages/quran/skill-quran) package ships five specialized skills:
+
+1. **`quran-mushaf-app`**: Architectural workflow for building evidence-governed Mushaf reader UIs using `@deepseek-ai/dsh-quran-sdk`, `verifyEnvelopeIntegrity`, and KFGQPC typography.
+2. **`quran-recitation-feature`**: Building synchronized recitation players combining EveryAyah audio, Husary millisecond timing, algorithmic Tajweed highlighting, and phonetic script.
+3. **`quran-verified-research`**: Conducting scholarly Quranic research combining search, morphological root analysis, thematic topics, and named Tafsir with a trailing SHA-256 Evidence Ledger.
+4. **`quran-compare-riwayat`**: Structural comparison and coordinate conversion across the 8 canonical riwayat (`Hafs`, `Warsh`, `Qalun`, `Shuba`, `Douri`, `Sousi`, `Bazzi`, `Qunbul`).
+5. **`quran-create-capability`**: Scaffolding a new Quran capability (tool or skill) and **automatically wiring it** into the 3-layer Governance Pipeline (`EvidenceEnvelope` + `GovernanceCard` + `cordis.patch.yml`).
 
 ---
 
-## 5. التثبيت والتشغيل المستقل · Installation & Standalone Execution
+## 5. Installation & Standalone Execution
 
-### المتطلبات الأساسية (Prerequisites)
-- **Node.js**: الإصدار `22.19.0+` أو `24.0.0+`
-- **pnpm**: الإصدار `10+` أو `11+`
-- **Python 3.10+** (اختياري — لتشغيل محركي التجويد `tajweed-embeddings` والرسم الصوتي `quran-transcript` محليًا)
+### Prerequisites
+- **Node.js**: `>= 22.19.0` or `>= 24.0.0`
+- **pnpm**: `>= 10.0.0`
+- **Python 3.10+** *(optional — automatically configured in `.venv` for local offline Tajweed and Phonetics)*
 
-### خطوات التنزيل والإعداد والتشغيل على Windows
+### Windows — Clone, Setup & Run
 
 ```powershell
-# 1. استنساخ المستودع
+# 1. Clone the repository
 git clone https://github.com/Barniyah/Quran-Harness.git
 cd Quran-Harness
 
-# 2. تشغيل سكربت الإعداد الشامل (يثبّت الحزم + يبني المشروع + يجهّز بيئة بايثون .venv)
+# 2. Run the one-step setup script (installs pnpm packages, builds host/client bundles, and sets up Python .venv)
 .\setup-quran-harness.cmd
 
-# 3. تشغيل الواجهة الرسومية الكاملة لـ Quran Harness
+# 3. Launch the standalone Quran Harness Web GUI
 .\run-quran-harness.cmd
 ```
 
-### خطوات التنزيل والإعداد والتشغيل على macOS / Linux
+### macOS / Linux — Clone, Setup & Run
 
 ```bash
-# 1. استنساخ المستودع
+# 1. Clone the repository
 git clone https://github.com/Barniyah/Quran-Harness.git
 cd Quran-Harness
 
-# 2. تشغيل سكربت الإعداد الشامل
+# 2. Run the one-step setup script
 chmod +x setup-quran-harness.sh run-quran-harness.sh
 ./setup-quran-harness.sh
 
-# 3. تشغيل الواجهة الرسومية الكاملة لـ Quran Harness
+# 3. Launch the standalone Quran Harness Web GUI
 ./run-quran-harness.sh
 ```
 
-> **ملاحظة:** يمكنك أيضًا تمرير أي خيارات إضافية لسكربت التشغيل مثل تحديد المنفذ:
-> `.\run-quran-harness.cmd --port 3000`
-
 ---
 
-## 6. إجراء الاختبارات الشاملة · Running All Tests
+## 6. Running the Verification & Test Suite
 
-يحتوي المشروع على **21 ملف اختبار آلي (95 اختبارًا)** تغطي جميع القدرات الـ17، المهارات الـ5، الـ SDK، الثيم الإسلامي واللغة العربية (`RTL`)، وبوابات التحقق النهائية واختبارات Red-Team:
+Quran Harness includes **21 test files (`95 / 95` passing tests)** covering dual-source verse verification, SHA-256 integrity checks, Red-Team anti-hallucination & tamper detection, Islamic theme & Arabic RTL localization, and upstream core isolation:
 
 ```bash
-# 1. تشغيل جميع الاختبارات في packages/quran (21 ملف اختبار — 95 اختبارًا)
+# 1. Run the complete Quran Harness test suite (21 test files — 95 tests)
 pnpm exec vitest run packages/quran
 
-# 2. تشغيل بوابات التحقق النهائية وعزل النواة واختبارات Red-Team منفردةً
+# 2. Run Phase 5 Release & Red-Team Governance Verification Gates individually
 pnpm exec vitest run packages/quran/quran-bundle/tests/phase5-release-verification.spec.ts
 
-# 3. تشغيل اختبارات الثيم الإسلامي واللغة العربية (RTL)
+# 3. Run Islamic Mushaf Theme & Arabic (RTL) Locale UI tests
 pnpm exec vitest run packages/quran/client-theme-islamic/tests/theme.client.spec.ts
 ```
 
-ولاختبار جميع القدرات والمهارات يدويًا داخل الواجهة الرسومية للمتصفح، راجع:
-- 📄 **[دليل اختبارات الواجهة الكامل (Markdown)](./docs/quran/QURAN-HARNESS-GUI-TESTS.md)**
-- 🌐 **[صفحة اختبارات الواجهة التفاعلية القابلة للنسخ (HTML)](./docs/quran/QURAN-HARNESS-GUI-TESTS.html)**
+For interactive manual GUI testing of all 17 tools, 5 skills, and Red-Team governance prompts:
+- 🌐 **[Open the Interactive GUI Test Suite (GitHub Pages)](https://barniyah.github.io/Quran-Harness/quran/QURAN-HARNESS-GUI-TESTS.html)**
+- 📄 **[Read the GUI Test Suite Markdown Guide](./docs/quran/QURAN-HARNESS-GUI-TESTS.md)**
 
 ---
 
-## 7. كيفية إضافة قدرة قرآنية جديدة وربطها بالحوكمة تلقائيًا · Adding a New Capability
+## 7. Creating a New Governed Capability or Skill
 
-يمكنك إنشاء أي قدرة قرآنية جديدة وربطها تلقائيًا بطبقة الحوكمة بطريقتين:
+You can add a new Quran capability and automatically wire it into the Governance Layer either conversationally or via the CLI scaffolder:
 
-### أ) من خلال المحادثة مباشرة (عبر مهارة `quran-create-capability`)
-اكتب للوكيل في المحادثة:
-> `استخدم مهارة quran-create-capability لإنشاء قدرة قرآنية جديدة باسم quran_get_sajdah_verses تعرض آيات السجدة في القرآن، واربطها تلقائيًا بمظروف الأدلة EvidenceEnvelope وبطاقة GovernanceCard وملف cordis.patch.yml.`
+### Option A — Via Conversational Prompt (`quran-create-capability` skill)
+Ask the agent in the chat UI:
+> `Use the quran-create-capability skill to create a new capability named quran_get_sajdah_verses and wire it automatically into EvidenceEnvelope, GovernanceCard, and cordis.patch.yml.`
 
-### ب) من خلال المولّد الآلي في الطرفية (`scripts/create-quran-capability.mjs`)
+### Option B — Via the Automated CLI Generator (`scripts/create-quran-capability.mjs`)
 ```bash
 node scripts/create-quran-capability.mjs \
   --pkg tool-quran-sajdah \
@@ -198,16 +199,23 @@ node scripts/create-quran-capability.mjs \
   --trust L1-official \
   --description "Retrieve verified Sajdah verses in Hafs with governance envelope"
 ```
-يقوم هذا المولّد تلقائيًا بـ:
-1. إنشاء الحزمة `packages/quran/tool-quran-sajdah/` مع فحص إحداثيات الآيات وبناء `EvidenceEnvelope` (`SHA-256`) والتدوين في `evidence-audit.jsonl`.
-2. تسجيل الأداة `quran_get_sajdah_verses` في [`packages/quran/client-governance-card/src/client/index.ts`](./packages/quran/client-governance-card/src/client/index.ts).
-3. إضافة الحزمة بمسار نسبي محمول في [`packages/quran/quran-bundle/cordis.patch.yml`](./packages/quran/quran-bundle/cordis.patch.yml).
+This generator automatically:
+1. Scaffolds `packages/quran/tool-quran-sajdah/` with coordinate validation (`@deepseek-ai/dsh-quran-data`) and SHA-256 `EvidenceEnvelope` + `appendAuditLog` (`@deepseek-ai/dsh-quran-evidence`).
+2. Registers `quran_get_sajdah_verses` in [`packages/quran/client-governance-card/src/client/index.ts`](./packages/quran/client-governance-card/src/client/index.ts).
+3. Wires the plugin using a portable relative path in [`packages/quran/quran-bundle/cordis.patch.yml`](./packages/quran/quran-bundle/cordis.patch.yml).
+
+---
+
+## Legal & Attribution Notice
+
+- **License:** Released under the [MIT License](./LICENSE).
+- **Independence & Trademark Disclaimer:** **Quran Harness** is an independent open-source project created and architected by **Mohammed Barniyah**. It is built as an isolated plugin layer compatible with the MIT-licensed Cordis / DSH plugin architecture and is not affiliated with or endorsed by DeepSeek.
 
 ---
 
 <div align="center">
 
-### 🏛️ إعداد وتطوير ومعمارية المشروع · Author & Architect
+### 🏛️ Created & Architected by
 
 **Mohammed Barniyah · محمد برنيه**
 

@@ -64,8 +64,8 @@
   </g>
 
   <!-- Main Title -->
-  <text x="640" y="216" text-anchor="middle" fill="#fdf8ec" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" letter-spacing="1">
-    DeepSeek Quran Harness
+  <text x="640" y="216" text-anchor="middle" fill="#fdf8ec" font-family="'Segoe UI', system-ui, -apple-system, sans-serif" font-size="46" font-weight="800" letter-spacing="1.5">
+    Quran Harness
   </text>
 
   <!-- Arabic Subtitle -->
@@ -83,37 +83,37 @@
     <!-- Pill 1 -->
     <g transform="translate(0, 0)">
       <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
-      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">22 حزمة معزولة</text>
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="17" font-weight="800">22 Isolated Packages</text>
       <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">0 Core Modifications</text>
     </g>
     <!-- Pill 2 -->
     <g transform="translate(220, 0)">
       <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
-      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">17 أداة قرآنية محكمة</text>
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="17" font-weight="800">17 Governed Tools</text>
       <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">SHA-256 EvidenceEnvelope</text>
     </g>
     <!-- Pill 3 -->
     <g transform="translate(440, 0)">
       <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
-      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">5 مهارات تخصصية</text>
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="17" font-weight="800">5 Bundled Skills</text>
       <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">+ Auto Capability Generator</text>
     </g>
     <!-- Pill 4 -->
     <g transform="translate(660, 0)">
       <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
-      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">8 روايات معتمدة</text>
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="17" font-weight="800">8 Canonical Riwayat</text>
       <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">6,236 Verified Verses</text>
     </g>
     <!-- Pill 5 -->
     <g transform="translate(880, 0)">
       <rect width="200" height="58" rx="10" fill="url(#cardGrad)" stroke="#d4af37" stroke-width="1.2" stroke-opacity="0.65" />
-      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="18" font-weight="800">95 / 95 اختبارًا</text>
+      <text x="100" y="25" text-anchor="middle" fill="#f3d27a" font-size="17" font-weight="800">95 / 95 Tests Passing</text>
       <text x="100" y="45" text-anchor="middle" fill="#cfe5d8" font-size="12.5">Red-Team &amp; Golden Verified</text>
     </g>
   </g>
 
   <!-- Bottom Ornament Footer -->
   <text x="640" y="416" text-anchor="middle" fill="#d4af37" fill-opacity="0.85" font-family="'Segoe UI', system-ui, sans-serif" font-size="13.5" letter-spacing="1">
-    ───⊱✿⊰───  Created &amp; Architected by Mohammed Barniyah · رواية حفص عن عاصم · v0.1.0  ───⊱✿⊰───
+    ───⊱✿⊰───  Created &amp; Architected by Mohammed Barniyah · Hafs 'an 'Asim · v0.1.0  ───⊱✿⊰───
   </text>
 </svg>
