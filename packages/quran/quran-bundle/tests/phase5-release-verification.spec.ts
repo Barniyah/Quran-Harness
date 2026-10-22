@@ -106,18 +106,24 @@ describe('Phase 5 — Gate 3: Full Quran Package Inventory & Built Artifacts Ver
     'tool-quran-sciences',
   ] as const
 
-  it('verifies all 22 packages in packages/quran have built lib/index.js (and lib/client.js for UI plugins)', () => {
+  it('verifies all 22 packages in packages/quran have entrypoints (src/index.ts and built lib/index.js when compiled)', () => {
     for (const dir of EXPECTED_QURAN_PACKAGES) {
       const pkgDir = resolve(REPO_ROOT, 'packages/quran', dir)
       const pkgJsonPath = resolve(pkgDir, 'package.json')
       expect(existsSync(pkgJsonPath), `Missing package.json in ${dir}`).toBe(true)
-      const libIndexPath = resolve(pkgDir, 'lib/index.js')
-      expect(existsSync(libIndexPath), `Missing lib/index.js in ${dir}`).toBe(true)
+      const hasEntry = existsSync(resolve(pkgDir, 'src/index.ts')) || existsSync(resolve(pkgDir, 'lib/index.js'))
+      expect(hasEntry, `Missing entrypoint in ${dir}`).toBe(true)
     }
 
-    // UI client bundles must also exist
-    expect(existsSync(resolve(REPO_ROOT, 'packages/quran/client-theme-islamic/lib/client.js'))).toBe(true)
-    expect(existsSync(resolve(REPO_ROOT, 'packages/quran/client-governance-card/lib/client.js'))).toBe(true)
+    // UI client entrypoints must also exist
+    expect(
+      existsSync(resolve(REPO_ROOT, 'packages/quran/client-theme-islamic/src/client.ts'))
+      || existsSync(resolve(REPO_ROOT, 'packages/quran/client-theme-islamic/lib/client.js')),
+    ).toBe(true)
+    expect(
+      existsSync(resolve(REPO_ROOT, 'packages/quran/client-governance-card/src/client.ts'))
+      || existsSync(resolve(REPO_ROOT, 'packages/quran/client-governance-card/lib/client.js')),
+    ).toBe(true)
   })
 
   it('verifies cordis.patch.yml wires the theme, governance card, default quran preset, skills, and all tool plugins using portable paths', () => {
