@@ -6,12 +6,6 @@ name: Release (Python)
 # and public-PyPI switch are configured.
 on:
   workflow_dispatch:
-    inputs:
-      publish:
-        description: Publish the validated wheels to public PyPI. Must run from a python-v* tag.
-        required: true
-        type: boolean
-        default: false
 
 permissions:
   contents: read

@@ -1,22 +1,8 @@
 name: CI master
 
 on:
-  push:
-    branches: [master]
   workflow_dispatch:
-    inputs:
-      suite:
-        description: Manual CI suite to run
-        required: true
-        default: larger-runner-benchmark
-        type: choice
-        options:
-          - larger-runner-benchmark
-          - consolidated-runner-benchmark
-          - ssh-helper
 
-# New master pushes and manual runs replace obsolete checks in this workflow/ref.
-# Standby drills share cancellation; use completed runs as readiness evidence.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

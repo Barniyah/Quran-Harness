@@ -1,22 +1,7 @@
 name: Build SSH helper
 
 on:
-  workflow_call:
-    inputs:
-      targets:
-        description: Comma-separated native Node 24 targets; empty builds all four.
-        type: string
-        default: ''
-      release:
-        description: Retain a complete release build when another run starts.
-        type: boolean
-        default: false
   workflow_dispatch:
-    inputs:
-      targets:
-        description: Linux/macOS x64/arm64 pkg targets; empty builds all four.
-        type: string
-        default: ''
 
 permissions:
   contents: read

@@ -6,23 +6,6 @@
 name: Node Addon System
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/node-addon-system.yml'
-      - '.github/workflows/node-addon-system-release.yml'
-      - 'native/system/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-  push:
-    branches: [master]
-    paths:
-      - '.github/workflows/node-addon-system.yml'
-      - '.github/workflows/node-addon-system-release.yml'
-      - 'native/system/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
   workflow_dispatch:
 
 concurrency:

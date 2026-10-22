@@ -5,12 +5,6 @@ name: Node Addon System Release
 
 on:
   workflow_dispatch:
-    inputs:
-      publish:
-        description: Publish packed tarballs to npm. Must run from a node-addon-system-v* tag.
-        required: true
-        type: boolean
-        default: false
 
 permissions:
   contents: read

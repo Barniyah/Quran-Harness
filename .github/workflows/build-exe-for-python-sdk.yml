@@ -9,37 +9,7 @@ name: Build single-exe
 # list gray skipped checks on every unrelated PR label event. Checkout uses the
 # triggering ref, so dispatch needs no separate ref input.
 on:
-  workflow_call:
-    inputs:
-      targets:
-        description: Comma-separated pkg targets to build; empty builds all five.
-        type: string
-        required: false
-        default: ''
-      release:
-        description: Run as the native builder for the Python release workflow.
-        type: boolean
-        required: false
-        default: false
-      ci:
-        description: Run Python runtime CI validation for the selected targets.
-        type: boolean
-        required: false
-        default: false
-    secrets:
-      DEEPSEEK_API_KEY_EXTERNAL:
-        description: Real DeepSeek API key for trusted installed-wheel pull-request tests.
-        required: false
   workflow_dispatch:
-    inputs:
-      targets:
-        description: >-
-          Comma-separated pkg targets to build. Any subset of:
-          node24-linux-x64, node24-linux-arm64, node24-macos-arm64,
-          node24-macos-x64, node24-win-x64. Empty builds all five.
-        type: string
-        required: false
-        default: ''
 
 concurrency:
   # Keep the called workflow distinct from its caller's concurrency group;

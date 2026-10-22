@@ -1,0 +1,39 @@
+name: Quran Harness CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, quran-harness-agy]
+  pull_request:
+    branches: [main, quran-harness-agy]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quran-harness-tests:
+    name: Quran Harness (Build & 95 Deterministic Tests)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Quran Harness packages
+        run: pnpm --filter "./packages/quran/**" run build
+
+      - name: Run Quran Harness test suite (95 tests)
+        run: pnpm --filter "./packages/quran/**" run test

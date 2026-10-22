@@ -3,12 +3,6 @@ name: Release (SSH helper)
 # Validation accepts any ref; publication requires the matching dsh-v<version> tag.
 on:
   workflow_dispatch:
-    inputs:
-      publish:
-        description: Publish verified archives to GitHub Release. Must run from the matching dsh-v<version> tag.
-        type: boolean
-        required: true
-        default: false
 
 permissions:
   contents: read

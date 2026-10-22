@@ -1,13 +1,7 @@
 name: weighted-approval
 
 on:
-  pull_request_target:
-    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited]
-  issue_comment:
-    types: [created, edited, deleted]
-  workflow_run:
-    workflows: [weighted-approval-review-event]
-    types: [completed]
+  workflow_dispatch:
 
 permissions:
   contents: read

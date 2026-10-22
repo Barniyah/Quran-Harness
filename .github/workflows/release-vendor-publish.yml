@@ -7,12 +7,6 @@ name: Release publish (vendor)
 
 on:
   workflow_dispatch:
-    inputs:
-      dist-tag:
-        description: Optional unused npm channel. Leave empty for latest (stable) or next (prerelease).
-        required: false
-        type: string
-        default: ''
 
 permissions:
   contents: read
