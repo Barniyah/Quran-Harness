@@ -117,11 +117,13 @@ describe('Phase 5 — Gate 3: Full Quran Package Inventory & Built Artifacts Ver
 
     // UI client entrypoints must also exist
     expect(
-      existsSync(resolve(REPO_ROOT, 'packages/quran/client-theme-islamic/client/index.tsx'))
+      existsSync(resolve(REPO_ROOT, 'packages/quran/client-theme-islamic/src/client/index.ts'))
+      || existsSync(resolve(REPO_ROOT, 'packages/quran/client-theme-islamic/src/client/index.tsx'))
       || existsSync(resolve(REPO_ROOT, 'packages/quran/client-theme-islamic/lib/client.js')),
     ).toBe(true)
     expect(
-      existsSync(resolve(REPO_ROOT, 'packages/quran/client-governance-card/client/index.tsx'))
+      existsSync(resolve(REPO_ROOT, 'packages/quran/client-governance-card/src/client/index.ts'))
+      || existsSync(resolve(REPO_ROOT, 'packages/quran/client-governance-card/src/client/index.tsx'))
       || existsSync(resolve(REPO_ROOT, 'packages/quran/client-governance-card/lib/client.js')),
     ).toBe(true)
   })
