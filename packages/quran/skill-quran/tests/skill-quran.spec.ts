@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Context } from '@deepseek-ai/cordis'
-import type { SkillProvider } from '@deepseek-ai/dsh-skill'
+import type { SkillCandidate, SkillProvider, SkillProviderObservation } from '@deepseek-ai/dsh-skill'
 import { apply, parseQuranSkill, QURAN_SKILL_NAMES } from '../src/index.ts'
 
 describe('@deepseek-ai/dsh-skill-quran', () => {
@@ -19,7 +19,9 @@ describe('@deepseek-ai/dsh-skill-quran', () => {
     expect(registeredProvider!.name).toBe('dsh-quran')
 
     const listResult = await registeredProvider!.list({})
-    const candidates = Array.isArray(listResult) ? listResult : listResult.candidates
+    const candidates: readonly SkillCandidate[] = Array.isArray(listResult)
+      ? (listResult as readonly SkillCandidate[])
+      : (listResult as SkillProviderObservation).candidates
     expect(candidates.map(c => c.name)).toEqual([...QURAN_SKILL_NAMES])
     expect(candidates.map(c => c.name)).toContain('quran-create-capability')
 

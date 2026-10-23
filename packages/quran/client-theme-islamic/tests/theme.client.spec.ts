@@ -2,6 +2,7 @@
 
 import { readFileSync } from 'node:fs'
 import { createElement } from 'react'
+import type { FunctionComponent } from 'react'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
@@ -24,6 +25,10 @@ import {
   QuranMushafOverlay,
 } from '../src/client/index.ts'
 import { MUSHAF_DARK_TOKENS, MUSHAF_LIGHT_TOKENS } from '../src/client/themes.ts'
+
+// Slot components receive host-injected props (slot/children/useStore) at runtime;
+// tests pass them directly, so widen the static props type for test rendering only.
+const asTestComponent = (component: unknown) => component as FunctionComponent<Record<string, unknown>>
 
 interface FakeThemeDef {
   id: string
@@ -221,7 +226,7 @@ describe('quran islamic theme & arabic locale plugin', () => {
       selector({ preference: activePref, revision: 1 })
 
     const { rerender } = render(
-      createElement(QuranMushafOverlay, {
+      createElement(asTestComponent(QuranMushafOverlay), {
         slot: 'shell.overlay',
         children: {},
         useStore,
@@ -239,7 +244,7 @@ describe('quran islamic theme & arabic locale plugin', () => {
     // Switch to standard 'light' theme -> overlay hides
     activePref = 'light'
     rerender(
-      createElement(QuranMushafOverlay, {
+      createElement(asTestComponent(QuranMushafOverlay), {
         slot: 'shell.overlay',
         children: {},
         useStore,
@@ -292,7 +297,7 @@ describe('quran islamic theme & arabic locale plugin', () => {
       selector({ preference: activePref, revision: 1 })
 
     const { rerender } = render(
-      createElement(QuranAppearanceRow, {
+      createElement(asTestComponent(QuranAppearanceRow), {
         slot: 'settings.general.item',
         children: {},
         useStore,
@@ -315,7 +320,7 @@ describe('quran islamic theme & arabic locale plugin', () => {
 
     activePref = 'mushaf-dark'
     rerender(
-      createElement(QuranAppearanceRow, {
+      createElement(asTestComponent(QuranAppearanceRow), {
         slot: 'settings.general.item',
         children: {},
         useStore,
