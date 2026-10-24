@@ -1,0 +1,45 @@
+{
+  // Quran Harness — GitHub Codespaces / Dev Container configuration.
+  // Self-contained: only this folder is involved; no project source is modified.
+  "name": "Quran Harness",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    }
+  },
+  // The monorepo build (tsc + bundles) needs headroom; 4 cores / 8 GB is the smallest comfortable machine.
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb"
+  },
+  // Optional: set DEEPSEEK_API_KEY as a Codespaces secret to skip entering it in the UI.
+  "secrets": {
+    "DEEPSEEK_API_KEY": {
+      "description": "Optional DeepSeek API key. You can also enter an API key (or sign in) from the Quran Harness UI on first launch.",
+      "documentationUrl": "https://platform.deepseek.com/api_keys"
+    }
+  },
+  "containerEnv": {
+    "DSH_TELEMETRY_DISABLED": "1"
+  },
+  // One-time setup: pnpm install + build + Python .venv (Tajweed / Phonetics).
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  // Every time you open the Codespace: start the Quran Harness Web GUI in the terminal.
+  "postAttachCommand": "bash .devcontainer/start-quran-harness.sh",
+  "forwardPorts": [3080],
+  "portsAttributes": {
+    "3080": {
+      "label": "Quran Harness Web GUI",
+      "onAutoForward": "notify"
+    }
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": [".devcontainer/README.md"]
+    }
+  }
+}

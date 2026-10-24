@@ -1322,6 +1322,85 @@ chmod +x setup-quran-harness.sh run-quran-harness.sh
 
       <div class="card" style="margin-top: 1.5rem;">
         <div class="card-title">
+          <span>🔑 التشغيل لأول مرة: ربط النموذج (مفتاح DeepSeek API أو حساب DSH)</span>
+          <span class="badge badge-hybrid">First Launch</span>
+        </div>
+        <p style="color: var(--text-secondary);">
+          يطبع المشغّل رابطًا محليًا (افتراضيًا <code>http://127.0.0.1:3080/…</code>) يحتوي على رمز دخول لمرة واحدة ويفتحه في المتصفح. عند التشغيل لأول مرة تطلب الواجهة طريقة الاتصال بالنموذج اللغوي، اختر <strong>إحدى</strong> الطريقتين:
+        </p>
+        <ol style="color: var(--text-secondary); line-height: 2;">
+          <li><strong>إدخال مفتاح DeepSeek API:</strong> أنشئ مفتاحًا من <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener"><bdi>platform.deepseek.com/api_keys</bdi></a> والصقه عند الطلب، أو عرّفه مسبقًا كمتغير بيئة <code>DEEPSEEK_API_KEY</code> قبل التشغيل.</li>
+          <li><strong>تسجيل الدخول / إنشاء حساب DSH</strong> مباشرةً من شاشة التشغيل الأول.</li>
+        </ol>
+        <pre class="code-block"># macOS / Linux
+export DEEPSEEK_API_KEY=sk-...
+
+# Windows (PowerShell)
+$env:DEEPSEEK_API_KEY = "sk-..."</pre>
+        <p style="color: var(--text-secondary);">⚠️ لا تحفظ مفتاحك داخل المستودع، ولا تشارك رابط التشغيل لأنه يحتوي على رمز دخول.</p>
+      </div>
+
+      <div class="grid-2" style="margin-top: 1.5rem;">
+        <div class="card">
+          <div class="card-title">
+            <span>🕌 تفعيل نمط Quran Harness من الإعدادات</span>
+            <span class="badge badge-local">Agent Preset · quran</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            جميع مزايا Quran Harness (الأدوات الـ17 المحكومة، المهارات الخمس، وبطاقة الحوكمة الإلزامية) تعمل عبر نمط الوكيل <strong>Quran Harness</strong> (<code>quran</code>). افتح <strong>الإعدادات ← أنماط الوكيل (Agent Presets)</strong> وتأكد أن <strong>Quran Harness</strong> محدد كـ <strong>«الافتراضي للمهام الجديدة»</strong> قبل التعامل مع المزايا القرآنية:
+          </p>
+          <img src="assets/screenshots/settings-agent-presets-quran.png" alt="الإعدادات ← أنماط الوكيل ← Quran Harness محدد كافتراضي للمهام الجديدة" loading="lazy" style="width: 100%; border-radius: 12px; border: 1px solid var(--border, rgba(0,0,0,0.12));" />
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>🎨 اللغة العربية وثيم المصحف</span>
+            <span class="badge badge-local">Settings · General</span>
+          </div>
+          <p style="color: var(--text-secondary);">
+            من <strong>الإعدادات ← الإعدادات العامة</strong> يمكنك تحويل لغة الواجهة إلى <strong>العربية (RTL)</strong> واختيار ثيم <strong>مصحف نهاري / مصحف ليلي</strong>:
+          </p>
+          <img src="assets/screenshots/settings-general-appearance.png" alt="الإعدادات العامة ← اللغة العربية وثيمات المصحف النهاري والليلي" loading="lazy" style="width: 100%; border-radius: 12px; border: 1px solid var(--border, rgba(0,0,0,0.12));" />
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-title">
+          <span>🧠 اختيار أي نموذج لغوي (LLM) من الإعدادات</span>
+          <span class="badge badge-external">Settings · Models</span>
+        </div>
+        <p style="color: var(--text-secondary);">
+          Quran Harness <strong>مستقل عن النموذج</strong>: افتح <strong>الإعدادات ← النماذج (Models)</strong> لاختيار أو إضافة أي نموذج/مزوّد تفضّله. طبقة الحوكمة مفروضة داخل الأدوات نفسها (الجلب الحرفي، التحقق المتقاطع <code>L1 × L2</code>، غلاف <code>SHA-256</code>، وبطاقة الحوكمة)، لذلك <strong>لا تعتمد سلامة نص الآيات على النموذج المختار</strong> — مع أن النماذج الأقوى في استدعاء الأدوات تعطي إجابات بحثية أفضل.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top: 1.5rem;" id="codespaces">
+        <div class="card-title">
+          <span>☁️ التشغيل على GitHub Codespaces (بدون تثبيت محلي)</span>
+          <span class="badge badge-hybrid">Cloud · Dev Container</span>
+        </div>
+        <p style="color: var(--text-secondary);">
+          جرّب Quran Harness كاملًا من المتصفح: كل مستخدم يحصل على آلة سحابية معزولة على حسابه في GitHub وبمفتاحه الخاص. الإعداد كله موجود في مجلد <code>.devcontainer/</code> دون أي تعديل على ملفات المشروع.
+        </p>
+        <p style="text-align: center; margin: 1rem 0;">
+          <a href="https://codespaces.new/Barniyah/Quran-Harness?quickstart=1" target="_blank" rel="noopener"><img src="https://github.com/codespaces/badge.svg" alt="Open in GitHub Codespaces" /></a>
+        </p>
+        <ol style="color: var(--text-secondary); line-height: 2;">
+          <li>اضغط زر <strong>Open in GitHub Codespaces</strong> (أو من المستودع: <strong>Code ← Codespaces ← Create codespace on main</strong>). تُطلب آلة 4 أنوية / 8GB تلقائيًا.</li>
+          <li>انتظر <strong>الإعداد لمرة واحدة</strong> (عند الإنشاء الأول فقط، عدة دقائق): تثبيت الحزم، البناء، وبيئة بايثون للتجويد والصوتيات عبر نفس السكربت <code>setup-quran-harness.sh</code>.</li>
+          <li>تبدأ الواجهة <strong>تلقائيًا</strong> في الطرفية، اضغط <strong>Ctrl+Click</strong> على الرابط المطبوع (المنفذ <code>3080</code> خاص بك افتراضيًا).</li>
+          <li>اربط النموذج (مفتاح DeepSeek أو حساب DSH)، ثم تأكد من تفعيل نمط <strong>Quran Harness</strong> كما في الأعلى. اختياريًا: أضف <code>DEEPSEEK_API_KEY</code> كـ <a href="https://github.com/settings/codespaces" target="_blank" rel="noopener">Codespaces secret</a> لتخطي إدخال المفتاح.</li>
+        </ol>
+        <pre class="code-block"># إعادة تشغيل الواجهة في أي وقت
+bash .devcontainer/start-quran-harness.sh
+
+# تشغيل الاختبارات داخل Codespaces
+pnpm exec vitest run packages/quran</pre>
+        <p style="color: var(--text-secondary);">ℹ️ يتوقف Codespaces تلقائيًا بعد 30 دقيقة من الخمول، ويُحتسب من الساعات المجانية الشهرية لحساب كل مستخدم. أوقفه أو احذفه من <a href="https://github.com/codespaces" target="_blank" rel="noopener"><bdi>github.com/codespaces</bdi></a> عند الانتهاء.</p>
+      </div>
+
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-title">
           <span>✅ تشغيل منظومة الاختبارات الآلية الشاملة (21 ملف اختبار — 95 / 95 اختبارًا ناجحًا)</span>
           <span class="badge badge-local">Vitest Verification Suite</span>
         </div>

@@ -158,6 +158,54 @@ chmod +x setup-quran-harness.sh run-quran-harness.sh
 ./run-quran-harness.sh
 ```
 
+> The launcher prints a local URL (default `http://127.0.0.1:3080/…`) containing a one-time launch token and opens it in your default browser. Pass `--no-open` to disable the browser handoff or `--port <port>` to change the port.
+
+### First Launch — Connect a Model (DeepSeek API Key or DSH Account)
+
+On the very first launch the Web GUI asks how to connect to a language model. Choose **one** of the following:
+
+1. **Enter your DeepSeek API key** — create a key at [platform.deepseek.com/api_keys](https://platform.deepseek.com/api_keys) and paste it when prompted. Alternatively, set it in advance as an environment variable before launching:
+   ```bash
+   # macOS / Linux
+   export DEEPSEEK_API_KEY=sk-...
+   # Windows (PowerShell)
+   $env:DEEPSEEK_API_KEY = "sk-..."
+   ```
+2. **Sign in / create a DSH account** directly from the first-launch screen.
+
+> [!CAUTION]
+> Never commit your API key to the repository or share the launch URL — it contains a one-time access token.
+
+### Use the Quran Harness Preset (Settings → Agent Presets)
+
+All Quran Harness capabilities (the 17 governed tools, the 5 skills, and the mandatory Governance Card) are activated through the **Quran Harness** agent preset (`quran`). Open **Settings (الإعدادات) → Agent Presets (أنماط الوكيل)** and make sure **Quran Harness** is marked **Default for new tasks (الافتراضي للمهام الجديدة)** before working with Quranic features:
+
+<p align="center"><img src="./docs/assets/screenshots/settings-agent-presets-quran.png" alt="Settings → Agent Presets → Quran Harness (quran) selected as default for new tasks" width="85%" /></p>
+
+Under **Settings → General (الإعدادات العامة)** you can also switch the interface **Language** to Arabic (RTL) and pick the **Mushaf Light / Mushaf Dark** Islamic themes:
+
+<p align="center"><img src="./docs/assets/screenshots/settings-general-appearance.png" alt="Settings → General → Arabic language and Mushaf Light / Dark appearance themes" width="85%" /></p>
+
+### Choose Any LLM Model (Settings → Models)
+
+Quran Harness is **model-agnostic**. Open **Settings → Models (النماذج)** to select or add any LLM model/provider you prefer. The governance layer is enforced by the tools themselves (verbatim retrieval, `L1 × L2` cross-verification, `SHA-256` `EvidenceEnvelope`, and the Governance Card), so verse integrity does **not** depend on the chosen model — although stronger tool-calling models give better research answers.
+
+### Run in GitHub Codespaces (No Local Installation)
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Barniyah/Quran-Harness?quickstart=1)
+
+Try Quran Harness entirely in the browser — every user gets an isolated cloud machine on their own GitHub account, using their own API key:
+
+1. Click **Open in GitHub Codespaces** above (or **Code → Codespaces → Create codespace on main**). A 4-core / 8 GB machine is requested automatically.
+2. Wait for the **one-time setup** (first creation only, several minutes): pnpm install, build, and the Python `.venv` for Tajweed & Phonetics — all via the same `setup-quran-harness.sh`.
+3. The Web GUI **starts automatically** in the terminal. **Ctrl+Click** the printed URL (forwarded port `3080`, private to you by default).
+4. Connect a model (DeepSeek API key or DSH account), then confirm the **Quran Harness** preset as described above.
+   - Optional: add `DEEPSEEK_API_KEY` as a [Codespaces secret](https://github.com/settings/codespaces) to skip entering the key.
+5. Restart the GUI at any time with `bash .devcontainer/start-quran-harness.sh`, and run the tests with `pnpm exec vitest run packages/quran`.
+
+> [!NOTE]
+> Codespaces stops automatically after 30 minutes of inactivity and is billed against each user's free monthly Codespaces hours. Stop or delete it from [github.com/codespaces](https://github.com/codespaces) when finished. Configuration lives entirely in [`.devcontainer/`](./.devcontainer).
+
 ---
 
 ## 6. Running the Verification & Test Suite
