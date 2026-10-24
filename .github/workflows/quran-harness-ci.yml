@@ -3,9 +3,9 @@ name: Quran Harness CI
 on:
   workflow_dispatch:
   push:
-    branches: [main, quran-harness-agy]
+    branches: [main]
   pull_request:
-    branches: [main, quran-harness-agy]
+    branches: [main]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

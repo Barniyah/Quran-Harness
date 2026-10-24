@@ -42,15 +42,20 @@ export const TAFSIR_EDITIONS = {
 export type TafsirEdition = keyof typeof TAFSIR_EDITIONS
 
 const CDN_BASE = 'https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir'
+const RAW_FALLBACK_BASE = 'https://raw.githubusercontent.com/spa5k/tafsir_api/main/tafsir'
 
 /** Build the CDN URL for one ayah in one edition. Exported for tests. */
 export function tafsirUrl(edition: TafsirEdition, surah: number, ayah: number): string {
   return `${CDN_BASE}/${edition}/${surah}/${ayah}.json`
 }
 
-/** Fetch one ayah's tafsir text. Exported for tests. */
+/** Fetch one ayah's tafsir text (with automatic GitHub Raw mirror fallback if jsDelivr returns 403/5xx). Exported for tests. */
 export async function fetchTafsir(edition: TafsirEdition, surah: number, ayah: number, signal?: AbortSignal): Promise<string> {
-  const res = await fetch(tafsirUrl(edition, surah, ayah), { signal: signal ?? null })
+  let res = await fetch(tafsirUrl(edition, surah, ayah), { signal: signal ?? null })
+  if (!res.ok && (res.status === 403 || res.status === 429 || res.status >= 500) && edition in TAFSIR_EDITIONS) {
+    const fallbackRes = await fetch(`${RAW_FALLBACK_BASE}/${edition}/${surah}/${ayah}.json`, { signal: signal ?? null })
+    if (fallbackRes.ok) res = fallbackRes
+  }
   if (!res.ok) throw new Error(`tafsir CDN responded ${res.status} for ${edition} ${surah}:${ayah}`)
   const body = await res.json() as { text?: string }
   if (typeof body.text !== 'string' || body.text.trim() === '') {
