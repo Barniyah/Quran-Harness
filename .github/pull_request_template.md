@@ -1,21 +1,32 @@
-## Motivation
+## 🕌 Summary of Contribution
 
-<!-- 用一句话说明需要解决的问题，并以 Fixes #NN 或 Related #NN 引用同仓库 Issue。 -->
+<!-- Briefly describe what this Pull Request adds, improves, or fixes in Quran Harness. -->
 
-## Changes
+- **Type of Contribution:**
+  - [ ] 🛠️ New Evidence-Governed Quran Capability (`packages/quran/tool-*`)
+  - [ ] 📜 New or Updated Quran Skill (`packages/quran/skill-quran/assets/*`)
+  - [ ] 🎨 UI / Islamic Theme / Governance Card Enhancement (`packages/quran/client-*`)
+  - [ ] 📚 Documentation / Research Guide / Tests
 
-<!-- 高层次说明命令、配置、API、协议或持久化格式的变化；没有则写 None。 -->
-<!-- 高层次说明用户、模型或系统可观察行为的变化；没有则写 None。 -->
+---
 
-## Testing
+## 🔐 Quran Harness Governance & Provenance Checklist
 
-<!-- 每种测试方法添加一个条目。方法保持可见，将可复核证据放进对应的 Proof 区域。 -->
+- [ ] **100% Isolated Layer:** Zero files modified in `packages/core`, `packages/client`, `packages/preset`, or `apps` (verified by Gate 1 in `phase5-release-verification.spec.ts`).
+- [ ] **Portable Paths Only:** Uses relative paths (`./` or `../`) — no hardcoded absolute machine paths.
+- [ ] **3-Layer Governance Wiring** *(for new tools/capabilities)*:
+  - [ ] Wraps output in `createEnvelope` (`@deepseek-ai/dsh-quran-evidence`) with `SHA-256` `contentHash` and `appendAuditLog`.
+  - [ ] Registered in `GovernanceCard.tsx` (`QURAN_GOVERNED_TOOLS`).
+  - [ ] Mounted in `packages/quran/quran-bundle/cordis.patch.yml`.
+- [ ] **Scholarly & Data Provenance:**
+  - **Source Name & URL:** `<!-- e.g., Tanzil.net / Quran.com v4 / Quranic Arabic Corpus -->`
+  - **Trust Tier:** `<!-- L1-official / L2-verified-open / L3-community -->`
+  - **Riwaya (if applicable):** `<!-- Default: Hafs 'an 'Asim -->`
+  - **Pinned `.sha256` Sidecar Included (if adding local data):** `<!-- Yes / N/A -->`
 
-- <!-- 说明命令或步骤，以及它覆盖的行为。 -->
+---
 
-  <details>
-  <summary>Proof</summary>
+## 🧪 Verification & Test Results
 
-  <!-- 提供测试输出、截图、录屏、日志或其他可复核证据。 -->
-
-  </details>
+- [ ] `pnpm exec vitest run packages/quran` passes locally with 0 failures.
+- [ ] Added or updated unit tests in `packages/quran/<package>/tests/*.spec.ts`.

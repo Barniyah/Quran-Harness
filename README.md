@@ -13,7 +13,7 @@
 [![Tests](https://img.shields.io/badge/Tests-95%2F95_Passing-145a38?style=for-the-badge)](#6-running-the-verification--test-suite)
 [![Core Diff](https://img.shields.io/badge/Upstream_Core_Diff-0_Files_Modified-0d291e?style=for-the-badge)](#1-isolated-layer-architecture)
 
-🌐 **[Interactive Arabic & Technical Showcase (GitHub Pages)](https://barniyah.github.io/Quran-Harness/)** · 🧪 **[Interactive GUI Test Suite](https://barniyah.github.io/Quran-Harness/quran/QURAN-HARNESS-GUI-TESTS.html)** · 🛠️ **[Developer Plugin Guide](./docs/quran/DEVELOPER-PLUGIN-GUIDE.md)** · 📦 **[SDK & Skills Reference](./docs/quran/SDK-AND-SKILLS-GUIDE.md)**
+🌐 **[Interactive Arabic & Technical Showcase (GitHub Pages)](https://barniyah.github.io/Quran-Harness/)** · 🧪 **[Interactive GUI Test Suite](https://barniyah.github.io/Quran-Harness/quran/QURAN-HARNESS-GUI-TESTS.html)** · 🛠️ **[Developer Plugin Guide](./docs/quran/DEVELOPER-PLUGIN-GUIDE.md)** · 📦 **[SDK & Skills Reference](./docs/quran/SDK-AND-SKILLS-GUIDE.md)** · 🤝 **[Contributing Guide](./CONTRIBUTING.md)**
 
 </div>
 
