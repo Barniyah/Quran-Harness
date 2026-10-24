@@ -54,13 +54,15 @@
   <g transform="translate(640, 128)">
     <circle cx="0" cy="0" r="42" fill="#0b2419" stroke="url(#goldGrad)" stroke-width="2" />
     <circle cx="0" cy="0" r="36" fill="none" stroke="#d4af37" stroke-width="0.8" stroke-opacity="0.5" />
-    <!-- Open Mushaf Pages -->
-    <path d="M -24,-8 Q -12,-16 0,-8 Q 12,-16 24,-8 L 24,10 Q 12,2 0,10 Q -12,2 -24,10 Z" fill="#f7eed7" stroke="#c99b3b" stroke-width="1.5" />
-    <line x1="0" y1="-8" x2="0" y2="10" stroke="#b8892a" stroke-width="1.4" />
+    <!-- Open Mushaf Pages (Centered without star) -->
+    <path d="M -25,-14 Q -12.5,-22 0,-14 Q 12.5,-22 25,-14 L 25,6 Q 12.5,-2 0,6 Q -12.5,-2 -25,6 Z" fill="#f7eed7" stroke="#c99b3b" stroke-width="1.5" stroke-linejoin="round" />
+    <!-- Inner Page Frame & Subtle Verse Lines -->
+    <path d="M -21,-11 Q -11,-17 -3,-11 L -3,2 Q -11,-4 -21,2 Z M 3,-11 Q 11,-17 21,-11 L 21,2 Q 11,-4 3,2 Z" fill="none" stroke="#c99b3b" stroke-width="0.7" stroke-opacity="0.75" />
+    <path d="M -18,-7 Q -12,-11 -6,-7 M -18,-3 Q -12,-7 -6,-3 M 6,-7 Q 12,-11 18,-7 M 6,-3 Q 12,-7 18,-3" fill="none" stroke="#b8892a" stroke-width="0.8" stroke-linecap="round" stroke-opacity="0.85" />
+    <!-- Center Spine -->
+    <line x1="0" y1="-14" x2="0" y2="6" stroke="#b8892a" stroke-width="1.5" />
     <!-- Rehal (Wooden Stand) -->
-    <path d="M -20,14 L 16,28 M 20,14 L -16,28" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" />
-    <!-- Radiant Star Above Mushaf -->
-    <polygon points="0,-28 3,-20 11,-20 5,-15 7,-7 0,-12 -7,-7 -5,-15 -11,-20 -3,-20" fill="url(#goldGrad)" />
+    <path d="M -21,10 L 17,24 M 21,10 L -17,24" stroke="url(#goldGrad)" stroke-width="3" stroke-linecap="round" />
   </g>
 
   <!-- Main Title -->
